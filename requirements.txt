@@ -1,0 +1,7 @@
+math
+time
+numpy
+pandas
+plotly
+yfinance
+streamlit
