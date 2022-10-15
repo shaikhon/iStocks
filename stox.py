@@ -8,7 +8,7 @@ import streamlit as st
 import requests
 import math
 import time
-
+from datetime import date
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -132,13 +132,13 @@ st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like 
 st.text("6. Make price chart live! append data")
 ########################################################################################
 # Get Ticker symbols from NYSE ftp site
-url = 'https://ftp.nyse.com/NYSESymbolMapping/NYSESymbolMapping_20221014.txt'
+date_str = date.today().strftime("%Y%m%d")
+url = f'https://ftp.nyse.com/NYSESymbolMapping/NYSESymbolMapping_{date_str}.txt'
 stocks = get_tickers(url)
 # stocks = list(np.genfromtxt('nasdaqlisted.txt', delimiter='|',skip_header=1,dtype=str)[:,0])
 # df = pd.read_csv("nasdaq_screener.csv",index_col=0)
 # stocks = list(df.index)
 # ['MSFT','AAPL','TSLA','AMZN','BA', 'GOOGL','GOOG','NVDA','MVST','MILE']
-
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
@@ -153,18 +153,19 @@ stock = st.sidebar.selectbox(
 # STOCK INFO (Yfinance)
 ticker = get_ticker_info(stock)
 
+
 lang_dict = get_lang_dict(lang)
 
 # information dict
 idict = ticker.info
 
-# Price
+# Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
     idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
     idict['dayHigh'], idict['dayLow'], idict['volume']
 ], 2)
-# Financials	
+# Financials
 einfo = [
     idict['marketCap'], idict['floatShares'], idict['ebitda'],
     idict['freeCashflow'], idict['totalDebt'], idict['totalCash'],
@@ -183,8 +184,8 @@ sinfo = [idict['debtToEquity'], idict['shortPercentOfFloat'],
 
 einfo = [0 if x is None else x for x in einfo]  # replace None with 0
 pricelist = [floatToString(s) if s < 1e6 else str(millify(s)) for s in pinfo]
-
 elist = [millify(n) for n in einfo]
+
 ################## Major Market Metrics ############################
 # with st.empty():  # overwriting elements in-place
 #     for sec in range(5):
@@ -236,9 +237,9 @@ recommendation = "RECOMMENDATION"
 idict["recommendationKey"]
 
 ################## PIE CONTAINER ############################
-with st.container():
-    st.header("Nasdaq Pie")
-    st.plotly_chart(plot_pie(df))
+# with st.container():
+#     st.header("Nasdaq Pie")
+#     st.plotly_chart(plot_pie(df))
 
 ################## TABLE CONTAINER ############################
 st.header(stock + ' Summary')
