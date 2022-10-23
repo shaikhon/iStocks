@@ -463,9 +463,6 @@ lang_dict = get_lang_dict(lang)
 # information dict
 idict = ticker.info
 
-type(idict['currentPrice'])
-idict['currentPrice']
-
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
@@ -553,8 +550,9 @@ for col, label, metric in zip(columns2, general_labels, general_metrics):
     col.empty()
 
 ################## Target Price Bar ############################
-recommendation = "RECOMMENDATION"
-idict["recommendationKey"]
+# recommendation = "RECOMMENDATION"
+#
+# idict["recommendationKey"]
 
 ################## PIE CONTAINER ############################
 # with st.container():
@@ -604,7 +602,8 @@ with st.container():
 
 #################################################################
 
-# idict
+if st.checkbox("Information dict:"):
+    idict
 
     
 #################################################################
