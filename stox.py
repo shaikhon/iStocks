@@ -516,13 +516,16 @@ elist = [millify(n) for n in einfo]
 # list(ticker_dict), index = list(ticker_dict.values()).index('AMZN'), key = "stock")
 
 with st.container():
-    plt_col1, plt_col2 = st.columns([6,1],gap="small")
+    plt_col1, plt_col2, plt_col3 = st.columns([5,1,1],gap="small")
 
     plt_col1.header(idict['shortName']+" Chart")
     period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
                                 index=0, key="period")
+    interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
+                                index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
+
     # intraday - America/New_York
-    d = ticker.history(period=period, interval='1m',
+    d = ticker.history(period=period, interval=interval,
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
     st.plotly_chart(intraday(d), use_container_width=True)
