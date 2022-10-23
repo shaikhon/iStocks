@@ -505,15 +505,26 @@ elist = [millify(n) for n in einfo]
 #     st.write("Times up!")
 
 ################## CHART CONTAINER ############################
+
+# with st.container():
+#     opt_col1, opt_col3 = st.columns([6,1],gap="small")
+#     opt_col1.header(idict['shortName']+ "  Options")
+#
+#     stock = opt_col3.selectbox(
+
+# 'Ticker:',
+# list(ticker_dict), index = list(ticker_dict.values()).index('AMZN'), key = "stock")
+
 with st.container():
-    st.header(idict['shortName'])
+    plt_col1, plt_col2 = st.columns([6,1],gap="small")
+
+    plt_col1.header(idict['shortName']+" Chart")
+    period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
+                                index=0, key="period")
     # intraday - America/New_York
-    d = ticker.history(period="1d", interval='1m',
+    d = ticker.history(period=period, interval='1m',
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
-    # with warnings.catch_warnings():
-    #     warnings.simplefilter("ignore")
-    #     st.pyplot(plot_intraday(d))
-    # st.plotly_chart(px_intraday(d))
+
     st.plotly_chart(intraday(d), use_container_width=True)
 
 ################## Ticker Metrics ############################
