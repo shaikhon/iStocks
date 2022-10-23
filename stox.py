@@ -1,5 +1,5 @@
 # Stock App
-#import numpy as np
+import numpy as np
 import pandas as pd
 import yfinance as yf
 import streamlit as st
@@ -339,7 +339,7 @@ lang_dict
 # information dict
 idict = ticker.info
 # Price:
-pinfo = round([
+pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
     idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
     idict['dayHigh'], idict['dayLow'], idict['volume']
