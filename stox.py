@@ -9,7 +9,7 @@ import requests
 import math
 import time
 from datetime import date
-import plotly.express as px
+#import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -71,14 +71,14 @@ def millify(n):
 #################### PLOTS #################################################
 
 
-def px_intraday(d):
-    fig = px.line(d, x=d.index, y="Close", color_discrete_sequence=["lime"],
-                  template="plotly_dark")
-    fig.update_traces(mode="lines", hovertemplate='<i>Price</i>: $%{y:.2f}' +
-                                                  '<br><i>Time</i>: %{x|%H:%M}<br>')
-    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)",
-                      plot_bgcolor="rgba(0,0,0,0)")
-    return fig
+# def px_intraday(d):
+#     fig = px.line(d, x=d.index, y="Close", color_discrete_sequence=["lime"],
+#                   template="plotly_dark")
+#     fig.update_traces(mode="lines", hovertemplate='<i>Price</i>: $%{y:.2f}' +
+#                                                   '<br><i>Time</i>: %{x|%H:%M}<br>')
+#     fig.update_layout(paper_bgcolor="rgba(0,0,0,0)",
+#                       plot_bgcolor="rgba(0,0,0,0)")
+#     return fig
 
 
 def intraday(d):
@@ -111,10 +111,10 @@ def intraday(d):
     return fig
 
 
-def plot_pie(df):
-    df.loc[df['Market Cap'] < 5.e11, "Name"] = "Other"
-    fig = px.pie(df, values='Market Cap', names='Name', title='Market Cap of US Companies')
-    return fig
+# def plot_pie(df):
+#     df.loc[df['Market Cap'] < 5.e11, "Name"] = "Other"
+#     fig = px.pie(df, values='Market Cap', names='Name', title='Market Cap of US Companies')
+#     return fig
 
 
 ########################################################################################
