@@ -455,13 +455,10 @@ ticker_dict = get_names_dict(url)
 lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
-lang
-lang
-lang
 # Ticker input
 stock = st.sidebar.selectbox(
     'Ticker:',
-    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'))
+    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
 stock = ticker_dict[stock]
 
 # STOCK INFO (Yfinance)
@@ -469,8 +466,6 @@ ticker = get_ticker_info(stock)
 
 
 lang_dict = get_lang_dict(lang)
-lang_dict
-lang_dict
 
 # information dict
 idict = ticker.info
@@ -592,7 +587,7 @@ with st.container():
 
     stock = opt_col3.selectbox(
         'Experiation:',
-        ticker.options, index=0)
+        ticker.options, index=0, key="options")
 
 
 
