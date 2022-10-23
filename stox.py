@@ -1,8 +1,12 @@
 # Stock App
-import numpy as np
+#import numpy as np
 import pandas as pd
 import yfinance as yf
 import streamlit as st
+import requests, json, re
+from parsel import Selector
+from itertools import zip_longest
+
 # import altair as alt
 # import plotly.figure_factory as ff
 import requests
@@ -335,7 +339,7 @@ lang_dict = get_lang_dict(lang)
 idict = ticker.info
 
 # Price:
-pinfo = np.round([
+pinfo = round([
     idict['currentPrice'], idict['previousClose'],
     idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
     idict['dayHigh'], idict['dayLow'], idict['volume']
