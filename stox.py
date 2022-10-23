@@ -24,16 +24,33 @@ st.set_page_config(
 ##################  FUNCTIONS ############################
 
 
-def get_tickers(ftp_url):
-    r = requests.get(ftp_url)
-    return [entry.partition('|')[0] for entry in r.text.splitlines()]
-
+# def get_tickers(ftp_url):
+#     r = requests.get(ftp_url)
+#     return [entry.partition('|')[0] for entry in r.text.splitlines()]
 
 @st.cache(allow_output_mutation=True)
+def get_tickers(date_str):
+    date_int = int(date_str) - 5
+    tickers = []
+    while ("AMZN" not in tickers):
+        url = f'https://ftp.nyse.com/NYSESymbolMapping/NYSESymbolMapping_{date_int}.txt'
+        r = requests.get(url)
+        tickers = [entry.partition('|')[0] for entry in r.text.splitlines()]
+        date_int += 1
+
+    return tickers
+
+
+# @st.cache(allow_output_mutation=True)
 def get_ticker_info(stock):
     return yf.Ticker(stock)
 
+@st.cache(allow_output_mutation=True)
+def get_names_dict(url):
+    r = requests.get(url)
+    return {name[1]+" - "+name[5]:name[1] for name in [entry.split('|') for entry in r.text.splitlines()]}
 
+@st.cache(allow_output_mutation=True)
 def get_lang_dict(lang):
     if lang == 'English':
         lang_dict = {0: 'Current Price',
@@ -117,6 +134,131 @@ def intraday(d):
 #     return fig
 
 
+def scrape_google_finance(ticker: str):
+    params = {
+        "hl": "en"  # language
+    }
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36",
+    }
+
+    html = requests.get(f"https://www.google.com/finance/quote/{ticker}", params=params, headers=headers, timeout=30)
+    selector = Selector(text=html.text)
+
+    # where all extracted data will be temporary located
+    ticker_data = {
+        "ticker_data": {},
+        "about_panel": {},
+        "news": {"items": []},
+        "finance_perfomance": {"table": []},
+        "people_also_search_for": {"items": []},
+        "interested_in": {"items": []}
+    }
+
+    # current price, quote, title extraction
+    ticker_data["ticker_data"]["current_price"] = selector.css(".AHmHk .fxKbKc::text").get()
+    ticker_data["ticker_data"]["quote"] = selector.css(".PdOqHc::text").get().replace(" • ", ":")
+    ticker_data["ticker_data"]["title"] = selector.css(".zzDege::text").get()
+
+    # about panel extraction
+    about_panel_keys = selector.css(".gyFHrc .mfs7Fc::text").getall()
+    about_panel_values = selector.css(".gyFHrc .P6K39c").xpath("normalize-space()").getall()
+
+    for key, value in zip_longest(about_panel_keys, about_panel_values):
+        key_value = key.lower().replace(" ", "_")
+        ticker_data["about_panel"][key_value] = value
+
+    # description "about" extraction
+    ticker_data["about_panel"]["description"] = selector.css(".bLLb2d::text").get()
+    ticker_data["about_panel"]["extensions"] = selector.css(".w2tnNd::text").getall()
+
+    # news extarction
+    if selector.css(".yY3Lee").get():
+        for index, news in enumerate(selector.css(".yY3Lee"), start=1):
+            ticker_data["news"]["items"].append({
+                "position": index,
+                "title": news.css(".Yfwt5::text").get(),
+                "link": news.css(".z4rs2b a::attr(href)").get(),
+                "source": news.css(".sfyJob::text").get(),
+                "published": news.css(".Adak::text").get(),
+                "thumbnail": news.css("img.Z4idke::attr(src)").get()
+            })
+    else:
+        ticker_data["news"]["error"] = f"No news result from a {ticker}."
+
+    # finance perfomance table
+    if selector.css(".slpEwd .roXhBd").get():
+        fin_perf_col_2 = selector.css(".PFjsMe+ .yNnsfe::text").get()  # e.g. Dec 2021
+        fin_perf_col_3 = selector.css(".PFjsMe~ .yNnsfe+ .yNnsfe::text").get()  # e.g. Year/year change
+
+        for fin_perf in selector.css(".slpEwd .roXhBd"):
+            if fin_perf.css(".J9Jhg::text , .jU4VAc::text").get():
+                perf_key = fin_perf.css(
+                    ".J9Jhg::text , .jU4VAc::text").get()  # e.g. Revenue, Net Income, Operating Income..
+                perf_value_col_1 = fin_perf.css(".QXDnM::text").get()  # 60.3B, 26.40%..
+                perf_value_col_2 = fin_perf.css(".gEUVJe .JwB6zf::text").get()  # 2.39%, -21.22%..
+
+                ticker_data["finance_perfomance"]["table"].append({
+                    perf_key: {
+                        fin_perf_col_2: perf_value_col_1,
+                        fin_perf_col_3: perf_value_col_2
+                    }
+                })
+    else:
+        ticker_data["finance_perfomance"]["error"] = f"No 'finence perfomance table' for {ticker}."
+
+    # "you may be interested in" results
+    if selector.css(".HDXgAf .tOzDHb").get():
+        for index, other_interests in enumerate(selector.css(".HDXgAf .tOzDHb"), start=1):
+            ticker_data["interested_in"]["items"].append(discover_more_tickers(index, other_interests))
+    else:
+        ticker_data["interested_in"]["error"] = f"No 'you may be interested in` results for {ticker}"
+
+    # "people also search for" results
+    if selector.css(".HDXgAf+ div .tOzDHb").get():
+        for index, other_tickers in enumerate(selector.css(".HDXgAf+ div .tOzDHb"), start=1):
+            ticker_data["people_also_search_for"]["items"].append(discover_more_tickers(index, other_tickers))
+    else:
+        ticker_data["people_also_search_for"]["error"] = f"No 'people_also_search_for` in results for {ticker}"
+
+    return ticker_data
+
+
+def discover_more_tickers(index: int, other_data: str):
+    """
+    if price_change_formatted will start complaining,
+    check beforehand for None values with try/except and set it to 0, in this function.
+
+    however, re.search(r"\d{1}%|\d{1,10}\.\d{1,2}%" should make the job done.
+    """
+    return {
+        "position": index,
+        "ticker": other_data.css(".COaKTb::text").get(),
+        "ticker_link": f'https://www.google.com/finance{other_data.attrib["href"].replace("./", "/")}',
+        "title": other_data.css(".RwFyvf::text").get(),
+        "price": other_data.css(".YMlKec::text").get(),
+        "price_change": other_data.css("[jsname=Fe7oBc]::attr(aria-label)").get(),
+        # https://regex101.com/r/BOFBlt/1
+        # Up by 100.99% -> 100.99%
+        "price_change_formatted": re.search(r"\d{1}%|\d{1,10}\.\d{1,2}%",
+                                            other_data.css("[jsname=Fe7oBc]::attr(aria-label)").get()).group()
+    }
+
+
+@st.cache(allow_output_mutation=True)
+def get_index_info(index):
+    data = scrape_google_finance(index)
+
+    current = data['ticker_data']['current_price'].partition(',')
+    current = float(current[0] + current[-1])
+
+    prev = data["about_panel"]['previous_close'].partition(',')
+    prev = float(prev[0] + prev[-1])
+
+    return data['ticker_data']['title'], current, prev
+
+
 ########################################################################################
 #################################### MAIN Code #########################################
 ########################################################################################
@@ -131,10 +273,40 @@ st.text("4. add pie chart + convert tables to metrics")
 st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like google")
 st.text("6. Make price chart live! append data")
 ########################################################################################
-# Get Ticker symbols from NYSE ftp site
-date_str = date.today().strftime("%Y%m%d")
-url = f'https://ftp.nyse.com/NYSESymbolMapping/NYSESymbolMapping_{date_str}.txt'
-stocks = get_tickers(url)
+########################################################################################
+########################################################################################
+# indexes
+dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
+# dj_fut, sp_fut, nas_fut="YMWOO:CBOT", "ESWOO:CME_EMINIS", "NQWOO:CME_EMINIS"
+
+dj_name, dj_current, dj_prev = get_index_info(dj_index)
+sp_name, sp_current, sp_prev = get_index_info(sp_index)
+nas_name, nas_current, nas_prev = get_index_info(nas_index)
+
+# spf_name, spf_current, spf_prev = get_index_info(sp_fut)
+
+dj_col, sp_col, nas_col = st.columns(3)
+dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
+sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
+nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
+
+djf_col, spf_col, nasf_col = st.columns(3)
+
+# spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
+
+########################################################################################
+# Method 1: symbol + name
+url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
+    "NYSEGROUP_US_REF_SECURITYMASTERPREMIUM_EQUITY_4.0_20220927.txt"
+ticker_dict = get_names_dict(url)
+
+# # Method 2: symbol only
+# date_str = date.today().strftime("%Y%m%d")
+# stocks = get_tickers(date_str)
+# Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
+# Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
+
+# Method 3: from file
 # stocks = list(np.genfromtxt('nasdaqlisted.txt', delimiter='|',skip_header=1,dtype=str)[:,0])
 # df = pd.read_csv("nasdaq_screener.csv",index_col=0)
 # stocks = list(df.index)
@@ -146,9 +318,12 @@ lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
 
+# Ticker input
 stock = st.sidebar.selectbox(
     'Ticker:',
-    stocks, index=stocks.index('AMZN'))
+    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'))
+stock = ticker_dict[stock]
+
 
 # STOCK INFO (Yfinance)
 ticker = get_ticker_info(stock)
@@ -260,8 +435,8 @@ with st.container():
         tbl2
 
 ################## TABLE CONTAINER ############################
-with st.container():
-    col1, col2, col3 = st.columns(3)
+# with st.container():
+#     col1, col2, col3 = st.columns(3)
 
 # 	with col1:
 # 		tbl1
@@ -269,6 +444,21 @@ with st.container():
 # 	with col2:
 # 		tbl2
 
+#################################################################
+####################### OPTIONS #################################
+#################################################################
+"---"
+with st.container():
+    opt_col1, opt_col3 = st.columns([6,1],gap="small")
+    opt_col1.header(idict['shortName']+ "  Options")
+
+    stock = opt_col3.selectbox(
+        'Experiation:',
+        ticker.options, index=0)
+
+
+
+    
 #################################################################
 
 st.subheader('Jave for loop:')
