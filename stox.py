@@ -595,20 +595,6 @@ with st.container():
 
 # idict
 
-#################################################################
-####################### OPTIONS #################################
-#################################################################
-"---"
-with st.container():
-    opt_col1, opt_col3 = st.columns([6,1],gap="small")
-    opt_col1.header(idict['shortName']+ "  Options")
-
-    stock = opt_col3.selectbox(
-        'Experiation:',
-        ticker.options, index=0)
-
-
-
     
 #################################################################
 
