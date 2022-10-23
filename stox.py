@@ -398,15 +398,8 @@ def get_index_info(index):
 #################################### MAIN Code #########################################
 ########################################################################################
 ########################################################################################
-st.title('**STOX APP**')
-st.markdown('Welcome to the intelligent "Due Diligence" app for US companies by @ObaiShaikh')
-st.write("TODO:")
-st.text("1. append new data every 1m, update intraday plot")
-st.text("2. add useful resources, youtube links, urls")
-st.text("3. add 1M, 6M, 1Y charts")
-st.text("4. add pie chart + convert tables to metrics")
-st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like google")
-st.text("6. Make price chart live! append data")
+st.title('**STOXXX APP**')
+st.subheader('Welcome to the smart Due Diligence Wep App for US companies by @ObaiShaikh')
 ########################################################################################
 ########################################################################################
 # indexes
@@ -469,6 +462,10 @@ lang_dict = get_lang_dict(lang)
 
 # information dict
 idict = ticker.info
+
+type(idict['currentPrice'])
+idict['currentPrice']
+
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
@@ -612,16 +609,24 @@ with st.container():
     
 #################################################################
 
-st.subheader('Jave for loop:')
-code = '''int array[] = {0, 1, 2, 3, 4};
-string text = "Player ";
-for (int value : array)
-cout << text + std::to_string(value) << endl;'''
-
-st.code(code, language='python')
+# st.subheader('Jave for loop:')
+# code = '''int array[] = {0, 1, 2, 3, 4};
+# string text = "Player ";
+# for (int value : array)
+# cout << text + std::to_string(value) << endl;'''
+#
+# st.code(code, language='python')
 
 # show hidden text
-if st.checkbox('What does it mean when the lines cross?'):
+if st.checkbox("TODO:"):
+    st.text("1. append new data every 1m, update intraday plot")
+    st.text("2. add useful resources, youtube links, urls")
+    st.text("3. add 1M, 6M, 1Y charts")
+    st.text("4. add pie chart + convert tables to metrics")
+    st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like google")
+    st.text("6. Make price chart live! append data")
+
+    'What does it mean when the lines cross?'
     '# MAIN FEATURES:'
     '1. discounted FCF analysis: new money vid'
     '2. same-sector correlation analysis'
