@@ -324,6 +324,8 @@ lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
 lang
+lang
+lang
 # Ticker input
 stock = st.sidebar.selectbox(
     'Ticker:',
@@ -336,6 +338,8 @@ ticker = get_ticker_info(stock)
 
 lang_dict = get_lang_dict(lang)
 lang_dict
+lang_dict
+
 # information dict
 idict = ticker.info
 # Price:
