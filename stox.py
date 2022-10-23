@@ -323,7 +323,7 @@ ticker_dict = get_names_dict(url)
 lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
-
+lang
 # Ticker input
 stock = st.sidebar.selectbox(
     'Ticker:',
