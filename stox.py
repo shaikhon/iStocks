@@ -399,7 +399,7 @@ def get_index_info(index):
 ########################################################################################
 ########################################################################################
 st.title('**STOXXX APP**')
-st.subheader('Welcome to the smart Due Diligence Wep App for US companies by @ObaiShaikh')
+st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 ########################################################################################
 ########################################################################################
 # indexes
@@ -418,7 +418,7 @@ sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
 nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 
 djf_col, spf_col, nasf_col = st.columns(3)
-
+"---"
 # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
 
 ########################################################################################
