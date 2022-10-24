@@ -281,6 +281,13 @@ def instit_pie(ticker, floatShares):
     return fig
 
 
+@st.cache(allow_output_mutation=True)
+def px_income(df):
+    fig = px.scatter(df, x=df.index, y="Net Income")
+    fig.update_traces(marker_size=14)
+    return fig
+
+
 ########################################################################################
 ########################################################################################
 #################################### MAIN Code #########################################
@@ -455,10 +462,14 @@ st.header(stock + ' Financials')
 qtab, ytab = st.tabs(["Quarterly","Yearly"])
 
 with qtab:
-    st.subheader('Q')
+    # st.subheader('Q')
+    df = ticker.quarterly_financials.T
+    st.plotly_chart(px_income(df), use_container_width=True)
 
 with ytab:
-    st.subheader('YoY')
+    # st.subheader('YoY')
+    df = ticker.financials.T
+    st.plotly_chart(px_income(df), use_container_width=True)
 
 ########################################################################################
 #################################### PIE TABS  #########################################
