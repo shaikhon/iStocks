@@ -576,16 +576,15 @@ for col, label, metric in zip(columns2, general_labels, general_metrics):
 #     st.plotly_chart(plot_pie(df))
 
 st.header(stock + ' Holders')
-with st.container():
-    col1, col2 = st.columns(2)
+tab1, tab2 = st.tabs(["Institutions","Insiders"])
 
-    with col1:
-        # st.subheader('Price')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+with tab1:
+    # st.subheader('Price')
+    st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
-    with col2:
-        # st.subheader('Financials')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+with tab2:
+    # st.subheader('Financials')
+    st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
 ################## TABLE CONTAINER ############################
 st.header(stock + ' Summary')
