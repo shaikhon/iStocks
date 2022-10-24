@@ -283,7 +283,7 @@ def instit_pie(ticker, floatShares):
 
 @st.cache(allow_output_mutation=True)
 def px_income(df):
-    fig = px.scatter(df, x=df.index, y="Net Income", trendline='ols')
+    fig = px.scatter(df, x=df.index, y="Net Income", trendline='ols',trendline_color_override='white')
     fig.update_traces(marker_size=14)
 
     fig.update_layout(
