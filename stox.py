@@ -385,7 +385,7 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 ################################ YAHOO FINANCE #########################################
 ########################################################################################
 # Ticker input
-stock = st.sidebar.selectbox(
+stock = st.selectbox(
     'Ticker:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
 stock = ticker_dict[stock]
