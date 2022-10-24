@@ -293,9 +293,11 @@ def px_income(df):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
-        yaxis=dict(showgrid=False, title={"text": "Price ($)", "standoff": 10}),
-        yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
-        xaxis=dict(showline=False, title={"font":dict(size=24), "standoff": 1.5})
+        yaxis=dict(showline=False, showgrid=False, title={"text": "Net Income ($USD)",
+                                                          "font":dict(size=24),
+                                                          "standoff": 1.5}),
+        # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
+        xaxis=dict(showline=False,showgrid=False, title={"standoff": 1.5})
     )
 
     return fig
@@ -386,7 +388,7 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 ########################################################################################
 # Ticker input
 stock = st.selectbox(
-    'Ticker:',
+    'Search for a stock:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
 stock = ticker_dict[stock]
 # "---"
