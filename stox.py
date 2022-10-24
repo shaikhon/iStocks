@@ -506,13 +506,13 @@ with st.container():
     opt = ticker.option_chain(exp_date)
 
     if "Call" in opt_type:
-        df=opt.calls.round()
+        df=opt.calls.round(2)
         st.dataframe(df.drop(columns=['contractSymbol', 'change','currency','contractSize',
                                              'inTheMoney','lastTradeDate'], errors='ignore'))
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
     else:
-        df=opt.puts.round()
+        df=opt.puts.round(2)
         st.dataframe(df)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
