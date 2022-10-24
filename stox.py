@@ -321,7 +321,9 @@ def opt_scatter(df):
         yaxis=dict(showline=False, showgrid=True, title={"text": "Open Interest",
                                                           "font":dict(size=24),
                                                           "standoff": 25}),
-        yaxis2=dict(showline=False, howgrid=False, title={"text": "Volume", "standoff": 1.5}),
+        marginal_yaxis=dict(showline=False, showgrid=True, title={"text": "Open Interest",
+                                                         "font": dict(size=24),
+                                                         "standoff": 25}),
         xaxis=dict(showline=False,showgrid=False, title={"text": "Strike ($USD)",
                                                          "font":dict(size=24),
                                                          "standoff": 25})
