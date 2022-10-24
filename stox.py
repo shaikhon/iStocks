@@ -13,7 +13,7 @@ import requests
 import math
 import time
 from datetime import date
-#import plotly.express as px
+import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
