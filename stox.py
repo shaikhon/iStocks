@@ -502,9 +502,9 @@ with st.expander(stock + ' Quarterly Balance Sheet'):
 "---"
 with st.container():
     opt_col1, opt_col3 = st.columns([6,1],gap="small")
-    opt_col1.header(idict['shortName']+ "  Options")
+    opt_col1.header(stock+ "  Options")
 
-    stock = opt_col3.selectbox(
+    exp_date = opt_col3.selectbox(
         'Experiation:',
         ticker.options, index=0, key="options")
 
