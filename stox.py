@@ -286,34 +286,17 @@ def instit_pie(ticker, floatShares):
 #################################### MAIN Code #########################################
 ########################################################################################
 ########################################################################################
+# TITLE & LOGO:
 st.title('**U.S. Stocks App** 💎')
 # ":diamonds: :gem:  :fire:"
+":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 'The Smart App for Analyzing U.S. Stocks by @ObaiShaikh'
-
-########################################################################################
-########################################################################################
-# indexes
-dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
-# dj_fut, sp_fut, nas_fut="YMWOO:CBOT", "ESWOO:CME_EMINIS", "NQWOO:CME_EMINIS"
-
-dj_name, dj_current, dj_prev = get_index_info(dj_index)
-sp_name, sp_current, sp_prev = get_index_info(sp_index)
-nas_name, nas_current, nas_prev = get_index_info(nas_index)
-
-# spf_name, spf_current, spf_prev = get_index_info(sp_fut)
-
-dj_col, sp_col, nas_col = st.columns(3)
-dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
-sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
-nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
-
-djf_col, spf_col, nasf_col = st.columns(3)
 "---"
-# spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
-
 ########################################################################################
-# Get Ticker symbols from NYSE ftp site
+#################################### SIDEBAR ###########################################
+########################################################################################
+# GET SYMBOLS (NYSE ftp site)
 # Method 1: symbol + name
 url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
     "NYSEGROUP_US_REF_SECURITYMASTERPREMIUM_EQUITY_4.0_20220927.txt"
@@ -331,10 +314,7 @@ ticker_dict = get_names_dict(url)
 # stocks = list(df.index)
 # ['MSFT','AAPL','TSLA','AMZN','BA', 'GOOGL','GOOG','NVDA','MVST','MILE']
 ########################################################################################
-#################################### SIDEBAR ###########################################
-########################################################################################
 # TODO: ADD LOGO HERE: STOX
-
 # Language input
 lang = st.sidebar.radio(
     'Langauge:',
@@ -344,22 +324,60 @@ stock = st.sidebar.selectbox(
     'Ticker:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
 stock = ticker_dict[stock]
+########################################################################################
+#################################### MAIN PAGE #########################################
+########################################################################################
 
+############################## Major Market Metrics ####################################
+# MAJOR INDEXES (GOOGLE FINANCE):
+dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
+
+# FUTURES (NOT WORKING):
+# dj_fut, sp_fut, nas_fut="YMWOO:CBOT", "ESWOO:CME_EMINIS", "NQWOO:CME_EMINIS"
+
+# Get indexes info (Google Finance)
+dj_name, dj_current, dj_prev = get_index_info(dj_index)
+sp_name, sp_current, sp_prev = get_index_info(sp_index)
+nas_name, nas_current, nas_prev = get_index_info(nas_index)
+
+# Get indexe futures info (Google Finance)
+# spf_name, spf_current, spf_prev = get_index_info(sp_fut)
+
+# Print Index Metrics (Streamlit):
+dj_col, sp_col, nas_col = st.columns(3)
+dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
+sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
+nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
+
+# djf_col, spf_col, nasf_col = st.columns(3)
+# spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
+
+# overwriting elements in-place
+################## Major Market Metrics ############################
+# with st.empty():  # overwriting elements in-place
+#     for sec in range(5):
+#         st.write(f"{sec} seconds have passed")
+#         time.sleep(1)
+#     st.write("Times up!")
+
+"---"
+########################################################################################
+################################ YAHOO FINANCE #########################################
+########################################################################################
 # STOCK INFO (Yfinance)
 ticker = get_ticker_info(stock)
 
-
+# LANGUAGE DICT:
 lang_dict = get_lang_dict(lang)
 
-# information dict
+# TICKER INFORMATION DICT
 idict = ticker.info
 
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
     idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
-    idict['dayHigh'], idict['dayLow'], idict['volume']
-], 2)
+    idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
 # Financials
 einfo = [
     idict['marketCap'], idict['floatShares'], idict['ebitda'],
@@ -371,7 +389,6 @@ oinfo = [idict['averageDailyVolume10Day'], idict['fullTimeEmployees']]
 linfo = [
     idict['earningsGrowth'], idict['earningsQuarterlyGrowth'], idict['pegRatio'],
     idict['totalCashPerShare'], idict['revenuePerShare']]
-
 # short interest
 sinfo = [idict['debtToEquity'], idict['shortPercentOfFloat'],
          idict['sharesShort'], idict['shortRatio'],
@@ -382,24 +399,9 @@ einfo = [0 if x is None else x for x in einfo]  # replace None with 0
 pricelist = [floatToString(s) if s < 1e6 else str(millify(s)) for s in pinfo]
 elist = [millify(n) for n in einfo]
 
-################## Major Market Metrics ############################
-# with st.empty():  # overwriting elements in-place
-#     for sec in range(5):
-#         st.write(f"{sec} seconds have passed")
-#         time.sleep(1)
-#     st.write("Times up!")
-
-################## CHART CONTAINER ############################
-
-# with st.container():
-#     opt_col1, opt_col3 = st.columns([6,1],gap="small")
-#     opt_col1.header(idict['shortName']+ "  Options")
-#
-#     stock = opt_col3.selectbox(
-
-# 'Ticker:',
-# list(ticker_dict), index = list(ticker_dict.values()).index('AMZN'), key = "stock")
-
+########################################################################################
+################################# PRICE CHART  #########################################
+########################################################################################
 with st.container():
     plt_col1, plt_col2, plt_col3 = st.columns([5,1,1],gap="small")
 
@@ -409,13 +411,14 @@ with st.container():
     interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
                                 index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
 
-    # intraday - America/New_York
     d = ticker.history(period=period, interval=interval,
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
     st.plotly_chart(intraday(d), use_container_width=True)
 
-################## Ticker Metrics ############################
+########################################################################################
+################################# TICKER METRICS  ######################################
+########################################################################################
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 pe = 0 if idict["trailingPE"] is None else idict["trailingPE"]
 flabels = ["MARKET CAP", "AVG VOLUME", "P/E RATIO", "DIVIDEND YIELD"]
@@ -445,7 +448,9 @@ for col, label, metric in zip(columns2, general_labels, general_metrics):
 #
 # idict["recommendationKey"]
 
-################## PIE CONTAINER ############################
+########################################################################################
+#################################### PIE TABS  #########################################
+########################################################################################
 # with st.container():
 #     st.header("Nasdaq Pie")
 #     st.plotly_chart(plot_pie(df))
@@ -461,7 +466,9 @@ with tab2:
     # st.subheader('Financials')
     st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
-################## TABLE CONTAINER ############################
+########################################################################################
+################################# TABULATED DATA  ######################################
+########################################################################################
 st.header(stock + ' Summary')
 with st.container():
     col1, col2, col3 = st.columns(3)
