@@ -388,19 +388,17 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 #         time.sleep(1)
 #     st.write("Times up!")
 
-"---"
 ########################################################################################
 ################################ YAHOO FINANCE #########################################
 ########################################################################################
+"---"
 # Ticker input
 stock = st.selectbox(
     'Search a stock:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
 stock = ticker_dict[stock]
-# "---"
 ########################################################################################
 ########################################################################################
-
 # STOCK INFO (Yfinance)
 ticker = get_ticker_info(stock)
 
@@ -410,6 +408,110 @@ lang_dict = get_lang_dict(lang)
 # TICKER INFORMATION DICT
 idict = ticker.info
 
+
+########################################################################################
+################################# PRICE CHART  #########################################
+########################################################################################
+with st.container():
+    plt_col1, plt_col2, plt_col3 = st.columns([5,1,1],gap="small")
+
+    plt_col1.header(idict['shortName'])
+    period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
+                                index=0, key="period")
+    interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
+                                index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
+
+    d = ticker.history(period=period, interval=interval,
+                       rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
+
+    st.plotly_chart(intraday(d), use_container_width=True)
+
+########################################################################################
+################################# TICKER METRICS  ######################################
+########################################################################################
+# Calculations:
+div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
+pe = 0 if idict["trailingPE"] is None else idict["trailingPE"]
+flabels = ["MARKET CAP", "AVG VOLUME", "P/E RATIO", "DIVIDEND YIELD"]
+fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], pe, div_yld]
+fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
+general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
+                   idict["fullTimeEmployees"], idict["website"]]
+
+'---'
+with st.container():
+    st.header(stock + ' Summary')
+    # info_container = st.container()
+    # info_container2 = st.container()
+    columns = st.columns(len(general_labels))
+    columns2 = st.columns(len(flabels))
+
+    for col2, flabel, metric2 in zip(columns, flabels, fmetrics):
+        col2.caption(flabel)
+        col2.markdown(str(millify(metric2)))
+
+    for col, label, metric in zip(columns2, general_labels, general_metrics):
+        col.caption(label)
+        col.markdown(metric)
+        col.empty()
+
+################## Target Price Bar ############################
+# recommendation = "RECOMMENDATION"
+# idict["recommendationKey"]
+
+########################################################################################
+#################################### FIN TABS  #########################################
+########################################################################################
+st.header(stock + ' Financials')
+qtab, ytab = st.tabs(["Quarterly","Yearly"])
+
+with qtab:
+    df = ticker.quarterly_financials.T
+    st.plotly_chart(px_income(df), use_container_width=True)
+
+with ytab:
+    df = ticker.financials.T
+    st.plotly_chart(px_income(df), use_container_width=True)
+
+########################################################################################
+#################################### PIE TABS  #########################################
+########################################################################################
+"---"
+st.header(stock + ' Holders')
+
+with st.expander(stock + ' Holders'):
+    tab1, tab2 = st.tabs(["Institutions","Insiders"])
+
+    with tab1:
+        # st.subheader('Price')
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+
+    with tab2:
+        # st.subheader('Financials')
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+
+
+with st.expander(stock + ' Quarterly Balance Sheet'):
+    st.dataframe(ticker.quarterly_balance_sheet)
+
+
+#################################################################
+####################### OPTIONS #################################
+#################################################################
+"---"
+with st.container():
+    opt_col1, opt_col3 = st.columns([6,1],gap="small")
+    opt_col1.header(idict['shortName']+ "  Options")
+
+    stock = opt_col3.selectbox(
+        'Experiation:',
+        ticker.options, index=0, key="options")
+
+
+########################################################################################
+################################# TABULATED DATA  ######################################
+########################################################################################
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
@@ -432,102 +534,11 @@ sinfo = [idict['debtToEquity'], idict['shortPercentOfFloat'],
          idict['sharesShortPreviousMonthDate'], idict['sharesShortPriorMonth'],
          idict['dateShortInterest'], idict['shortRatio']]
 
-einfo = [0 if x is None else x for x in einfo]  # replace None with 0
 pricelist = [floatToString(s) if s < 1e6 else str(millify(s)) for s in pinfo]
+einfo = [0 if x is None else x for x in einfo]  # replace None with 0
 elist = [millify(n) for n in einfo]
 
-########################################################################################
-################################# PRICE CHART  #########################################
-########################################################################################
-with st.container():
-    plt_col1, plt_col2, plt_col3 = st.columns([5,1,1],gap="small")
 
-    plt_col1.header(idict['shortName'])
-    period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
-                                index=0, key="period")
-    interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
-                                index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
-
-    d = ticker.history(period=period, interval=interval,
-                       rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
-
-    st.plotly_chart(intraday(d), use_container_width=True)
-
-########################################################################################
-################################# TICKER METRICS  ######################################
-########################################################################################
-div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
-pe = 0 if idict["trailingPE"] is None else idict["trailingPE"]
-flabels = ["MARKET CAP", "AVG VOLUME", "P/E RATIO", "DIVIDEND YIELD"]
-fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], pe, div_yld]
-fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
-
-general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
-general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                   idict["fullTimeEmployees"], idict["website"]]
-
-info_container = st.container()
-info_container2 = st.container()
-columns = info_container.columns(len(general_labels))
-columns2 = info_container2.columns(len(flabels))
-
-for col2, flabel, metric2 in zip(columns, flabels, fmetrics):
-    col2.caption(flabel)
-    col2.markdown(str(millify(metric2)))
-
-for col, label, metric in zip(columns2, general_labels, general_metrics):
-    col.caption(label)
-    col.markdown(metric)
-    col.empty()
-
-################## Target Price Bar ############################
-# recommendation = "RECOMMENDATION"
-# idict["recommendationKey"]
-
-########################################################################################
-#################################### FIN TABS  #########################################
-########################################################################################
-st.header(stock + ' Financials')
-qtab, ytab = st.tabs(["Quarterly","Yearly"])
-
-with qtab:
-    # st.subheader('Q')
-    df = ticker.quarterly_financials.T
-    st.plotly_chart(px_income(df), use_container_width=True)
-
-with ytab:
-    # st.subheader('YoY')
-    df = ticker.financials.T
-    st.plotly_chart(px_income(df), use_container_width=True)
-
-########################################################################################
-#################################### PIE TABS  #########################################
-########################################################################################
-# with st.container():
-#     st.header("Nasdaq Pie")
-#     st.plotly_chart(plot_pie(df))
-"---"
-st.header(stock + ' Holders')
-
-with st.expander(stock + ' Holders'):
-    tab1, tab2 = st.tabs(["Institutions","Insiders"])
-
-    with tab1:
-        # st.subheader('Price')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
-
-    with tab2:
-        # st.subheader('Financials')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
-
-
-with st.expander(stock + ' Quarterly Balance Sheet'):
-    st.dataframe(ticker.quarterly_balance_sheet)
-
-
-########################################################################################
-################################# TABULATED DATA  ######################################
-########################################################################################
 "---"
 st.header(stock + ' Summary')
 with st.container():
@@ -555,20 +566,6 @@ with st.container():
 
 # 	with col2:
 # 		tbl2
-#################################################################
-####################### OPTIONS #################################
-#################################################################
-"---"
-with st.container():
-    opt_col1, opt_col3 = st.columns([6,1],gap="small")
-    opt_col1.header(idict['shortName']+ "  Options")
-
-    stock = opt_col3.selectbox(
-        'Experiation:',
-        ticker.options, index=0, key="options")
-
-
-
 #################################################################
 
 if st.checkbox("Information dict:"):
