@@ -248,13 +248,13 @@ def intraday(d):
     fig.update_layout(
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
         template="plotly_dark",
-        margin=dict(t=0,b=0,l=0,r=0),
+        margin=dict(t=10,b=10,l=10,r=10),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
         yaxis=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($)", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Volume", "standoff": 1.5}),
-        xaxis=dict(showline=False, title={"font":dict(size=24), "standoff": 1.5})
+        xaxis=dict(showline=False, title={"font":dict(size=24), "standoff": 10})
     )
     return fig
 
