@@ -505,7 +505,7 @@ with ytab:
 # with st.container():
 #     st.header("Nasdaq Pie")
 #     st.plotly_chart(plot_pie(df))
-
+"---"
 st.header(stock + ' Holders')
 
 with st.expander(stock + ' Holders'):
@@ -520,9 +520,14 @@ with st.expander(stock + ' Holders'):
         st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
 
+with st.expander(stock + ' Quarterly Balance Sheet'):
+    st.dataframe(ticker.quarterly_balance_sheet)
+
+
 ########################################################################################
 ################################# TABULATED DATA  ######################################
 ########################################################################################
+"---"
 st.header(stock + ' Summary')
 with st.container():
     col1, col2, col3 = st.columns(3)
