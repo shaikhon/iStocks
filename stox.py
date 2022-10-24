@@ -301,8 +301,7 @@ def px_income(df):
         yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
                                                           "font":dict(size=24),
                                                           "standoff": 25}),
-        # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
-        xaxis=dict(showline=False,showgrid=False, title={"standoff": 1.5})
+        xaxis=dict(showline=False,showgrid=False, title={"standoff": 25})
     )
 
     return fig
@@ -312,6 +311,22 @@ def opt_scatter(df):
     fig = px.scatter(df, x="strike", y="openInterest", color="lastPrice",
                      size='impliedVolatility',
                      marginal_x="rug", marginal_y="histogram")
+    fig.update_layout(
+        # hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
+        template="plotly_dark",
+        margin=dict(t=0,b=0,l=0,r=0),
+        # paper_bgcolor="rgba(0,0,0,0)",
+        # plot_bgcolor="rgba(0,0,0,0)",
+        # showlegend=False,
+        yaxis=dict(showline=False, showgrid=True, title={"text": "Open Interest",
+                                                          "font":dict(size=24),
+                                                          "standoff": 25}),
+        # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
+        xaxis=dict(showline=False,showgrid=False, title={"text": "Strike ($USD)",
+                                                         "font":dict(size=24),
+                                                         "standoff": 25})
+    )
+
     return fig
 
 ########################################################################################
