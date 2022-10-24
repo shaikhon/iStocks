@@ -394,6 +394,22 @@ def get_index_info(index):
     return data['ticker_data']['title'], current, prev
 
 
+@st.cache(allow_output_mutation=True)
+def instit_pie(ticker, floatShares):
+    inst_df = ticker.institutional_holders
+    other_row = {"Holder": "Other Institutions", "Shares": floatShares - inst_df.Shares.sum(), "Date Reported": None,
+                 "% Out": None, "Value": None}
+    other_row = pd.DataFrame(other_row, index=[0])
+
+    inst_df = pd.concat([inst_df, other_row], axis=0)
+
+    inst_df['pct'] = inst_df.Shares / floatShares
+
+    fig = px.pie(inst_df, values="pct", names="Holder", title='Institutional Holders')
+
+    return fig
+
+
 ########################################################################################
 #################################### MAIN Code #########################################
 ########################################################################################
@@ -559,6 +575,18 @@ for col, label, metric in zip(columns2, general_labels, general_metrics):
 #     st.header("Nasdaq Pie")
 #     st.plotly_chart(plot_pie(df))
 
+st.header(stock + ' Holders')
+with st.container():
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        # st.subheader('Price')
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']))
+
+    with col2:
+        # st.subheader('Financials')
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']))
+
 ################## TABLE CONTAINER ############################
 st.header(stock + ' Summary')
 with st.container():
@@ -624,6 +652,7 @@ if st.checkbox("TODO:"):
     st.text("4. add pie chart + convert tables to metrics")
     st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like google")
     st.text("6. Make price chart live! append data")
+    st.text("7. fix millify, AMZN mrkt cap=1.2 Trillion, use log10")
 
     'What does it mean when the lines cross?'
     '# MAIN FEATURES:'
