@@ -332,7 +332,6 @@ def opt_scatter(df):
         #     yaxis4=dict(showline=False,showgrid=False),
 
     )
-    )
 
     return fig
 
