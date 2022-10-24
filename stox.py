@@ -507,7 +507,9 @@ with st.container():
 
     if "Call" in opt_type:
         df=opt.calls.round(2)
-        st.dataframe(df.drop(columns=['contractSymbol', 'change','currency','contractSize',
+
+        dx = df[df.inTheMoney].index[-1]
+        st.dataframe(df.loc[dx-5:dx+5].drop(columns=['contractSymbol', 'change','currency','contractSize',
                                              'inTheMoney','lastTradeDate'], errors='ignore'))
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
