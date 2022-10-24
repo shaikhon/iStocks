@@ -283,7 +283,7 @@ def instit_pie(ticker, floatShares):
 
 @st.cache(allow_output_mutation=True)
 def px_income(df):
-    fig = px.scatter(df, x=df.index, y="Net Income", trendline='ols',trendline_color_override='white')
+    fig = px.scatter(df, x=df.index, y="Net Income", trendline='ols')
     fig.update_traces(marker_size=14)
 
     fig.update_layout(
@@ -293,7 +293,7 @@ def px_income(df):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
-        yaxis=dict(showline=False, showgrid=False, title={"text": "Net Income ($USD)",
+        yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
                                                           "font":dict(size=24),
                                                           "standoff": 25}),
         # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
