@@ -21,7 +21,7 @@ st.set_page_config(
     page_title="STOX APP",
     page_icon="🧊",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",  #expanded
 )
 
 ##############################################################################
@@ -384,6 +384,15 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 ########################################################################################
 ################################ YAHOO FINANCE #########################################
 ########################################################################################
+# Ticker input
+stock = st.sidebar.selectbox(
+    'Ticker:',
+    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
+stock = ticker_dict[stock]
+# "---"
+########################################################################################
+########################################################################################
+
 # STOCK INFO (Yfinance)
 ticker = get_ticker_info(stock)
 
@@ -465,7 +474,6 @@ for col, label, metric in zip(columns2, general_labels, general_metrics):
 
 ################## Target Price Bar ############################
 # recommendation = "RECOMMENDATION"
-#
 # idict["recommendationKey"]
 
 ########################################################################################
