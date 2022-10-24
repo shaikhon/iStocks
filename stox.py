@@ -314,11 +314,12 @@ def px_income(df):
 ########################################################################################
 ########################################################################################
 # TITLE & LOGO:
-st.title('**U.S. Stocks App** 💎')
+st.title('💎 **U.S. Stocks App** 💎')
 # ":diamonds: :gem:  :fire:"
-":dollar: :moneybag: :money_with_wings: :fire:"
+# ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
-'The Smart App for Analyzing U.S. Stocks by @ObaiShaikh'
+'The Smart App for Analyzing U.S. Stocks'
+'By Obai Shaikh'
 "---"
 ########################################################################################
 #################################### SIDEBAR ###########################################
@@ -393,7 +394,7 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 ########################################################################################
 # Ticker input
 stock = st.selectbox(
-    'Search for a stock:',
+    'Search a stock:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
 stock = ticker_dict[stock]
 # "---"
