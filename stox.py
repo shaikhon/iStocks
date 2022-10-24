@@ -307,6 +307,12 @@ def px_income(df):
 
     return fig
 
+@st.cache(allow_output_mutation=True)
+def opt_scatter(df):
+    fig = px.scatter(df, x="strike", y="openInterest", color="lastPrice",
+                     size='impliedVolatility',
+                     marginal_x="rug", marginal_y="histogram")
+    return fig
 
 ########################################################################################
 ########################################################################################
@@ -479,9 +485,16 @@ with st.container():
     opt = ticker.option_chain(exp_date)
 
     if "Call" in opt_type:
-        st.dataframe(opt.calls)
+        df=opt.calls
+        st.dataframe(df.drop(columns=['contractSymbol', 'change','currency','contractSize',
+                                             'inTheMoney','lastTradeDate'], errors='ignore'))
+        st.plotly_chart(opt_scatter(df), use_container_width=True)
+
     else:
-        st.dataframe(opt.puts)
+        df=opt.puts
+        st.dataframe(df)
+        st.plotly_chart(opt_scatter(df), use_container_width=True)
+
 
 
 ########################################################################################
