@@ -460,26 +460,49 @@ with st.container():
 # recommendation = "RECOMMENDATION"
 # idict["recommendationKey"]
 
-########################################################################################
-#################################### FIN TABS  #########################################
-########################################################################################
-st.header(stock + ' Financials')
-qtab, ytab = st.tabs(["Quarterly","Yearly"])
-
-with qtab:
-    df = ticker.quarterly_financials.T
-    st.plotly_chart(px_income(df), use_container_width=True)
-
-with ytab:
-    df = ticker.financials.T
-    st.plotly_chart(px_income(df), use_container_width=True)
-
-########################################################################################
-#################################### PIE TABS  #########################################
-########################################################################################
+#################################################################
+####################### OPTIONS #################################
+#################################################################
 "---"
-st.header(stock + ' Holders')
+with st.container():
+    opt_col1, opt_col2, opt_col3 = st.columns([4, 1, 1], gap="small")
+    opt_col1.header(stock+ "  Options")
 
+    opt_type = opt_col2.selectbox(
+        'Call/Put:',
+        ["Call", "Put"], index=0, key="option_type")
+
+    exp_date = opt_col3.selectbox(
+        'Experiation:',
+        ticker.options, index=0, key="opt_exp_date")
+
+    opt = ticker.option_chain(exp_date)
+
+    if "Call" in opt_type:
+        st.dataframe(opt.calls)
+    else:
+        st.dataframe(opt.puts)
+
+
+########################################################################################
+#################################### FIN Expander ######################################
+########################################################################################
+with st.expander(stock + ' Earnings'):
+
+    qtab, ytab = st.tabs(["Quarterly","Yearly"])
+
+    with qtab:
+        df = ticker.quarterly_financials.T
+        st.plotly_chart(px_income(df), use_container_width=True)
+
+    with ytab:
+        df = ticker.financials.T
+        st.plotly_chart(px_income(df), use_container_width=True)
+
+
+########################################################################################
+#################################### PIE Expander ######################################
+########################################################################################
 with st.expander(stock + ' Holders'):
     tab1, tab2 = st.tabs(["Institutions","Insiders"])
 
@@ -496,17 +519,6 @@ with st.expander(stock + ' Quarterly Balance Sheet'):
     st.dataframe(ticker.quarterly_balance_sheet)
 
 
-#################################################################
-####################### OPTIONS #################################
-#################################################################
-"---"
-with st.container():
-    opt_col1, opt_col3 = st.columns([6,1],gap="small")
-    opt_col1.header(stock+ "  Options")
-
-    exp_date = opt_col3.selectbox(
-        'Experiation:',
-        ticker.options, index=0, key="options")
 
 
 ########################################################################################
