@@ -581,11 +581,11 @@ with st.container():
 
     with col1:
         # st.subheader('Price')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']))
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
     with col2:
         # st.subheader('Financials')
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']))
+        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
 ################## TABLE CONTAINER ############################
 st.header(stock + ' Summary')
