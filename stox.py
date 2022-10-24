@@ -288,7 +288,7 @@ def instit_pie(ticker, floatShares):
 ########################################################################################
 st.title('**U.S. Stocks App** 💎')
 # ":diamonds: :gem:  :fire:"
-st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
+# st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 'The Smart App for Analyzing U.S. Stocks by @ObaiShaikh'
 
 ########################################################################################
@@ -527,6 +527,7 @@ if st.checkbox("TODO:"):
     st.text("5. add recommendation + quarterly financials, balance sheet, FCF, like google")
     st.text("6. Make price chart live! append data")
     st.text("7. fix millify, AMZN mrkt cap=1.2 Trillion, use log10")
+    st.text("8. add twtr, linkedin, github contact info")
 
     'What does it mean when the lines cross?'
     '# MAIN FEATURES:'
