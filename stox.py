@@ -295,7 +295,7 @@ def px_income(df):
         showlegend=False,
         yaxis=dict(showline=False, showgrid=False, title={"text": "Net Income ($USD)",
                                                           "font":dict(size=24),
-                                                          "standoff": 1.5}),
+                                                          "standoff": 15}),
         # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1.5}),
         xaxis=dict(showline=False,showgrid=False, title={"standoff": 1.5})
     )
