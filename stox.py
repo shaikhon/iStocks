@@ -387,7 +387,7 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 # Ticker input
 stock = st.sidebar.selectbox(
     'Ticker:',
-    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
+    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
 stock = ticker_dict[stock]
 # "---"
 ########################################################################################
