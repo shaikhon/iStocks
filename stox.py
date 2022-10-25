@@ -323,7 +323,7 @@ def opt_scatter(df, exp_date):
 
     fig.update_layout(
         template="plotly_dark",
-        title_text="Strike vs. "+y_label+"      Expiration: "+exp_date,
+        title_text="Strike vs. "+y_label+"          Expiration: "+exp_date,
         title_font=dict(size=24),
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
                                 title={"text": "Implied<br>Volatility (%)", }),
@@ -360,7 +360,7 @@ def parse_headers(hdrs):
 
 
 @st.cache(allow_output_mutation=True)
-def opt_table(df, exp_date, kind='Call', spread=5):
+def opt_table(df, kind='Call', spread=5):
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
     dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
     df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
@@ -387,7 +387,7 @@ def opt_table(df, exp_date, kind='Call', spread=5):
 
     fig.update_layout(
         margin=dict(b=0, l=10, r=10),
-        title_text="Options Chain      Expiration: "+exp_date,
+        title_text=kind+" Options Chain",
     title_font=dict(size=24))
 
     return fig
@@ -567,7 +567,7 @@ with st.expander(stock + ' Options'):
         opt = ticker.option_chain(exp_date)
 
         df=opt.calls #.round(2)
-        st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
+        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
     with put_tab:
