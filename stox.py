@@ -544,7 +544,6 @@ with st.container():
 ########################################################################################
 # Calculations:
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
-
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
 if 'sector' in idict:
@@ -567,9 +566,9 @@ else:   # for ETFs
 '---'
 with st.container():
     st.header(stock + ' Summary')
-    columns = st.columns(len(general_labels))
-    columns2 = st.columns(len(flabels))
-
+    columns = st.columns(len(flabels))
+    columns2 = st.columns(len(general_labels))
+    
     for col2, flabel, metric2 in zip(columns, flabels, fmetrics):
         col2.caption(flabel)
         st.write(metric2)
