@@ -307,7 +307,7 @@ def px_income(df):
     return fig
 
 @st.cache(allow_output_mutation=True)
-def opt_scatter(df):
+def opt_scatter(df, exp_date):
     df_sum = df.openInterest.sum()
     y = 'volume' if df_sum < 100 else "openInterest"
     y_label = 'Volume' if df_sum < 100 else "Open Interest"
@@ -323,6 +323,8 @@ def opt_scatter(df):
 
     fig.update_layout(
         template="plotly_dark",
+        title_text="Strike vs. "+y_label+"      Expiration: "+exp_date,
+        title_font=dict(size=24),
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
                                 title={"text": "Implied<br>Volatility (%)", }),
         legend=dict(yanchor="bottom", y=.75),
