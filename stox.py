@@ -368,6 +368,8 @@ def opt_table(df, kind, spread=5):
     df['color'] = df.inTheMoney.mask(df.inTheMoney,
                                      other='rgb(10, 255, 30)').mask(~df.inTheMoney,
                                                                     other='rgb(255, 45, 10)')
+
+    st.write(df[df.inTheMoney])
     st.write(dx)
     df = df.loc[dx - spread:dx + spread]
     hdrs = parse_headers(list(df.drop(columns=['color', 'inTheMoney']).columns))
