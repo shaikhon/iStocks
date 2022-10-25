@@ -394,7 +394,7 @@ def opt_table(df, kind='Call', spread=5):
 
     return fig
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True,suppress_st_warning=True)
 def bs_df(df):
     df[df.isna()] = 0
     df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
