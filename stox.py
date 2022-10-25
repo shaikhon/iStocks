@@ -364,7 +364,7 @@ def parse_headers(hdrs):
 def opt_table(df, kind, spread=5):
     # df[df.isnull()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
-    dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
+    dx = df[df.inTheMoney].index[-1] if "C" in kind else df[df.inTheMoney].index[0]
 
     st.write(max(df[df.inTheMoney].index))
     st.write(min(df[df.inTheMoney].index))
