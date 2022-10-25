@@ -657,10 +657,10 @@ with st.expander(stock + ' Balance Sheet'):
 # Price:
 if idict["quoteType"] == "ETF":
     price = idict['regularMarketPrice']
-
+    share = idict["priceToEarnings"]
 else:
     price = idict['currentPrice']
-
+    shares = idict['floatShares']
 
 pinfo = np.round([
     price, idict['previousClose'],
@@ -668,7 +668,7 @@ pinfo = np.round([
     idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
 # Financials
 einfo = [
-    idict['marketCap'], idict['floatShares'], idict['ebitda'],
+    idict['marketCap'], shares, idict['ebitda'],
     idict['freeCashflow'], idict['totalDebt'], idict['totalCash'],
     idict['totalRevenue']]  # idict['operatingCashflow'],
 # stock info
