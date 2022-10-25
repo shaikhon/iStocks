@@ -316,7 +316,7 @@ def opt_scatter(df, exp_date):
     fig = px.scatter(df.round(2), x="strike", y=y,
                      color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
                      range_color=(0, df.impliedVolatility.max()),
-                     size='lastPrice', size_max=50,
+                     size='lastPrice', size_max=25,
                      symbol="In The Money", symbol_map={'In': "0", "Out": "x"},
                      # marginal_x="rug",
                      marginal_y="histogram")
@@ -640,7 +640,7 @@ with st.expander(stock + ' Balance Sheet'):
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns])
 
         # df = '$' + (df/1000000).round(1).astype(str) + " Million"
-        df = df.apply(lambda x: ["{:,}".format(x) for _ in df],axis=1, result_type='expand') #.ljust(12))
+        # df = df.apply(lambda x: ["{:,}".format(x) for _ in df],axis=1, result_type='expand') #.ljust(12))
         for col in qb:
             qb[col] = qb[col].apply(lambda x: "${:,} Million".format(x).ljust(12))
 
