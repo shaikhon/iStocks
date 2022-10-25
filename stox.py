@@ -328,7 +328,7 @@ def opt_scatter(df, exp_date):
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
                                 title={"text": "Implied<br>Volatility (%)", }),
         legend=dict(yanchor="bottom", y=.75),
-        margin=dict(t=0, b=0, l=0, r=0),
+        margin=dict(b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=dict(showline=False, showgrid=True, title={"text": y_label,
