@@ -328,7 +328,7 @@ def opt_scatter(df, exp_date):
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
                                 title={"text": "Implied<br>Volatility (%)", }),
         legend=dict(yanchor="bottom", y=.75),
-        margin=dict(t=25, b=0, l=10, r=10),
+        margin=dict(b=0, l=10, r=10),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=dict(showline=False, showgrid=True, title={"text": y_label,
@@ -386,7 +386,7 @@ def opt_table(df, exp_date, kind='Call', spread=5):
     ])
 
     fig.update_layout(
-        margin=dict(t=25, b=0, l=10, r=10),
+        margin=dict(b=0, l=10, r=10),
         title_text="Options Chain      Expiration: "+exp_date,
     title_font=dict(size=24))
 
