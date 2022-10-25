@@ -308,7 +308,7 @@ def px_income(df):
 
 @st.cache(allow_output_mutation=True)
 def opt_scatter(df):
-    fig = px.scatter(df, x="strike",
+    fig = px.scatter(df.round(4), x="strike",
                      y="volume",
                      # y="openInterest",
                      color="lastPrice",
@@ -367,8 +367,8 @@ def opt_table(df, kind='Call', spread=5):
                     font=dict(color='white', size=14),
                     height=50,
                     align='center'),
-        cells=dict(values=[df.strike, df.lastPrice, df.bid, df.ask, df.percentChange.round(2),
-                           df.volume, df.openInterest, df.impliedVolatility.round(2)],
+        cells=dict(values=[df.strike, df.lastPrice, df.bid, df.ask, df.percentChange,
+                           df.volume, df.openInterest, df.impliedVolatility],
                    line_color='white',
                    fill_color=[df.color],
                    font=dict(color='black', size=14),
