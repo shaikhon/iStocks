@@ -631,29 +631,29 @@ with st.expander(stock + ' Holders'):
     tab1, tab2 = st.tabs(["Institutions","Insiders"])
 
     with tab1:
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+        if not df.empty:
+            st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
     with tab2:
-        st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+        if not df.empty:
+            st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 ########################################################################################
 ################################# BALANCE SHEET ########################################
 ########################################################################################
 with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
-        df = (ticker.quarterly_balance_sheet // 1000000)
-        bs_df(df)
+        if not df.empty:
+            df = (ticker.quarterly_balance_sheet // 1000000)
+            bs_df(df)
 
     with ybtab:
-        df = (ticker.balance_sheet // 1000000)
-        bs_df(df)
-
-
-
+        if not df.empty:
+            df = (ticker.balance_sheet // 1000000)
+            bs_df(df)
 ########################################################################################
 ##################################### TABLES ###########################################
 ########################################################################################
-
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
