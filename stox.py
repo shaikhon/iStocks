@@ -546,28 +546,50 @@ with st.container():
 ####################### OPTIONS #################################
 #################################################################
 "---"
-with st.container():
-    opt_col1, opt_col2, opt_col3 = st.columns([4, 1, 1], gap="small")
-    opt_col1.header(stock+ "  Options")
+# with st.container():
+with st.expander(stock + ' Options'):
 
-    opt_type = opt_col2.selectbox(
-        'Call/Put:',
-        ["Call", "Put"], index=0, key="option_type")
+    call_tab, put_tab = st.tabs(["Calls","Puts"])
 
-    exp_date = opt_col3.selectbox(
-        'Expiration:',
-        ticker.options, index=0, key="opt_exp_date")
+    with call_tab:
+        opt_type="Call"
+        opt_col1, opt_col2 = st.columns([4, 1], gap="small")
+        opt_col1.header(stock+ "  Calls")
+        # opt_type = opt_col2.selectbox(
+        #     'Call/Put:',
+        #     ["Call", "Put"], index=0, key="option_type")
 
-    opt = ticker.option_chain(exp_date)
+        exp_date = opt_col2.selectbox(
+            'Expiration:',
+            ticker.options, index=0, key="opt_exp_date")
+    
+        opt = ticker.option_chain(exp_date)
 
-    if "Call" in opt_type:
         df=opt.calls #.round(2)
         st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
-    else:
+
+    with put_tab:
+        opt_type = "Put"
+        opt_col1, opt_col2 = st.columns([4, 1], gap="small")
+        opt_col1.header(stock + "  Puts")
+        exp_date = opt_col2.selectbox(
+            'Expiration:',
+            ticker.options, index=0, key="opt_exp_date")
+        opt = ticker.option_chain(exp_date)
+
         df=opt.puts #.round(2)
         st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
+
+        # if "Call" in opt_type:
+        #     df=opt.calls #.round(2)
+        #     st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
+        #     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
+        # else:
+        #     df=opt.puts #.round(2)
+        #     st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
+        #     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
 
 ########################################################################################
