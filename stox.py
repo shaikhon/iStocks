@@ -405,7 +405,7 @@ def bs_df(df):
     st.dataframe(df, use_container_width=True)
     st.text("* in Millions")
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def options(ticker, opt_type):
     opt_col1, opt_col2 = st.columns([4, 1], gap="small")
     opt_col1.header(stock + "  " + opt_type + "s")
