@@ -315,6 +315,7 @@ def opt_scatter(df):
 
     fig = px.scatter(df.round(2), x="strike", y=y,
                      color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
+                     range_color=(0, df.impliedVolatility.max()),
                      size='lastPrice', size_max=20,
                      # size='impliedVolatility', size_max=30,
                      symbol="In The Money",
