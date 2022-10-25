@@ -306,7 +306,7 @@ def px_income(df):
 
     return fig
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def opt_scatter(df, exp_date):
     df_sum = df.openInterest.sum()
     y = 'volume' #if df_sum < 100 else "openInterest"
@@ -348,7 +348,7 @@ def opt_scatter(df, exp_date):
 
     return fig
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def parse_headers(hdrs):
     isupper = [[element.isupper() for element in hdr] for hdr in hdrs]  # True for every letter is upper
     any_upper = [np.any([element.isupper() for element in hdr]) for hdr in hdrs]  # True for any header with upper
