@@ -570,7 +570,8 @@ with st.container():
     for col, label, metric in zip(columns2, general_labels, general_metrics):
         col.caption(label)
         col.markdown(metric)
-        st.write(metric, metric.isnumeric())
+        st.write(metric)
+        st.write(metric.isnumeric())
         # col.empty()
 
 with st.expander("Click here for tips:"):
