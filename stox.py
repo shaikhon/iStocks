@@ -645,9 +645,13 @@ with st.expander(stock + ' Balance Sheet'):
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
-        df = ticker.balance_sheet.round(0)
+        df = (ticker.balance_sheet // 1000000)
         df[df.isna()] = 0
-        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],dtype=int)
+        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
+                          dtype=int)
+        for col in df:
+            df[col] = df[col].apply(lambda x: "${:,} Million".format(x).ljust(12))
+
         st.dataframe(df, use_container_width=True)
 
 
