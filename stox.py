@@ -362,8 +362,12 @@ def parse_headers(hdrs):
 
 # @st.cache(allow_output_mutation=True)
 def opt_table(df, kind, spread=5):
+    df[df.isna()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
     dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
+    st.write(df)
+    st.write(df)
+    st.write(df)
     df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
                                                                                    other='rgb(255, 45, 10)')
     df = df.loc[dx - spread:dx + spread]
