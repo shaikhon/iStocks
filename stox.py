@@ -308,7 +308,10 @@ def px_income(df):
 
 @st.cache(allow_output_mutation=True)
 def opt_scatter(df):
-    fig = px.scatter(df, x="strike", y="openInterest", color="lastPrice",
+    fig = px.scatter(df, x="strike",
+                     y="volume",
+                     # y="openInterest",
+                     color="lastPrice",
                      size='impliedVolatility',
                      marginal_x="rug", marginal_y="histogram")
     fig.update_layout(
@@ -318,8 +321,9 @@ def opt_scatter(df):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         # showlegend=False,
-        yaxis=dict(showline=False, showgrid=True, title={"text": "Open Interest",
-                                                          "font":dict(size=24),
+        yaxis=dict(showline=False, showgrid=True, title={"font":dict(size=24),
+                                                         # "text": "Open Interest",
+                                                         "text": "Volume",
                                                           "standoff": 25}),
 
         xaxis=dict(showline=False,showgrid=False, title={"text": "Strike ($USD)",
@@ -330,7 +334,6 @@ def opt_scatter(df):
         yaxis2 = dict(showline=False, showgrid=False),
         yaxis3 = dict(showline=False, showgrid=False),
         #     yaxis4=dict(showline=False,showgrid=False),
-
     )
 
     return fig
