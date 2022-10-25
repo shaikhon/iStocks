@@ -520,9 +520,14 @@ pe = 0 if idict["trailingPE"] is None else idict["trailingPE"]
 flabels = ["MARKET CAP", "AVG VOLUME", "P/E RATIO", "DIVIDEND YIELD"]
 fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], pe, div_yld]
 fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
-general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
-general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                   idict["fullTimeEmployees"], idict["website"]]
+
+if 'sector' in idict:
+    general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+    general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
+                       idict["fullTimeEmployees"], idict["website"]]
+else:
+    general_labels = ["CATEGORY", "MARKET", "TIME ZONE"]
+    general_metrics = [idict["category"], idict["market"], idict["exchangeTimezoneName"]]
 
 '---'
 with st.container():
