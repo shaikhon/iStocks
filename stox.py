@@ -635,16 +635,12 @@ with st.expander(stock + ' Holders'):
 with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly","Yearly"])
     with qbtab:
-        df = (ticker.quarterly_balance_sheet / 1000000).round(0).astype(int)
+        df = (ticker.quarterly_balance_sheet // 1000000)
         df[df.isna()] = 0
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns])
-
-        # df = '$' + (df/1000000).round(1).astype(str) + " Million"
-        # df = df.apply(lambda x: ["{:,}".format(x) for _ in df],axis=1, result_type='expand') #.ljust(12))
         for col in df:
             df[col] = df[col].apply(lambda x: "${:,} Million".format(x).ljust(12))
 
-        # df = '$' + df + " Million"
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
