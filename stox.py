@@ -360,7 +360,7 @@ def parse_headers(hdrs):
     return ["<b>" + hdr + "</b>" for hdr in hdrs]  # bold headers
 
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def opt_table(df, kind='Call', spread=5):
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
     dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
