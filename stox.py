@@ -573,7 +573,8 @@ with st.container():
         col.empty()
 
 with st.expander("Click here for tips:"):
-    "* PEG RATIO : lower than 1.0 is best, suggesting that a company is relatively undervalued.  -Investopedia"
+    "* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, " \
+    "suggesting that a company is relatively undervalued.  -Investopedia"
 
 
 ################## Target Price Bar ############################
