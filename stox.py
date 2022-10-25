@@ -566,7 +566,7 @@ with st.expander(stock + ' Options'):
 
         opt = ticker.option_chain(exp_date)
 
-        df=opt.calls #.round(2)
+        df=opt.calls
         st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
@@ -579,8 +579,8 @@ with st.expander(stock + ' Options'):
             ticker.options, index=0, key="put_exp_date")
         opt = ticker.option_chain(exp_date)
 
-        df=opt.puts #.round(2)
-        st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
+        df=opt.puts
+        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
         # if "Call" in opt_type:
