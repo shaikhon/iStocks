@@ -368,7 +368,7 @@ def opt_table(df, kind='Call', spread=5):
                            df.volume, df.openInterest, df.impliedVolatility.round(2)],
                    line_color='white',
                    fill_color=[df.color],
-                   font=dict(color='white', size=14),
+                   font=dict(color='black', size=14),
                    height=25,
                    align='center'))
     ])
