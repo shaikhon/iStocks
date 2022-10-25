@@ -313,7 +313,7 @@ def opt_scatter(df):
     y_label = 'Volume' if df_sum < 100 else "Open Interest"
     df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
 
-    fig = px.scatter(df_puts.round(2), x="strike", y=y,
+    fig = px.scatter(df.round(2), x="strike", y=y,
                      color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
                      size='lastPrice', size_max=20,
                      # size='impliedVolatility', size_max=30,
