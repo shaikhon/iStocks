@@ -561,8 +561,8 @@ with st.expander(stock + ' Options'):
 
         exp_date = opt_col2.selectbox(
             'Expiration:',
-            ticker.options, index=0, key="opt_exp_date")
-    
+            ticker.options, index=0, key="call_exp_date")
+
         opt = ticker.option_chain(exp_date)
 
         df=opt.calls #.round(2)
@@ -575,7 +575,7 @@ with st.expander(stock + ' Options'):
         opt_col1.header(stock + "  Puts")
         exp_date = opt_col2.selectbox(
             'Expiration:',
-            ticker.options, index=0, key="opt_exp_date")
+            ticker.options, index=0, key="put_exp_date")
         opt = ticker.option_chain(exp_date)
 
         df=opt.puts #.round(2)
