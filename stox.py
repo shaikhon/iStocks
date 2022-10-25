@@ -628,7 +628,7 @@ with st.expander(stock + ' Earnings'):
 ########################## HOLDERS - PIE Expander ######################################
 ########################################################################################
 with st.expander(stock + ' Holders'):
-    tab1, tab2 = st.tabs(["Institutions","Insiders"])
+    tab1, tab2 = st.tabs(["Institutions", "Insiders"])
 
     with tab1:
         if not df.empty:
@@ -655,8 +655,15 @@ with st.expander(stock + ' Balance Sheet'):
 ##################################### TABLES ###########################################
 ########################################################################################
 # Price:
+if idict["quoteType"] == "ETF":
+    price = idict['regularMarketPrice']
+
+else:
+    price = idict['currentPrice']
+
+
 pinfo = np.round([
-    idict['currentPrice'], idict['previousClose'],
+    price, idict['previousClose'],
     idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
     idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
 # Financials
