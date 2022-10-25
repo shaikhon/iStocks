@@ -335,6 +335,43 @@ def opt_scatter(df):
 
     return fig
 
+@st.cache(allow_output_mutation=True)
+def parse_headers(hdrs):
+    isupper = [[element.isupper() for element in hdr] for hdr in hdrs]  # True for every letter is upper
+    any_upper = [np.any([element.isupper() for element in hdr]) for hdr in hdrs]  # True for any header with upper
+    dx = [None if not _ else arr.index(True) for (_, arr) in
+          zip(any_upper, isupper)]  # index for upper letter or None if all lower
+    hdrs_list = [e.partition(e[:d]) for (e, d) in zip(hdrs, dx)]  # split headers at capital letter
+    words = [[word.capitalize() for word in hdr if word] for hdr in hdrs_list]  # remove empty str and capitalize
+    hdrs = [' '.join(word) for word in words]  # join headers
+    return ["<b>" + hdr + "</b>" for hdr in hdrs]  # bold headers
+
+
+@st.cache(allow_output_mutation=True)
+def opt_table(df, spread=5):
+    df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
+    dx = df[df.inTheMoney].index[-1]
+    df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
+                                                                                   other='rgb(255, 45, 10)')
+    df = df.loc[dx - spread:dx + spread]
+    hdrs = parse_headers(list(df.drop(columns=['color', 'inTheMoney']).columns))
+
+    fig = go.Figure(data=[go.Table(
+        columnwidth=[150 for _ in range(len(hdrs))],
+
+        header=dict(values=hdrs,
+                    fill_color='rgb(0,0,0,0)',
+                    font=dict(color='white', size=14),
+                    height=50,
+                    align='center'),
+        cells=dict(values=[df.strike, df.lastPrice, df.bid, df.ask, df.percentChange.round(2),
+                           df.volume, df.openInterest, df.impliedVolatility.round(2)],
+                   line_color='white',
+                   fill_color=[df.color],
+                   align='center'))
+    ])
+
+    return fig
 ########################################################################################
 ########################################################################################
 #################################### MAIN Code #########################################
@@ -506,16 +543,18 @@ with st.container():
     opt = ticker.option_chain(exp_date)
 
     if "Call" in opt_type:
-        df=opt.calls.round(2)
+        df=opt.calls #.round(2)
 
-        dx = df[df.inTheMoney].index[-1]
-        st.dataframe(df.loc[dx-5:dx+5].drop(columns=['contractSymbol', 'change','currency','contractSize',
-                                             'inTheMoney','lastTradeDate'], errors='ignore'))
+        # dx = df[df.inTheMoney].index[-1]
+        # st.dataframe(df.loc[dx-5:dx+5].drop(columns=['contractSymbol', 'change','currency','contractSize',
+        #                                      'inTheMoney','lastTradeDate'], errors='ignore'))
+
+        st.plotly_chart(opt_table(df), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
     else:
-        df=opt.puts.round(2)
-        st.dataframe(df)
+        df=opt.puts #.round(2)
+        st.plotly_chart(opt_table(df), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
 
