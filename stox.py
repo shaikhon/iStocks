@@ -393,6 +393,34 @@ def opt_table(df, kind='Call', spread=5):
         title_font=dict(size=30))
 
     return fig
+
+@st.cache(allow_output_mutation=True)
+def bs_df(df):
+    df[df.isna()] = 0
+    df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
+                      dtype=int)
+    for col in df:
+        df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
+
+    st.dataframe(df, use_container_width=True)
+    st.text("* in Millions")
+
+@st.cache(allow_output_mutation=True)
+def options(ticker, opt_type):
+    opt_col1, opt_col2 = st.columns([4, 1], gap="small")
+    opt_col1.header(stock + "  " + opt_type + "s")
+
+    exp_date = opt_col2.selectbox(
+        'Expiration:',
+        ticker.options, index=0, key="exp_date")
+    opt = ticker.option_chain(exp_date)
+
+    df = opt.puts
+    st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
+    # "---"
+    st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
+
+
 ########################################################################################
 ########################################################################################
 #################################### MAIN Code #########################################
@@ -420,12 +448,10 @@ ticker_dict = get_names_dict(url)
 # stocks = get_tickers(date_str)
 # Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
-
 # Method 3: from file
 # stocks = list(np.genfromtxt('nasdaqlisted.txt', delimiter='|',skip_header=1,dtype=str)[:,0])
 # df = pd.read_csv("nasdaq_screener.csv",index_col=0)
 # stocks = list(df.index)
-# ['MSFT','AAPL','TSLA','AMZN','BA', 'GOOGL','GOOG','NVDA','MVST','MILE']
 ########################################################################################
 # TODO: ADD LOGO HERE: STOX
 # Language input
@@ -440,7 +466,6 @@ stock = ticker_dict[stock]
 ########################################################################################
 #################################### MAIN PAGE #########################################
 ########################################################################################
-
 ############################## Major Market Metrics ####################################
 # MAJOR INDEXES (GOOGLE FINANCE):
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
@@ -532,8 +557,6 @@ else:
 '---'
 with st.container():
     st.header(stock + ' Summary')
-    # info_container = st.container()
-    # info_container2 = st.container()
     columns = st.columns(len(general_labels))
     columns2 = st.columns(len(flabels))
 
@@ -561,45 +584,12 @@ with st.expander(stock + ' Options'):
 
     with call_tab:
         opt_type="Call"
-        opt_col1, opt_col2 = st.columns([4, 1], gap="small")
-        opt_col1.header(stock+ "  Calls")
-        # opt_type = opt_col2.selectbox(
-        #     'Call/Put:',
-        #     ["Call", "Put"], index=0, key="option_type")
-
-        exp_date = opt_col2.selectbox(
-            'Expiration:',
-            ticker.options, index=0, key="call_exp_date")
-
-        opt = ticker.option_chain(exp_date)
-
-        df=opt.calls
-        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
-        # "---"
-        st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
+        options(ticker, opt_type)
 
     with put_tab:
         opt_type = "Put"
-        opt_col1, opt_col2 = st.columns([4, 1], gap="small")
-        opt_col1.header(stock + "  Puts")
-        exp_date = opt_col2.selectbox(
-            'Expiration:',
-            ticker.options, index=0, key="put_exp_date")
-        opt = ticker.option_chain(exp_date)
+        options(ticker, opt_type)
 
-        df=opt.puts
-        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
-        # "---"
-        st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
-
-        # if "Call" in opt_type:
-        #     df=opt.calls #.round(2)
-        #     st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
-        #     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
-        # else:
-        #     df=opt.puts #.round(2)
-        #     st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
-        #     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
 
 ########################################################################################
@@ -636,26 +626,12 @@ with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
         df = (ticker.quarterly_balance_sheet // 1000000)
-        df[df.isna()] = 0
-        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
-                          dtype=int)
-        for col in df:
-            df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
-
-        # df.index.name = "in Millions"
-        st.dataframe(df, use_container_width=True)
-        st.text("in Millions")
+        bs_df(df)
 
     with ybtab:
         df = (ticker.balance_sheet // 1000000)
-        df[df.isna()] = 0
-        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
-                          dtype=int)
-        for col in df:
-            df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
-        df.index.name = "in Millions"
-        st.text("in Millions")
-        st.dataframe(df, use_container_width=True)
+        bs_df(df)
+
 
 
 ########################################################################################
