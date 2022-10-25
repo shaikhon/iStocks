@@ -308,27 +308,33 @@ def px_income(df):
 
 @st.cache(allow_output_mutation=True)
 def opt_scatter(df):
-    fig = px.scatter(df.round(4), x="strike",
-                     y="volume",
-                     # y="openInterest",
-                     color="lastPrice",
-                     size='impliedVolatility',
+    df_sum = df.openInterest.sum()
+    y = 'volume' if df_sum < 100 else "openInterest"
+    y_label = 'Volume' if df_sum < 100 else "Open Interest"
+    df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
+
+    fig = px.scatter(df_puts.round(2), x="strike", y=y,
+                     color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
+                     size='lastPrice', size_max=20,
+                     # size='impliedVolatility', size_max=30,
+                     symbol="In The Money",
                      marginal_x="rug", marginal_y="histogram")
+
     fig.update_layout(
-        # hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
         template="plotly_dark",
-        margin=dict(t=0,b=0,l=0,r=0),
+        coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
+                                title={"text": "Implied<br>Volatility (%)", }),
+        legend=dict(yanchor="bottom", y=.75),
+        margin=dict(t=0, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        # showlegend=False,
-        yaxis=dict(showline=False, showgrid=True, title={"font":dict(size=24),
-                                                         # "text": "Open Interest",
-                                                         "text": "Volume",
-                                                          "standoff": 25}),
-
-        xaxis=dict(showline=False,showgrid=False, title={"text": "Strike ($USD)",
-                                                         "font":dict(size=24),
+        yaxis=dict(showline=False, showgrid=True, title={"text": y_label,
+                                                         "font": dict(size=24),
                                                          "standoff": 25}),
+
+        xaxis=dict(showline=False, showgrid=False, title={"text": "Strike ($USD)",
+                                                          "font": dict(size=24),
+                                                          "standoff": 25}),
         xaxis2 = dict(showline=False, showgrid=False),
         xaxis3 = dict(showline=False, showgrid=False),
         yaxis2 = dict(showline=False, showgrid=False),
@@ -377,7 +383,7 @@ def opt_table(df, exp_date, kind='Call', spread=5):
     ])
 
     fig.update_layout(
-    title_text="Options Chain   Exp:"+exp_date,
+    title_text="Options Chain      Expiration: "+exp_date,
     title_font=dict(size=24))
 
     return fig
@@ -546,7 +552,7 @@ with st.container():
         ["Call", "Put"], index=0, key="option_type")
 
     exp_date = opt_col3.selectbox(
-        'Experiation:',
+        'Expiration:',
         ticker.options, index=0, key="opt_exp_date")
 
     opt = ticker.option_chain(exp_date)
