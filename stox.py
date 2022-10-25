@@ -613,16 +613,16 @@ with st.expander(stock + ' Options'):
 ########################################################################################
 with st.expander(stock + ' Earnings'):
 
-    qtab, ytab = st.tabs(["Quarterly","Yearly"])
+    qtab, ytab = st.tabs(["Quarterly", "Yearly"])
 
     with qtab:
         df = ticker.quarterly_financials.T
-        if df:
+        if not df.isempty:
             st.plotly_chart(px_income(df), use_container_width=True)
 
     with ytab:
         df = ticker.financials.T
-        if df:
+        if not df.isempty:
             st.plotly_chart(px_income(df), use_container_width=True)
 ########################################################################################
 ########################## HOLDERS - PIE Expander ######################################
@@ -631,11 +631,9 @@ with st.expander(stock + ' Holders'):
     tab1, tab2 = st.tabs(["Institutions","Insiders"])
 
     with tab1:
-        # st.subheader('Price')
         st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
     with tab2:
-        # st.subheader('Financials')
         st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 ########################################################################################
 ################################# BALANCE SHEET ########################################
