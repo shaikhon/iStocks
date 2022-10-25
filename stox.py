@@ -412,7 +412,7 @@ def options(ticker, opt_type):
 
     exp_date = opt_col2.selectbox(
         'Expiration:',
-        ticker.options, index=0, key="exp_date")
+        ticker.options, index=0, key=opt_type+"_exp_date")
     opt = ticker.option_chain(exp_date)
 
     df = opt.puts
