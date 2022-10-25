@@ -544,18 +544,25 @@ with st.container():
 ########################################################################################
 # Calculations:
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
-peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
-flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
-fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
+
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
 if 'sector' in idict:
     general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
     general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
                        idict["fullTimeEmployees"], idict["website"]]
-else:
+
+    peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
+    flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
+    fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
+
+else:   # for ETFs
     general_labels = ["CATEGORY", "MARKET", "TIME ZONE"]
     general_metrics = [idict["category"], idict["market"], idict["exchangeTimezoneName"]]
+
+    peg = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
+    flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
+    fmetrics = [idict["totalAssets"], idict["averageDailyVolume10Day"], peg, div_yld]
 
 '---'
 with st.container():
