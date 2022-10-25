@@ -316,7 +316,7 @@ def opt_scatter(df, exp_date):
     fig = px.scatter(df.round(2), x="strike", y=y,
                      color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
                      range_color=(0, df.impliedVolatility.max()),
-                     size='lastPrice', size_max=30,
+                     size='lastPrice', size_max=50,
                      symbol="In The Money", symbol_map={'In': "0", "Out": "x"},
                      # marginal_x="rug",
                      marginal_y="histogram")
