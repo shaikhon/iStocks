@@ -642,9 +642,9 @@ with st.expander(stock + ' Balance Sheet'):
         for col in df:
             df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
 
-        df.index.name = "in Millions"
-        st.text("in Millions")
+        # df.index.name = "in Millions"
         st.dataframe(df, use_container_width=True)
+        st.text("in Millions")
 
     with ybtab:
         df = (ticker.balance_sheet // 1000000)
