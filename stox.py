@@ -640,8 +640,9 @@ with st.expander(stock + ' Balance Sheet'):
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
                           dtype=int)
         for col in df:
-            df[col] = df[col].apply(lambda x: "${:,} Million".format(x).ljust(20))
+            df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
 
+        df.index.name = "in Millions"
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
@@ -650,8 +651,8 @@ with st.expander(stock + ' Balance Sheet'):
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
                           dtype=int)
         for col in df:
-            df[col] = df[col].apply(lambda x: "${:,} Million".format(x).ljust(12))
-
+            df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
+        df.index.name = "in Millions"
         st.dataframe(df, use_container_width=True)
 
 
