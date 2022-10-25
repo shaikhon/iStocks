@@ -635,7 +635,7 @@ with st.expander(stock + ' Holders'):
 with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly","Yearly"])
     with qbtab:
-        df = ticker.quarterly_balance_sheet / 1000000
+        df = (ticker.quarterly_balance_sheet / 1000000).round(0)
         df[df.isna()] = 0.0
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns])
 
