@@ -324,7 +324,8 @@ def opt_scatter(df, exp_date):
     fig.update_layout(
         template="plotly_dark",
         title_text="<b>Strike vs. "+y_label+"          Expiration: "+exp_date+"<b>",
-        title_font=dict(size=26),
+        title_font=dict(size=30),
+        title_x=.5,
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=.75,
                                 title={"text": "Implied<br>Volatility (%)", }),
         legend=dict(yanchor="bottom", y=.75),
@@ -388,7 +389,8 @@ def opt_table(df, kind='Call', spread=5):
     fig.update_layout(
         margin=dict(b=0, l=10, r=10),
         title_text="<b>"+kind+" Options Chain<b>",
-    title_font=dict(size=26))
+        title_x=.5,
+        title_font=dict(size=30))
 
     return fig
 ########################################################################################
