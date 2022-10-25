@@ -364,7 +364,7 @@ def parse_headers(hdrs):
 def opt_table(df, kind, spread=5):
     # df[df.isnull()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
-    dx = df[df.inTheMoney].index[-1] if "C" in kind else df[df.inTheMoney].index[0]
+    dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index[0])
     df['color'] = df.inTheMoney.mask(df.inTheMoney,
                                      other='rgb(10, 255, 30)').mask(~df.inTheMoney,
                                                                     other='rgb(255, 45, 10)')
@@ -399,7 +399,7 @@ def opt_table(df, kind, spread=5):
 
     return fig
 
-# @st.cache(allow_output_mutation=True,suppress_st_warning=True)
+
 def bs_df(df):
     df[df.isna()] = 0
     df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
@@ -410,7 +410,6 @@ def bs_df(df):
     st.dataframe(df, use_container_width=True)
     st.text("* in Millions")
 
-# @st.cache(allow_output_mutation=True)
 def options(ticker, opt_type):
     opt_col1, opt_col2 = st.columns([4, 1], gap="small")
     opt_col1.header(stock + "  " + opt_type + "s")
@@ -420,7 +419,8 @@ def options(ticker, opt_type):
         ticker.options, index=0, key=opt_type+"_exp_date")
     opt = ticker.option_chain(exp_date)
 
-    df = opt.puts
+    df = opt.calls if "C" in opt_type else opt.puts
+
     st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
     # "---"
     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
