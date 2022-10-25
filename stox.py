@@ -617,11 +617,13 @@ with st.expander(stock + ' Earnings'):
 
     with qtab:
         df = ticker.quarterly_financials.T
-        st.plotly_chart(px_income(df), use_container_width=True)
+        if df:
+            st.plotly_chart(px_income(df), use_container_width=True)
 
     with ytab:
         df = ticker.financials.T
-        st.plotly_chart(px_income(df), use_container_width=True)
+        if df:
+            st.plotly_chart(px_income(df), use_container_width=True)
 ########################################################################################
 ########################## HOLDERS - PIE Expander ######################################
 ########################################################################################
