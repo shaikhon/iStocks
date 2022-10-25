@@ -365,8 +365,10 @@ def opt_table(df, kind, spread=5):
     # df[df.isnull()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
     dx = df[df.inTheMoney].index[-1] if "C" in kind else df[df.inTheMoney].index[0]
-    df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
-                                                                                   other='rgb(255, 45, 10)')
+    df['color'] = df.inTheMoney.mask(df.inTheMoney,
+                                     other='rgb(10, 255, 30)').mask(~df.inTheMoney,
+                                                                    other='rgb(255, 45, 10)')
+    st.write(dx)
     df = df.loc[dx - spread:dx + spread]
     hdrs = parse_headers(list(df.drop(columns=['color', 'inTheMoney']).columns))
 
@@ -388,7 +390,7 @@ def opt_table(df, kind, spread=5):
     ])
 
     fig.update_layout(
-        margin=dict(t=25, b=0, l=10, r=10),
+        margin=dict(t=50, b=0, l=10, r=10),
         title_text="<b>"+kind+" Options Chain<b>",
         title_x=.5,
         title_font=dict(size=30))
