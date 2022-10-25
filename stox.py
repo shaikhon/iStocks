@@ -654,13 +654,19 @@ with st.expander(stock + ' Balance Sheet'):
 ########################################################################################
 ##################################### TABLES ###########################################
 ########################################################################################
+'''
 # Price:
 if idict["quoteType"] == "ETF":
     price = idict['regularMarketPrice']
-    share = idict["priceToEarnings"]
+    shares = idict['equityHoldings']['priceToEarnings']
+    cash = idict['equityHoldings']['priceToCashflow']
+    info4 = idict['equityHoldings']['priceToSales']
+
 else:
     price = idict['currentPrice']
     shares = idict['floatShares']
+    cash = idict['freeCashflow']
+    info4 = idict['ebitda']
 
 pinfo = np.round([
     price, idict['previousClose'],
@@ -668,8 +674,8 @@ pinfo = np.round([
     idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
 # Financials
 einfo = [
-    idict['marketCap'], shares, idict['ebitda'],
-    idict['freeCashflow'], idict['totalDebt'], idict['totalCash'],
+    idict['marketCap'], shares, info4,
+    cash, idict['totalDebt'], idict['totalCash'],
     idict['totalRevenue']]  # idict['operatingCashflow'],
 # stock info
 oinfo = [idict['averageDailyVolume10Day'], idict['fullTimeEmployees']]
@@ -705,7 +711,7 @@ with st.container():
                          index=['Market Cap', 'Floating Shares', 'EBITDA', 'Free Cash Flow', 'Total Debt', 'Total Cash',
                                 'Total Revenue'], name='$ USD')
         tbl2
-
+'''
 ################## TABLE CONTAINER ############################
 # with st.container():
 #     col1, col2, col3 = st.columns(3)
@@ -716,11 +722,9 @@ with st.container():
 # 	with col2:
 # 		tbl2
 #################################################################
-
 if st.checkbox("Information dict:"):
     idict
 
-    
 #################################################################
 
 # st.subheader('Jave for loop:')
