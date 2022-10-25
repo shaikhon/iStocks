@@ -631,7 +631,7 @@ with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly","Yearly"])
     with qbtab:
         df = ticker.quarterly_balance_sheet.round(0)
-        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns])
+        df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],dtype=int)
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
