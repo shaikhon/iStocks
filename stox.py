@@ -565,6 +565,7 @@ with st.container():
 
     for col2, flabel, metric2 in zip(columns, flabels, fmetrics):
         col2.caption(flabel)
+        st.write(metric2)
         col2.markdown(str(millify(metric2)))
 
     for col, label, metric in zip(columns2, general_labels, general_metrics):
