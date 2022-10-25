@@ -580,7 +580,7 @@ with st.container():
 # with st.container():
 with st.expander(stock + ' Options'):
 
-    call_tab, put_tab = st.tabs(["Calls","Puts"])
+    call_tab, put_tab = st.tabs(["Calls", "Puts"])
 
     with call_tab:
         opt_type="Call"
