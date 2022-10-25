@@ -348,9 +348,9 @@ def parse_headers(hdrs):
 
 
 @st.cache(allow_output_mutation=True)
-def opt_table(df, spread=5):
+def opt_table(df, kind='Call', spread=5):
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
-    dx = df[df.inTheMoney].index[-1]
+    dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
     df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
                                                                                    other='rgb(255, 45, 10)')
     df = df.loc[dx - spread:dx + spread]
@@ -368,6 +368,8 @@ def opt_table(df, spread=5):
                            df.volume, df.openInterest, df.impliedVolatility.round(2)],
                    line_color='white',
                    fill_color=[df.color],
+                   font=dict(color='white', size=14),
+                   height=25,
                    align='center'))
     ])
 
@@ -544,19 +546,12 @@ with st.container():
 
     if "Call" in opt_type:
         df=opt.calls #.round(2)
-
-        # dx = df[df.inTheMoney].index[-1]
-        # st.dataframe(df.loc[dx-5:dx+5].drop(columns=['contractSymbol', 'change','currency','contractSize',
-        #                                      'inTheMoney','lastTradeDate'], errors='ignore'))
-
-        st.plotly_chart(opt_table(df), use_container_width=True)
+        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
-
     else:
         df=opt.puts #.round(2)
-        st.plotly_chart(opt_table(df), use_container_width=True)
+        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
-
 
 
 ########################################################################################
