@@ -309,8 +309,8 @@ def px_income(df):
 @st.cache(allow_output_mutation=True)
 def opt_scatter(df, exp_date):
     df_sum = df.openInterest.sum()
-    y = 'volume' if df_sum < 100 else "openInterest"
-    y_label = 'Volume' if df_sum < 100 else "Open Interest"
+    y = 'volume' #if df_sum < 100 else "openInterest"
+    y_label = 'Volume' #if df_sum < 100 else "Open Interest"
     df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
 
     fig = px.scatter(df.round(2), x="strike", y=y,
