@@ -598,7 +598,7 @@ with st.expander(stock + ' Options'):
 
 
 ########################################################################################
-#################################### FIN Expander ######################################
+################################ EARNINGS Expander #####################################
 ########################################################################################
 with st.expander(stock + ' Earnings'):
 
@@ -611,10 +611,8 @@ with st.expander(stock + ' Earnings'):
     with ytab:
         df = ticker.financials.T
         st.plotly_chart(px_income(df), use_container_width=True)
-
-
 ########################################################################################
-#################################### PIE Expander ######################################
+########################## HOLDERS - PIE Expander ######################################
 ########################################################################################
 with st.expander(stock + ' Holders'):
     tab1, tab2 = st.tabs(["Institutions","Insiders"])
@@ -626,17 +624,22 @@ with st.expander(stock + ' Holders'):
     with tab2:
         # st.subheader('Financials')
         st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+########################################################################################
+################################# BALANCE SHEET ########################################
+########################################################################################
+with st.expander(stock + ' Balance Sheet'):
+    qbtab, ybtab = st.tabs(["Quarterly","Yearly"])
+    with qbtab:
+        st.dataframe(ticker.quarterly_balance_sheet.round(0), use_container_width=True)
 
-
-with st.expander(stock + ' Quarterly Balance Sheet'):
-    st.dataframe(ticker.quarterly_balance_sheet)
-
-
+    with ybtab:
+        st.dataframe(ticker.balance_sheet.round(0), use_container_width=True)
 
 
 ########################################################################################
-################################# TABULATED DATA  ######################################
+##################################### TABLES ###########################################
 ########################################################################################
+
 # Price:
 pinfo = np.round([
     idict['currentPrice'], idict['previousClose'],
