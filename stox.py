@@ -654,7 +654,8 @@ with st.expander(stock + ' Balance Sheet'):
 ########################################################################################
 ##################################### TABLES ###########################################
 ########################################################################################
-'''
+if st.checkbox('Tables:'):
+    '''
 # Price:
 if idict["quoteType"] == "ETF":
     price = idict['regularMarketPrice']
@@ -712,6 +713,7 @@ with st.container():
                                 'Total Revenue'], name='$ USD')
         tbl2
 '''
+
 ################## TABLE CONTAINER ############################
 # with st.container():
 #     col1, col2, col3 = st.columns(3)
