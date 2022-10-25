@@ -570,7 +570,7 @@ with st.expander(stock + ' Options'):
 
         df=opt.calls
         st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
-        "---"
+        # "---"
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
     with put_tab:
@@ -584,7 +584,7 @@ with st.expander(stock + ' Options'):
 
         df=opt.puts
         st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
-        "---"
+        # "---"
         st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
         # if "Call" in opt_type:
