@@ -633,7 +633,8 @@ with st.expander(stock + ' Balance Sheet'):
         df = ticker.quarterly_balance_sheet
         df[df.isna()] = 0.0
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns])
-        df = '$' + (df/1000000).round(1).astype(str) + " Million"
+        # df = '$' + (df/1000000).round(1).astype(str) + " Million"
+        df = '$' + (df/1000000).round(1).apply(lambda x: f"{x:,}".ljust(10)) + " Million"
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
