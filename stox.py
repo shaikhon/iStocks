@@ -387,7 +387,7 @@ def opt_table(df, kind='Call', spread=5):
     ])
 
     fig.update_layout(
-        margin=dict(b=0, l=10, r=10),
+        margin=dict(t=30, b=0, l=10, r=10),
         title_text="<b>"+kind+" Options Chain<b>",
         title_x=.5,
         title_font=dict(size=30))
