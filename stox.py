@@ -365,7 +365,10 @@ def opt_table(df, kind, spread=5):
     # df[df.isnull()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
     dx = max(df[df.inTheMoney].index) if "C" in kind else min(df[df.inTheMoney].index)
-    st.write(dx)
+
+    st.write(max(df[df.inTheMoney].index))
+    st.write(min(df[df.inTheMoney].index))
+    st.write(kind)
     st.write(dx)
     st.write(dx)
     df['color'] = df.inTheMoney.mask(df.inTheMoney, other='rgb(10, 255, 30)').mask(~df.inTheMoney,
