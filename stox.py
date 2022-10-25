@@ -553,11 +553,11 @@ with st.container():
 
     if "Call" in opt_type:
         df=opt.calls #.round(2)
-        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
+        st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
     else:
         df=opt.puts #.round(2)
-        st.plotly_chart(opt_table(df, kind=opt_type), use_container_width=True)
+        st.plotly_chart(opt_table(df, exp_date, kind=opt_type), use_container_width=True)
         st.plotly_chart(opt_scatter(df), use_container_width=True)
 
 
