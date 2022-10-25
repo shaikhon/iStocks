@@ -545,9 +545,9 @@ with st.container():
 # Calculations:
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
-flabels = ["MARKET CAP", "AVG VOLUME", "P/E RATIO", "DIVIDEND YIELD"]
+flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
 fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
-fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
+# fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
 if 'sector' in idict:
     general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
@@ -573,7 +573,7 @@ with st.container():
         col.empty()
 
 with st.expander("Click here for tips:"):
-    "* A PEG lower than 1.0 is best, suggesting that a company is relatively undervalued.  -Investopedia"
+    "* PEG RATIO : lower than 1.0 is best, suggesting that a company is relatively undervalued.  -Investopedia"
 
 
 ################## Target Price Bar ############################
