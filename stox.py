@@ -570,11 +570,12 @@ with st.container():
     for col, label, metric in zip(columns2, general_labels, general_metrics):
         col.caption(label)
         col.markdown(metric)
-        col.empty()
+        st.write(metric, metric.isnumeric())
+        # col.empty()
 
 with st.expander("Click here for tips:"):
-    "* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, " \
-    "suggesting that a company is relatively undervalued.  -Investopedia"
+    st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, " \
+    "suggesting that a company is relatively undervalued.  -Investopedia")
 
 
 ################## Target Price Bar ############################
