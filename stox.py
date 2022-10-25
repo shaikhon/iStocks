@@ -640,7 +640,7 @@ with st.expander(stock + ' Balance Sheet'):
         df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
                           dtype=int)
         for col in df:
-            df[col] = df[col].apply(lambda x: "${:,} Million".format(x).ljust(18))
+            df[col] = df[col].apply(lambda x: "${:,} Million".format(x).rjust(18))
 
         st.dataframe(df, use_container_width=True)
 
