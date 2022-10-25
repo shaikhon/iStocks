@@ -569,9 +569,12 @@ with st.container():
 
     for col, label, metric in zip(columns2, general_labels, general_metrics):
         col.caption(label)
+        if isinstance(metric, int):
+            st.write('found int')
+            metric = f"{metric:,}"
         col.markdown(metric)
         st.write(metric)
-        st.write(metric.isnumeric())
+
         # col.empty()
 
 with st.expander("Click here for tips:"):
