@@ -332,7 +332,7 @@ def opt_scatter(df):
                                                          "font": dict(size=24),
                                                          "standoff": 25}),
 
-        xaxis=dict(showline=False, showgrid=False, title={"text": "Strike ($USD)",
+        xaxis=dict(showline=False, showgrid=True, title={"text": "Strike ($USD)",
                                                           "font": dict(size=24),
                                                           "standoff": 25}),
         xaxis2 = dict(showline=False, showgrid=False),
