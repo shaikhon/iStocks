@@ -643,6 +643,9 @@ with st.expander(stock + ' Balance Sheet'):
             df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
 
         df.index.name = "in Millions"
+        st.subheader("in Millions")
+        st.write("in Millions")
+        st.text("in Millions")
         st.dataframe(df, use_container_width=True)
 
     with ybtab:
@@ -653,6 +656,9 @@ with st.expander(stock + ' Balance Sheet'):
         for col in df:
             df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
         df.index.name = "in Millions"
+        st.subheader("in Millions")
+        st.write("in Millions")
+        st.text("in Millions")
         st.dataframe(df, use_container_width=True)
 
 
