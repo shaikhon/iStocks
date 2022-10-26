@@ -309,7 +309,10 @@ def instit_pie(ticker, floatShares):
 
 @st.cache(allow_output_mutation=True)
 def etf_holdings_pie(df):
-    fig = px.pie(df, values="holdingPercent", names="holdingName", title='TOP 10 HOLDINGS')
+    df['holdingPercent'] = df.holdingPercent.round(2)
+    fig = px.pie(df, values="holdingPercent", names="holdingName",
+                 title='TOP 10 HOLDINGS',
+)
     fig.update_layout(
         template="plotly_dark",
         margin=dict(t=25,b=0,l=0,r=0),
