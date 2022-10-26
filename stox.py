@@ -579,7 +579,7 @@ div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 if 'sector' in idict:
     general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
     general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                       idict["fullTimeEmployees"], idict["website"]]
+                       idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
 
     peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
     flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
