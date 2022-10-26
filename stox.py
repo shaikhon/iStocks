@@ -71,11 +71,14 @@ def get_symbols_dict(today):
         other_df = nasdaq_df(fname="otherlisted.txt").rename(columns={"ACT Symbol": "Symbol"}).loc[:,
                    ["Symbol", "Security Name", "ETF"]].iloc[:-1]
 
+        # Nasdaqlisted
         df["Name"] = df.Symbol + " - " + df['Security Name'].apply(lambda x: f"{x}".split('-')[0].strip())
         df = df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
-
+        df["ETF"] = df.ETF.mask(df.ETF.isna(), other='N')
+        # Otherlisted
         other_df["Name"] = other_df.Symbol + " - " + other_df['Security Name']
         other_df = other_df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
+        other_df["ETF"] = other_df.ETF.mask(other_df.ETF.isna(), other='N')
 
         merged = pd.concat([df, other_df])
     return merged.to_dict()
@@ -578,7 +581,7 @@ with st.container():
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
-if 'Y' in isetf:
+if 'N' in isetf:
     pinfo = np.round([
         idict['currentPrice'], idict['previousClose'],
         idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
@@ -595,13 +598,14 @@ if 'Y' in isetf:
     peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
     fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
 
-else:   # for ETFs
+elif 'Y' in isetf:   # for ETFs
     general_labels = ["CATEGORY", "MARKET", "TIME ZONE"]
     general_metrics = [idict["category"], idict["market"], idict["exchangeTimezoneName"]]
 
     peg = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
     flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
     fmetrics = [idict["totalAssets"], idict["averageDailyVolume10Day"], peg, div_yld]
+
 
 
 '---'
