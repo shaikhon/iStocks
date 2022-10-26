@@ -609,7 +609,6 @@ with st.container():
         if isinstance(metric, int):
             metric = f"{metric:,}"
         col.markdown(metric)
-        # col.empty()
 
 with st.expander("Click here for tips:"):
     st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, " \
@@ -685,7 +684,9 @@ with st.expander(stock + ' Balance Sheet'):
 ###################################### NEWS ############################################
 ########################################################################################
 
-
+# FIND EXCHANGE AT WHICH TICKER IS TRADED
+#       MODIFY get_symbols_dict(): create "echange" column in df
+# SCRAPE NEWS OFF GOOGLE FIN.
 
 
 
