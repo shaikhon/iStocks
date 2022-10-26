@@ -536,7 +536,8 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 stock = st.selectbox(
     'Search a stock:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
-stock = ticker_dict[stock]
+isetf = etf_dict[stock]
+stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
 ########################################################################################
 ########################################################################################
 # STOCK INFO (Yfinance)
