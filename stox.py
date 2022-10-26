@@ -918,7 +918,7 @@ cc1,cc2,cc3,cc4,cc5,cc6=st.columns(6)
 cc1.image('./images/LI-In-Bug.png', use_column_width=True)
 cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
 
-if rfrsh_col.button('Refresh'):
+if rfrsh_col.button('Refresh', help="You can also refresh by pressing 'R'"):
     st.experimental_rerun()
 # time.sleep(st.session_state.rate)
 # st.experimental_rerun()
