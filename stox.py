@@ -505,8 +505,6 @@ stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-le
 ########################################################################################
 ############################## Major Market Metrics ####################################
 "---"
-# MAJOR INDEXES (GOOGLE FINANCE):
-st.subheader("Major Markets")
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
 
 # FUTURES (NOT WORKING):
@@ -520,14 +518,18 @@ nas_name, nas_current, nas_prev = get_index_info(nas_index)
 # Get indexes futures info (Google Finance)
 # spf_name, spf_current, spf_prev = get_index_info(sp_fut)
 
-# Print Index Metrics (Streamlit):
-dj_col, sp_col, nas_col = st.columns(3)
-dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
-sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
-nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
+with st.container():
+    # MAJOR INDEXES (GOOGLE FINANCE):
+    st.subheader("Major Markets")
 
-# djf_col, spf_col, nasf_col = st.columns(3)
-# spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
+    # Print Index Metrics (Streamlit):
+    dj_col, sp_col, nas_col = st.columns(3)
+    dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
+    sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
+    nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
+
+    # djf_col, spf_col, nasf_col = st.columns(3)
+    # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
 
 
 ########################################################################################
