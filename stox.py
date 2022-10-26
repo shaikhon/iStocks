@@ -615,7 +615,7 @@ with st.container():
 
     for col, label, metric in zip(columns, smrylbl, smry_metrics):
         col.caption(label)
-        col.markdown(str(millify(metric)))
+        col.markdown(str(metric))
 
     for col, label, metric in zip(columns2, flabels, fmetrics):
         col.caption(label)
