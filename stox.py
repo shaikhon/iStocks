@@ -554,7 +554,7 @@ with st.container():
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1,_, plt_col2, plt_col3 = st.columns([3,2,1,1],gap="small")
+    plt_col1,_,rfrsh_col, plt_col2, plt_col3 = st.columns([3,1,1,1,1],gap="small")
     # Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
@@ -918,6 +918,7 @@ cc1,cc2,cc3,cc4,cc5,cc6=st.columns(6)
 cc1.image('./images/LI-In-Bug.png', use_column_width=True)
 cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
 
-
+if rfrsh_col.button('Refresh'):
+    st.experimental_rerun()
 # time.sleep(st.session_state.rate)
 # st.experimental_rerun()
