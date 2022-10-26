@@ -247,17 +247,6 @@ def get_index_info(index):
 ##############################################################################
 ############################ PLOTS ###########################################
 ##############################################################################
-
-# def px_intraday(d):
-#     fig = px.line(d, x=d.index, y="Close", color_discrete_sequence=["lime"],
-#                   template="plotly_dark")
-#     fig.update_traces(mode="lines", hovertemplate='<i>Price</i>: $%{y:.2f}' +
-#                                                   '<br><i>Time</i>: %{x|%H:%M}<br>')
-#     fig.update_layout(paper_bgcolor="rgba(0,0,0,0)",
-#                       plot_bgcolor="rgba(0,0,0,0)")
-#     return fig
-
-
 def intraday(d):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -336,47 +325,6 @@ def px_income(df):
 
     return fig
 
-@st.cache(allow_output_mutation=True)
-def opt_scatter(df, exp_date):
-    # df_sum = df.openInterest.sum()
-    y = 'volume' #if df_sum < 100 else "openInterest"
-    y_label = 'Volume' #if df_sum < 100 else "Open Interest"
-    df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
-
-    fig = px.scatter(df.round(2), x="strike", y=y,
-                     color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
-                     range_color=(0, df.impliedVolatility.max()),
-                     size='lastPrice', size_max=25,
-                     symbol="In The Money", symbol_map={'In': "0", "Out": "x"},
-                     # marginal_x="rug",
-                     marginal_y="histogram")
-
-    fig.update_layout(
-        template="plotly_dark",
-        title_text="<b>Strike vs. "+y_label+"          Expiration: "+exp_date+"<b>",
-        title_font=dict(size=30),
-        title_x=0.5,
-        coloraxis_colorbar=dict(yanchor="bottom", y=0, len=0.75,
-                                title={"text": "Implied<br>Volatility (%)",}),
-        legend=dict(yanchor="bottom", y=.75),
-        margin=dict(t=50,b=0, l=10, r=10),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        yaxis=dict(showline=False, showgrid=True, title={"text": y_label,
-                                                         "font": dict(size=24),
-                                                         "standoff": 25}),
-
-        xaxis=dict(showline=False, showgrid=True, title={"text": "Strike ($USD)",
-                                                          "font": dict(size=24),
-                                                          "standoff": 25}),
-        xaxis2 = dict(showline=False, showgrid=False),
-        xaxis3 = dict(showline=False, showgrid=False),
-        yaxis2 = dict(showline=False, showgrid=False),
-        yaxis3 = dict(showline=False, showgrid=False),
-        #     yaxis4=dict(showline=False,showgrid=False),
-    )
-
-    return fig
 
 @st.cache(allow_output_mutation=True)
 def parse_headers(hdrs):
@@ -428,6 +376,49 @@ def opt_table(df, kind, spread=5):
     return fig
 
 
+@st.cache(allow_output_mutation=True)
+def opt_scatter(df, exp_date):
+    # df_sum = df.openInterest.sum()
+    y = 'volume' #if df_sum < 100 else "openInterest"
+    y_label = 'Volume' #if df_sum < 100 else "Open Interest"
+    df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
+
+    fig = px.scatter(df.round(2), x="strike", y=y,
+                     color="impliedVolatility", color_continuous_scale=["magenta", 'yellow', 'lime'],
+                     range_color=(0, df.impliedVolatility.max()),
+                     size='lastPrice', size_max=25,
+                     symbol="In The Money", symbol_map={'In': "0", "Out": "x"},
+                     # marginal_x="rug",
+                     marginal_y="histogram")
+
+    fig.update_layout(
+        template="plotly_dark",
+        title_text="<b>Strike vs. "+y_label+"          Expiration: "+exp_date+"<b>",
+        title_font=dict(size=30),
+        title_x=0.5,
+        coloraxis_colorbar=dict(yanchor="bottom", y=0, len=0.75,
+                                title={"text": "Implied<br>Volatility (%)",}),
+        legend=dict(yanchor="bottom", y=.75),
+        margin=dict(t=50,b=0, l=10, r=10),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        yaxis=dict(showline=False, showgrid=True, title={"text": y_label,
+                                                         "font": dict(size=24),
+                                                         "standoff": 25}),
+
+        xaxis=dict(showline=False, showgrid=True, title={"text": "Strike ($USD)",
+                                                          "font": dict(size=24),
+                                                          "standoff": 25}),
+        xaxis2 = dict(showline=False, showgrid=False),
+        xaxis3 = dict(showline=False, showgrid=False),
+        yaxis2 = dict(showline=False, showgrid=False),
+        yaxis3 = dict(showline=False, showgrid=False),
+        #     yaxis4=dict(showline=False,showgrid=False),
+    )
+
+    return fig
+
+
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def bs_df(df):
     df[df.isna()] = 0
@@ -468,6 +459,10 @@ st.title('💎 **U.S. Stocks App** 💎')
 'The Smart App for Analyzing U.S. Stocks'
 'By Obai Shaikh'
 "---"
+
+# Session State:
+if 'rate' not in st.sessin_state:
+    st.sessin_state.rate = 30       # refresh rate, seconds
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
@@ -515,7 +510,7 @@ dj_name, dj_current, dj_prev = get_index_info(dj_index)
 sp_name, sp_current, sp_prev = get_index_info(sp_index)
 nas_name, nas_current, nas_prev = get_index_info(nas_index)
 
-# Get indexe futures info (Google Finance)
+# Get indexes futures info (Google Finance)
 # spf_name, spf_current, spf_prev = get_index_info(sp_fut)
 
 # Print Index Metrics (Streamlit):
@@ -859,7 +854,10 @@ if st.checkbox("TODO:"):
     'invested. As such, a DCF analysis is appropriate in any situation wherein a person'
     'is paying money in the present with expectations of receiving more money in the future. -investopedia'
 
-
-
-time.sleep(30)
+"---"
+st.info(f"This Page Automatically Reloads Every {st.sessin_state.rate} Seconds. "
+        f"You Change The Rate Below.")
+st.sessin_state.rate = st.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
+                                       step=10, key='rate')
+time.sleep(st.sessin_state.rate)
 st.experimental_rerun()
