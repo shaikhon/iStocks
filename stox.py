@@ -454,14 +454,16 @@ def options(ticker, opt_type):
 # TITLE & LOGO:
 # title = '💎 **U.S. Stocks App** 💎'
 title = '💎 U.S. Stocks App 💎'
+welcome = 'The Smart App for Analyzing U.S. Stocks'' by Obai Shaikh'
+
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1 style='text-align: center; color: white;'>{welcome}</h1>", unsafe_allow_html=True)
 
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
-'The Smart App for Analyzing U.S. Stocks'
-'By Obai Shaikh'
+
 "---"
 
 # Session State:
