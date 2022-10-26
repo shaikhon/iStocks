@@ -31,7 +31,6 @@ st.set_page_config(
 #     r = requests.get(ftp_url)
 #     return [entry.partition('|')[0] for entry in r.text.splitlines()]
 
-@st.cache(allow_output_mutation=True)
 def get_tickers(date_str):
     date_int = int(date_str) - 5
     tickers = []
@@ -40,17 +39,51 @@ def get_tickers(date_str):
         r = requests.get(url)
         tickers = [entry.partition('|')[0] for entry in r.text.splitlines()]
         date_int += 1
-
     return tickers
 
-# @st.cache(allow_output_mutation=True)
-def get_ticker_info(stock):
-    return yf.Ticker(stock)
 
-@st.cache(allow_output_mutation=True)
 def get_names_dict(url):
     r = requests.get(url)
     return {name[1]+" - "+name[5]:name[1] for name in [entry.split('|') for entry in r.text.splitlines()]}
+
+
+def nasdaq_df(host='ftp.nasdaqtrader.com', sub_dir="symboldirectory", fname='nasdaqlisted.txt'):
+    with ftplib.FTP(host, 'anonymous') as ftp:
+        ftp.cwd(sub_dir)
+        with BytesIO() as f:
+            ftp.retrbinary('RETR ' + fname, f.write)
+            f.seek(0)
+            df = pd.read_csv(f, sep="|")
+
+    return df
+
+
+@st.cache(allow_output_mutation=True)
+def get_symbols_dict(today):
+    '''Get Nasdaq Ticker Symbols (Equity & ETFs)
+
+    Returns a dict-like
+    Symbol -> {Name -> Symbol}
+    ETF    -> {Name -> if_ETF}
+    '''
+    # print(f"Downloading U.S. Ticker Symbols  -  Last Updated: {today}")
+    with st.spinner(f"Downloading U.S. Ticker Symbols  -  Last Updated: {today}"):
+        df = nasdaq_df().loc[:, ["Symbol", "Security Name", "ETF"]].iloc[:-1]  # drop last row is file creation time
+        other_df = nasdaq_df(fname="otherlisted.txt").rename(columns={"ACT Symbol": "Symbol"}).loc[:,
+                   ["Symbol", "Security Name", "ETF"]].iloc[:-1]
+
+        df["Name"] = df.Symbol + " - " + df['Security Name'].apply(lambda x: f"{x}".split('-')[0].strip())
+        df = df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
+
+        other_df["Name"] = other_df.Symbol + " - " + other_df['Security Name']
+        other_df = other_df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
+
+        merged = pd.concat([df, other_df])
+    return merged.to_dict()
+
+
+def get_ticker_info(stock):
+    return yf.Ticker(stock)
 
 
 @st.cache(allow_output_mutation=True)
@@ -440,21 +473,22 @@ st.title('💎 **U.S. Stocks App** 💎')
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
-# GET SYMBOLS (NYSE ftp site)
-# Method 1: symbol + name
-url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
-    "NYSEGROUP_US_REF_SECURITYMASTERPREMIUM_EQUITY_4.0_20220927.txt"
-ticker_dict = get_names_dict(url)
+# GET SYMBOLS
+today = date.today().strftime("%D")
+ticker_etf_dict = get_symbols_dict(today)
+ticker_dict = ticker_etf_dict['Symbol']
+etf_dict = ticker_etf_dict['ETF']
+
+# # Old Method: symbol + name (NYSE) - fixed file
+# url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
+#     "NYSEGROUP_US_REF_SECURITYMASTERPREMIUM_EQUITY_4.0_20220927.txt"
+# ticker_dict = get_names_dict(url)
 
 # # Method 2: symbol only
 # date_str = date.today().strftime("%Y%m%d")
 # stocks = get_tickers(date_str)
 # Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
-# Method 3: from file
-# stocks = list(np.genfromtxt('nasdaqlisted.txt', delimiter='|',skip_header=1,dtype=str)[:,0])
-# df = pd.read_csv("nasdaq_screener.csv",index_col=0)
-# stocks = list(df.index)
 ########################################################################################
 # TODO: ADD LOGO HERE: STOX
 # Language input
@@ -465,7 +499,11 @@ lang = st.sidebar.radio(
 stock = st.sidebar.selectbox(
     'Ticker:',
     list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
-stock = ticker_dict[stock]
+isetf = etf_dict[stock]
+stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
+
+st.write(stock)
+st.write(isetf)
 ########################################################################################
 #################################### MAIN PAGE #########################################
 ########################################################################################
@@ -562,6 +600,7 @@ else:   # for ETFs
     peg = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
     flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
     fmetrics = [idict["totalAssets"], idict["averageDailyVolume10Day"], peg, div_yld]
+
 
 '---'
 with st.container():
