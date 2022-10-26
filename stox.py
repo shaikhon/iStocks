@@ -300,7 +300,7 @@ def intraday(d):
 @st.cache(allow_output_mutation=True)
 def instit_pie(ticker, floatShares):
     inst_df = ticker.institutional_holders
-    other_row = {"Holder": "Other Institutions", "Shares": floatShares - inst_df.Shares.sum(), "Date Reported": None,
+    other_row = {"Holder": "Other", "Shares": floatShares - inst_df.Shares.sum(), "Date Reported": None,
                  "% Out": None, "Value": None}
     other_row = pd.DataFrame(other_row, index=[0])
 
@@ -409,7 +409,7 @@ def opt_table(df, kind, spread=5):
 
         header=dict(values=hdrs,
                     fill_color='rgb(0,0,0,0)',
-                    font=dict(color='white', size=14),
+                    font=dict(color='white', size=12),
                     height=50,
                     align='center'),
         cells=dict(values=[df.strike, df.lastPrice, df.bid, df.ask, df.percentChange,
@@ -439,6 +439,7 @@ def bs_df(df):
 
     st.dataframe(df, use_container_width=True)
     st.text("* in Millions")
+
 
 def options(ticker, opt_type):
     opt_col1, opt_col2 = st.columns([4, 1], gap="small")
@@ -501,8 +502,6 @@ stock = st.sidebar.selectbox(
 isetf = etf_dict[stock]
 stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
 
-st.write(stock)
-st.write(isetf)
 ########################################################################################
 #################################### MAIN PAGE #########################################
 ########################################################################################
@@ -530,13 +529,6 @@ nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
 # djf_col, spf_col, nasf_col = st.columns(3)
 # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
 
-# overwriting elements in-place
-################## Major Market Metrics ############################
-# with st.empty():  # overwriting elements in-place
-#     for sec in range(5):
-#         st.write(f"{sec} seconds have passed")
-#         time.sleep(1)
-#     st.write("Times up!")
 
 ########################################################################################
 ################################ YAHOO FINANCE #########################################
@@ -689,6 +681,43 @@ with st.expander(stock + ' Balance Sheet'):
         if not df.empty:
             df = (ticker.balance_sheet // 1000000)
             bs_df(df)
+
+
+
+########################################################################################
+##################################### TESTING ##########################################
+########################################################################################
+n_cols = 10
+df1 = pd.DataFrame(
+    np.random.randn(50,n_cols),
+    columns=('col %d' % i for i in range(n_cols))
+)
+
+my_table = st.table(df1)
+
+df2 = pd.DataFrame(
+    np.random.randn(50,n_cols),
+    columns=('col %d' % i for i in range(n_cols))
+)
+
+my_table.add_rows(df2)
+
+"^"*50
+st.write("Charts:")
+my_chart = st.line_chart(df1)
+'sleeping...'
+time.sleep(10)
+my_chart.add_rows(df2)
+
+
+# overwriting elements in-place
+################## Major Market Metrics ############################
+# with st.empty():  # overwriting elements in-place
+#     for sec in range(5):
+#         st.write(f"{sec} seconds have passed")
+#         time.sleep(1)
+#     st.write("Times up!")
+
 ########################################################################################
 ##################################### TABLES ###########################################
 ########################################################################################
@@ -785,6 +814,7 @@ if st.checkbox("TODO:"):
     st.text("6. Make price chart live! append data")
     st.text("7. fix millify, AMZN mrkt cap=1.2 Trillion, use log10")
     st.text("8. add twtr, linkedin, github contact info")
+    st.text("9. earnings: estimated vs. actual: surprise")
 
     'What does it mean when the lines cross?'
     '# MAIN FEATURES:'
