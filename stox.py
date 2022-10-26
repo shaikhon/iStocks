@@ -857,11 +857,15 @@ if st.checkbox("TODO:"):
 "---"
 st.info(f"This Page Automatically Reloads Every {st.session_state.rate} Seconds. "
         f"You Change The Rate Below.")
-c1,c2,c3,c4,c5,c6=st.columns([1,3,1,1,1,1])
+c1,c2=st.columns([1,6])
 st.session_state.rate = c1.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
                                        step=10, key='reload_rate')
-c5.image('./images/LI-In-Bug.png', use_column_width=False, width=25)
-c6.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
+
+cc1,cc2,cc3,cc4,cc5,cc6=st.columns(6)
+
+cc1.image('./images/LI-In-Bug.png', use_column_width=False, width=50)
+cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
+
 
 time.sleep(st.session_state.rate)
 st.experimental_rerun()
