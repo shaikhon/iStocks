@@ -505,6 +505,7 @@ stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-le
 ########################################################################################
 ############################## Major Market Metrics ####################################
 "---"
+# MAJOR INDEXES (GOOGLE FINANCE):
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
 
 # FUTURES (NOT WORKING):
@@ -519,7 +520,6 @@ nas_name, nas_current, nas_prev = get_index_info(nas_index)
 # spf_name, spf_current, spf_prev = get_index_info(sp_fut)
 
 with st.container():
-    # MAJOR INDEXES (GOOGLE FINANCE):
     st.subheader("Major Markets")
 
     # Print Index Metrics (Streamlit):
@@ -536,22 +536,7 @@ with st.container():
 ################################ YAHOO FINANCE #########################################
 ########################################################################################
 "---"
-# Ticker input
-stock = st.selectbox(
-    'Search a stock:',
-    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
-isetf = etf_dict[stock]
-stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
-########################################################################################
-########################################################################################
-# STOCK INFO (Yfinance)
-ticker = get_ticker_info(stock)
 
-# LANGUAGE DICT:
-lang_dict = get_lang_dict(lang)
-
-# TICKER INFORMATION DICT
-idict = ticker.info
 
 
 ########################################################################################
@@ -559,6 +544,19 @@ idict = ticker.info
 ########################################################################################
 with st.container():
     plt_col1, plt_col2, plt_col3 = st.columns([5,1,1],gap="small")
+    # Ticker input
+    stock = plt_col1.selectbox(
+        'Search a stock:',
+        list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
+    isetf = etf_dict[stock]
+    stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
+    ########################################################################################
+    # STOCK INFO (Yfinance)
+    ticker = get_ticker_info(stock)
+    # LANGUAGE DICT:
+    lang_dict = get_lang_dict(lang)
+    # TICKER INFORMATION DICT
+    idict = ticker.info
 
     plt_col1.header(idict['shortName'])
     period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
