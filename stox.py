@@ -543,7 +543,7 @@ with st.container():
 ################################# PRICE CHART  #########################################
 ########################################################################################
 with st.container():
-    plt_col1,_, plt_col2, plt_col3 = st.columns([2,2,1,1],gap="small")
+    plt_col1,_, plt_col2, plt_col3 = st.columns([3,2,1,1],gap="small")
     # Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
