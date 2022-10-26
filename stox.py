@@ -458,7 +458,7 @@ welcome = 'The Smart App for Analyzing U.S. Stocks'' by Obai Shaikh'
 
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1,2,1])
+col1, col2, col3 = st.columns([1,2,1], gap="small")
 col2.write(welcome)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
