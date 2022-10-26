@@ -307,6 +307,15 @@ def instit_pie(ticker, floatShares):
     )
     return fig
 
+@st.cache(allow_output_mutation=True)
+def etf_holdings_pie(df):
+    fig = px.pie(df, values="holdingPercent", names="holdingName", title='TOP 10 HOLDINGS')
+    fig.update_layout(
+        template="plotly_dark",
+        margin=dict(t=25,b=0,l=0,r=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",)
+    return fig
 
 @st.cache(allow_output_mutation=True)
 def px_income(df):
@@ -671,15 +680,22 @@ with st.expander(stock + ' Earnings'):
 ########################## HOLDERS - PIE Expander ######################################
 ########################################################################################
 with st.expander(stock + ' Holders'):
-    tab1, tab2 = st.tabs(["Institutions", "Insiders"])
 
-    with tab1:
-        if idict['floatShares']:
-            st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+    if 'N' in isetf:
+        tab1, tab2 = st.tabs(["Institutions", "Insiders"])
+        with tab1:
+                st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+        with tab2:
+                st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
-    with tab2:
-        if idict['floatShares']:
-            st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+    else:
+        tab1, tab2 = st.tabs(["Holdings", "Insiders"])
+        df = pd.DataFrame(idict['holdings'])
+        with tab1:
+                st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
+        with tab2:
+                st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
+
 ########################################################################################
 ################################# BALANCE SHEET ########################################
 ########################################################################################
