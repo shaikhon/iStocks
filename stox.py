@@ -919,5 +919,5 @@ cc1.image('./images/LI-In-Bug.png', use_column_width=True)
 cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
 
 
-time.sleep(st.session_state.rate)
-st.experimental_rerun()
+# time.sleep(st.session_state.rate)
+# st.experimental_rerun()
