@@ -521,7 +521,8 @@ nas_name, nas_current, nas_prev = get_index_info(nas_index)
 # spf_name, spf_current, spf_prev = get_index_info(sp_fut)
 
 with st.container():
-    st.subheader("Major Markets")
+    # st.subheader("Major Markets")
+    st.markdown("<h1 style='text-align: center; color: white;'>Major Markets</h1>", unsafe_allow_html=True)
 
     # Print Index Metrics (Streamlit):
     dj_col, sp_col, nas_col = st.columns(3)
