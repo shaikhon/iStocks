@@ -693,14 +693,14 @@ df1 = pd.DataFrame(
     columns=('col %d' % i for i in range(n_cols))
 )
 
-my_table = st.table(df1)
+# my_table = st.table(df1)
 
 df2 = pd.DataFrame(
     np.random.randn(50,n_cols),
     columns=('col %d' % i for i in range(n_cols))
 )
 
-my_table.add_rows(df2)
+# my_table.add_rows(df2)
 
 "^"*50
 st.write("Charts:")
@@ -708,7 +708,7 @@ my_chart = st.line_chart(df1)
 'sleeping...'
 time.sleep(10)
 my_chart.add_rows(df2)
-
+'Done....'
 
 # overwriting elements in-place
 ################## Major Market Metrics ############################
