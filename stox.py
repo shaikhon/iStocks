@@ -464,7 +464,6 @@ col2.write(welcome)
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 
-"---"
 
 # Session State:
 if 'rate' not in st.session_state:
@@ -505,7 +504,9 @@ stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-le
 #################################### MAIN PAGE #########################################
 ########################################################################################
 ############################## Major Market Metrics ####################################
+"---"
 # MAJOR INDEXES (GOOGLE FINANCE):
+st.subheader("Major Markets")
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
 
 # FUTURES (NOT WORKING):
