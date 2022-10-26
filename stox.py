@@ -565,7 +565,7 @@ with st.container():
     # TICKER INFORMATION DICT
     idict = ticker.info
 
-    plt_col1.header(idict['shortName'])
+    st.header(idict['shortName'])
     period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
                                 index=0, key="period")
     interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
