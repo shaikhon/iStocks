@@ -232,7 +232,6 @@ def discover_more_tickers(index: int, other_data: str):
     }
 
 
-# @st.cache(allow_output_mutation=True)
 def get_index_info(index):
     data = scrape_google_finance(index)
 
@@ -243,7 +242,6 @@ def get_index_info(index):
     prev = float(prev[0] + prev[-1])
 
     return data['ticker_data']['title'], current, prev
-
 
 
 ##############################################################################
@@ -338,9 +336,9 @@ def px_income(df):
 
     return fig
 
-# @st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def opt_scatter(df, exp_date):
-    df_sum = df.openInterest.sum()
+    # df_sum = df.openInterest.sum()
     y = 'volume' #if df_sum < 100 else "openInterest"
     y_label = 'Volume' #if df_sum < 100 else "Open Interest"
     df["In The Money"] = df.inTheMoney.mask(df.inTheMoney, "In").mask(~df.inTheMoney, "Out")
@@ -380,7 +378,7 @@ def opt_scatter(df, exp_date):
 
     return fig
 
-# @st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def parse_headers(hdrs):
     isupper = [[element.isupper() for element in hdr] for hdr in hdrs]  # True for every letter is upper
     any_upper = [np.any([element.isupper() for element in hdr]) for hdr in hdrs]  # True for any header with upper
@@ -392,7 +390,7 @@ def parse_headers(hdrs):
     return ["<b>" + hdr + "</b>" for hdr in hdrs]  # bold headers
 
 
-# @st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def opt_table(df, kind, spread=5):
     # df[df.isnull()] = 0
     df = df.drop(columns=['contractSymbol', 'change', 'currency', 'contractSize', 'lastTradeDate']).round(2)
@@ -430,6 +428,7 @@ def opt_table(df, kind, spread=5):
     return fig
 
 
+@st.cache(allow_output_mutation=True)
 def bs_df(df):
     df[df.isna()] = 0
     df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
@@ -636,13 +635,10 @@ with st.expander(stock + ' Options'):
         opt_type = "Put"
         options(ticker, opt_type)
 
-
-
 ########################################################################################
 ################################ EARNINGS Expander #####################################
 ########################################################################################
 with st.expander(stock + ' Earnings'):
-
     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
 
     with qtab:
@@ -661,11 +657,11 @@ with st.expander(stock + ' Holders'):
     tab1, tab2 = st.tabs(["Institutions", "Insiders"])
 
     with tab1:
-        if not df.empty:
+        if idict['floatShares']:
             st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 
     with tab2:
-        if not df.empty:
+        if idict['floatShares']:
             st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
 ########################################################################################
 ################################# BALANCE SHEET ########################################
@@ -673,13 +669,13 @@ with st.expander(stock + ' Holders'):
 with st.expander(stock + ' Balance Sheet'):
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
+        df = (ticker.quarterly_balance_sheet // 1000000)
         if not df.empty:
-            df = (ticker.quarterly_balance_sheet // 1000000)
             bs_df(df)
 
     with ybtab:
+        df = (ticker.balance_sheet // 1000000)
         if not df.empty:
-            df = (ticker.balance_sheet // 1000000)
             bs_df(df)
 
 
@@ -687,28 +683,28 @@ with st.expander(stock + ' Balance Sheet'):
 ########################################################################################
 ##################################### TESTING ##########################################
 ########################################################################################
-n_cols = 10
-df1 = pd.DataFrame(
-    np.random.randn(50,n_cols),
-    columns=('col %d' % i for i in range(n_cols))
-)
-
-# my_table = st.table(df1)
-
-df2 = pd.DataFrame(
-    np.random.randn(50,n_cols),
-    columns=('col %d' % i for i in range(n_cols))
-)
-
-# my_table.add_rows(df2)
-
-"^"*50
-st.write("Charts:")
-my_chart = st.line_chart(df1)
-'sleeping...'
-time.sleep(10)
-my_chart.add_rows(df2)
-'Done....'
+# n_cols = 10
+# df1 = pd.DataFrame(
+#     np.random.randn(50,n_cols),
+#     columns=('col %d' % i for i in range(n_cols))
+# )
+#
+# # my_table = st.table(df1)
+#
+# df2 = pd.DataFrame(
+#     np.random.randn(50,n_cols),
+#     columns=('col %d' % i for i in range(n_cols))
+# )
+#
+# # my_table.add_rows(df2)
+#
+# "^"*50
+# st.write("Charts:")
+# my_chart = st.line_chart(df1)
+# 'sleeping...'
+# time.sleep(10)
+# my_chart.add_rows(df2)
+# 'Done....'
 
 # overwriting elements in-place
 ################## Major Market Metrics ############################
@@ -721,7 +717,7 @@ my_chart.add_rows(df2)
 ########################################################################################
 ##################################### TABLES ###########################################
 ########################################################################################
-if st.checkbox('Tables:'):
+if st.checkbox('Tables (has error):'):
     '''
 # Price:
 if idict["quoteType"] == "ETF":
@@ -862,3 +858,8 @@ if st.checkbox("TODO:"):
     'assumes that a dollar today is worth more than a dollar tomorrow because it can be'
     'invested. As such, a DCF analysis is appropriate in any situation wherein a person'
     'is paying money in the present with expectations of receiving more money in the future. -investopedia'
+
+
+
+time.sleep(60)
+st.experimental_rerun()
