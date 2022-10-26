@@ -462,8 +462,8 @@ welcome = 'The Smart App for Analyzing U.S. Stocks'' by Obai Shaikh'
 
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([2,2,2], gap="small")
-col2.write(welcome)
+titcol1, titcol2, titcol3 = st.columns([2,2,2], gap="small")
+titcol2.write(welcome)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
