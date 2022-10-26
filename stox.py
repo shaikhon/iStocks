@@ -550,6 +550,8 @@ with st.container():
         list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
     isetf = etf_dict[stock]
     stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
+    st.write(isetf)
+    st.write(isetf)
     ########################################################################################
     # STOCK INFO (Yfinance)
     ticker = get_ticker_info(stock)
@@ -576,13 +578,21 @@ with st.container():
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
-if 'sector' in idict:
+if 'Y' in isetf:
+    pinfo = np.round([
+        idict['currentPrice'], idict['previousClose'],
+        idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
+        idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
+
+    flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
+
     general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+
+
     general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
                        idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
 
     peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
-    flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
     fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
 
 else:   # for ETFs
@@ -884,5 +894,5 @@ cc1.image('./images/LI-In-Bug.png', use_column_width=True)
 cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
 
 
-# time.sleep(st.session_state.rate)
-# st.experimental_rerun()
+time.sleep(st.session_state.rate)
+st.experimental_rerun()
