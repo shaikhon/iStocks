@@ -918,9 +918,9 @@ with st.container():
     images =['./images/GitHub-Mark-Light.png', './images/LI-In-Bug.png', './images/Twitter-logo.png']
     site_names =['GitHub', 'LinkedIn','Twitter']
     links = ['https://github.com/shaikhon','https://www.linkedin.com/in/obai-shaikh/','https://twitter.com/ObaiShaikh']
-    for cc, image, site, link in zip(st.columns(6),images, site_names, links):
-        cc.image(images, use_column_width=False, width=70)
-        cc.markdown(f"[{site}]({link}")
+    for cc, image, site, link in zip(st.columns(6), images, site_names, links):
+        cc.image(image, use_column_width=False, width=70)
+        cc.markdown(f"[{site}]({link})")
 
 if rfrsh_col.button('Refresh', help="You can also refresh by pressing 'R'"):
     st.experimental_rerun()
