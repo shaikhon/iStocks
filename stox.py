@@ -428,7 +428,7 @@ def opt_table(df, kind, spread=5):
     return fig
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def bs_df(df):
     df[df.isna()] = 0
     df = pd.DataFrame(df, columns=[col.strftime('%Y-%m-%d') for col in df.columns],
@@ -436,8 +436,7 @@ def bs_df(df):
     for col in df:
         df[col] = df[col].apply(lambda x: "${:,}".format(x).ljust(20))
 
-    st.dataframe(df, use_container_width=True)
-    st.text("* in Millions")
+    return df
 
 
 def options(ticker, opt_type):
@@ -671,13 +670,13 @@ with st.expander(stock + ' Balance Sheet'):
     with qbtab:
         df = (ticker.quarterly_balance_sheet // 1000000)
         if not df.empty:
-            bs_df(df)
-
+            st.dataframe(bs_df(df), use_container_width=True)
+            st.text("* in Millions")
     with ybtab:
         df = (ticker.balance_sheet // 1000000)
         if not df.empty:
-            bs_df(df)
-
+            st.dataframe(bs_df(df), use_container_width=True)
+            st.text("* in Millions")
 
 
 ########################################################################################
@@ -861,5 +860,5 @@ if st.checkbox("TODO:"):
 
 
 
-time.sleep(60)
+time.sleep(30)
 st.experimental_rerun()
