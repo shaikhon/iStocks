@@ -609,7 +609,6 @@ else:   # for ETFs
 with st.container():
     st.header(stock + ' Summary')
     columns = st.columns(len(smrylbl))
-
     columns2 = st.columns(len(flabels))
     columns3 = st.columns(len(loclbl))
 
