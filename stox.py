@@ -7,9 +7,8 @@ import requests, json, re
 from parsel import Selector
 from itertools import zip_longest
 
-# import altair as alt
-# import plotly.figure_factory as ff
-import requests
+import requests, ftplib
+from io import BytesIO
 import math
 import time
 from datetime import date
