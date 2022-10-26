@@ -554,7 +554,7 @@ with st.container():
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1,_,rfrsh_col, plt_col2, plt_col3 = st.columns([3,1,1,1,1],gap="small")
+    plt_col1,_, plt_col2, plt_col3, rfrsh_col = st.columns([3,1,1,1,1],gap="small")
     # Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
