@@ -461,8 +461,8 @@ st.title('💎 **U.S. Stocks App** 💎')
 "---"
 
 # Session State:
-if 'rate' not in st.sessin_state:
-    st.sessin_state.rate = 30       # refresh rate, seconds
+if 'rate' not in st.session_state:
+    st.session_state.rate = 30       # refresh rate, seconds
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
@@ -855,9 +855,9 @@ if st.checkbox("TODO:"):
     'is paying money in the present with expectations of receiving more money in the future. -investopedia'
 
 "---"
-st.info(f"This Page Automatically Reloads Every {st.sessin_state.rate} Seconds. "
+st.info(f"This Page Automatically Reloads Every {st.session_state.rate} Seconds. "
         f"You Change The Rate Below.")
-st.sessin_state.rate = st.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
+st.session_state.rate = st.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
                                        step=10, key='rate')
-time.sleep(st.sessin_state.rate)
+time.sleep(st.session_state.rate)
 st.experimental_rerun()
