@@ -546,6 +546,8 @@ with st.container():
 ########################################################################################
 "---"
 with st.container():
+    st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
+
     plt_col1,_, plt_col2, plt_col3 = st.columns([3,2,1,1],gap="small")
     # Ticker input
     stock = plt_col1.selectbox(
@@ -581,44 +583,45 @@ with st.container():
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
 
-if 'N' in isetf:
-    pinfo = np.round([
-        idict['currentPrice'], idict['previousClose'],
-        idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
-        idict['dayHigh'], idict['dayLow'], idict['volume']], 2)
+if 'N' in isetf:   # for stocks
 
+    smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
     flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
+    loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
 
-    general_labels = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+    smry_metrics = np.round([
+        idict['currentPrice'], idict['previousClose'],
+        idict['dayHigh'], idict['dayLow']
+    ], 2) # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow'],
+    peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
 
+    fmetrics = [idict["marketCap"], idict['volume'], peg, div_yld]
 
     general_metrics = [idict["sector"], idict["city"] + ", " + idict["country"],
                        idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
 
-    peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
-    fmetrics = [idict["marketCap"], idict["averageDailyVolume10Day"], peg, div_yld]
 
-elif 'Y' in isetf:   # for ETFs
-    general_labels = ["CATEGORY", "MARKET", "TIME ZONE"]
-    general_metrics = [idict["category"], idict["market"], idict["exchangeTimezoneName"]]
-
-    peg = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
+else:   # for ETFs
     flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
-    fmetrics = [idict["totalAssets"], idict["averageDailyVolume10Day"], peg, div_yld]
+    general_labels = ["CATEGORY",'EXCHANGE', "MARKET", "TIME ZONE"]
 
+    avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
+    fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
+    general_metrics = [idict["category"], idict["exchange"],  idict["market"], idict["exchangeTimezoneName"]]
 
 
 '---'
 with st.container():
     st.header(stock + ' Summary')
-    columns = st.columns(len(flabels))
-    columns2 = st.columns(len(general_labels))
+    columns = st.columns(len(smrylbl))
+    columns2 = st.columns(len(flabels))
+    columns3 = st.columns(len(loclbl))
 
     for col2, flabel, metric2 in zip(columns, flabels, fmetrics):
         col2.caption(flabel)
         col2.markdown(str(millify(metric2)))
 
-    for col, label, metric in zip(columns2, general_labels, general_metrics):
+    for col, label, metric in zip(columns2, loclbl, general_metrics):
         col.caption(label)
         if isinstance(metric, int):
             metric = f"{metric:,}"
