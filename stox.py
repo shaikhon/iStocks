@@ -497,12 +497,6 @@ etf_dict = ticker_etf_dict['ETF']
 lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
-# Ticker input
-stock = st.sidebar.selectbox(
-    'Ticker:',
-    list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock")
-isetf = etf_dict[stock]
-stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
 
 ########################################################################################
 #################################### MAIN PAGE #########################################
@@ -555,8 +549,6 @@ with st.container():
         list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
     isetf = etf_dict[stock]
     stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
-    st.write(isetf)
-    st.write(isetf)
     ########################################################################################
     # STOCK INFO (Yfinance)
     ticker = get_ticker_info(stock)
