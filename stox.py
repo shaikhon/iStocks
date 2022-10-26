@@ -913,10 +913,14 @@ c1,c2=st.columns([1,2])
 st.session_state.rate = c1.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
                                        step=10, key='reload_rate')
 "---"
-st.subheader("Get in touch:")
-cc1,cc2,cc3,cc4,cc5,cc6=st.columns(6)
-cc1.image('./images/LI-In-Bug.png', use_column_width=False, width=70)
-cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
+with st.container():
+    st.subheader("Get in touch:")
+    images =['./images/GitHub-Mark-Light.png', './images/LI-In-Bug.png', './images/Twitter-logo.png']
+    site_names =['GitHub', 'LinkedIn','Twitter']
+    links = ['https://github.com/shaikhon','https://www.linkedin.com/in/obai-shaikh/','https://twitter.com/ObaiShaikh']
+    for cc, image, site, link in zip(st.columns(6),images, site_names, links):
+        cc.image(images, use_column_width=False, width=70)
+        cc.markdown(f"[{site}]({link}")
 
 if rfrsh_col.button('Refresh', help="You can also refresh by pressing 'R'"):
     st.experimental_rerun()
