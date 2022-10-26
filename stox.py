@@ -614,12 +614,12 @@ with st.container():
     columns3 = st.columns(len(loclbl))
 
     for col, label, metric in zip(columns, smrylbl, smry_metrics):
-        col2.caption(label)
-        col2.markdown(str(millify(metric)))
+        col.caption(label)
+        col.markdown(str(millify(metric)))
 
-    for col2, label, metric in zip(columns2, flabels, fmetrics):
-        col2.caption(label)
-        col2.markdown(str(millify(metric)))
+    for col, label, metric in zip(columns2, flabels, fmetrics):
+        col.caption(label)
+        col.markdown(str(millify(metric)))
 
     for col, label, metric in zip(columns3, loclbl, lmetrics):
         col.caption(label)
