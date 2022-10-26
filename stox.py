@@ -389,7 +389,8 @@ def opt_scatter(df, exp_date):
                      size='lastPrice', size_max=25,
                      symbol="In The Money", symbol_map={'In': "0", "Out": "x"},
                      # marginal_x="rug",
-                     marginal_y="histogram")
+                     # marginal_y="histogram"
+                     )
 
     fig.update_layout(
         template="plotly_dark",
