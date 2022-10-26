@@ -866,6 +866,7 @@ cc1,cc2,cc3,cc4,cc5,cc6=st.columns(6)
 cc1.image('./images/LI-In-Bug.png', use_column_width=True)
 cc1.markdown("[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)")
 
+cc1.markdown("<h1 style='text-align: center; color: red;'>[LinkedIn](https://www.linkedin.com/in/obai-shaikh/)</h1>", unsafe_allow_html=True)
 
 # time.sleep(st.session_state.rate)
 # st.experimental_rerun()
