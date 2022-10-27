@@ -131,6 +131,68 @@ def millify(n):
     return '{:.0f}{}'.format(n / 10 ** (3 * millidx), millnames[millidx])
 
 
+def yf_metrics(idict, isetf):
+    # Calculations:
+    div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
+    # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
+    smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
+
+    if 'N' in isetf:  # for stocks
+
+        flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
+        loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+
+        smry_metrics = np.round([idict['currentPrice'], idict['previousClose'],
+                                 idict['dayHigh'], idict['dayLow']],
+                                2)  # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
+        peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
+
+        fmetrics = [idict["marketCap"], idict['volume'], peg, div_yld]
+
+        lmetrics = [idict["sector"], idict["city"] + ", " + idict["country"],
+                    idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
+
+
+    else:  # for ETFs
+
+        flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
+        loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
+
+        smry_metrics = np.round([idict['regularMarketPrice'], idict['previousClose'],
+                                 idict['dayHigh'], idict['dayLow']],
+                                2)  # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
+        avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
+        fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
+        lmetrics = [idict["category"], idict["exchange"], idict["market"], idict["exchangeTimezoneName"]]
+
+    '---'
+    with st.container():
+        st.header(stock + ' Summary')
+        columns = st.columns(len(smrylbl))
+        columns2 = st.columns(len(flabels))
+        columns3 = st.columns(len(loclbl))
+
+        for col, label, metric in zip(columns, smrylbl, smry_metrics):
+            col.caption(label)
+            col.markdown(str(metric))
+
+        for col, label, metric in zip(columns2, flabels, fmetrics):
+            col.caption(label)
+            col.markdown(str(millify(metric)))
+
+        for col, label, metric in zip(columns3, loclbl, lmetrics):
+            col.caption(label)
+            if isinstance(metric, int):
+                metric = f"{metric:,}"
+            col.markdown(metric)
+
+    with st.expander("Click here for tips:"):
+        st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, "
+                "suggesting that a company is relatively undervalued.  -Investopedia")
+
+    return
+
+
 def scrape_google_finance(ticker: str):
     params = {
         "hl": "en"  # language
@@ -292,8 +354,8 @@ def plot_news_item(title, link, source, pub_when, thumb):
     fig.add_layout_image(
         dict(
             source=thumb,
-            xref="x domain",
-            yref="y domain",
+            xref="paper",
+            yref="paper",
             x=.93,
             y=0.5,
             xanchor="right",
@@ -724,66 +786,7 @@ gticker=stock+":"+exchange
 ginfo, news = google_stock_info(gticker)
 ########################################################################################
 ################################# TICKER METRICS  ######################################
-# Calculations:
-div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
-# fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
-smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
-
-if 'N' in isetf:   # for stocks
-
-    flabels = ["MARKET CAP", "AVG VOLUME", "PEG RATIO", "DIVIDEND YIELD"]
-    loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
-
-    smry_metrics = np.round([idict['currentPrice'], idict['previousClose'],
-                             idict['dayHigh'], idict['dayLow']],
-                            2) # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
-    peg = 0 if idict["pegRatio"] is None else idict["pegRatio"]
-
-    fmetrics = [idict["marketCap"], idict['volume'], peg, div_yld]
-
-    lmetrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                       idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
-
-
-else:   # for ETFs
-
-    flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
-    loclbl = ["CATEGORY",'EXCHANGE', "MARKET", "TIME ZONE"]
-
-    smry_metrics = np.round([idict['regularMarketPrice'], idict['previousClose'],
-                             idict['dayHigh'], idict['dayLow']],
-                            2) # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
-    avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
-    fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
-    lmetrics = [idict["category"], idict["exchange"],  idict["market"], idict["exchangeTimezoneName"]]
-
-
-'---'
-with st.container():
-    st.header(stock + ' Summary')
-    columns = st.columns(len(smrylbl))
-    columns2 = st.columns(len(flabels))
-    columns3 = st.columns(len(loclbl))
-
-    for col, label, metric in zip(columns, smrylbl, smry_metrics):
-        col.caption(label)
-        col.markdown(str(metric))
-
-    for col, label, metric in zip(columns2, flabels, fmetrics):
-        col.caption(label)
-        col.markdown(str(millify(metric)))
-
-    for col, label, metric in zip(columns3, loclbl, lmetrics):
-        col.caption(label)
-        if isinstance(metric, int):
-            metric = f"{metric:,}"
-        col.markdown(metric)
-
-with st.expander("Click here for tips:"):
-    st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, " \
-    "suggesting that a company is relatively undervalued.  -Investopedia")
-
-
+yf_metrics(idict, isetf)
 ################## Target Price Bar ############################
 # recommendation = "RECOMMENDATION"
 # idict["recommendationKey"]
