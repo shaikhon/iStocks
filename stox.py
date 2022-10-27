@@ -440,13 +440,13 @@ def instit_pie(ticker):
     st.write(inst_df)
     inst_df['pct'] = inst_df.Shares #/ floatShares
 
-    fig = px.pie(inst_df, values="pct", title="holders")
+    fig = px.pie(inst_df, values="pct")
     fig.update_layout(
         template="plotly_dark",
-        margin=dict(t=50, b=0, l=0, r=0),
+        margin=dict(t=0, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)},
+        # title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)},
     )
     return fig
 
