@@ -437,10 +437,9 @@ def instit_pie(ticker):
     # other_row = pd.DataFrame(other_row, index=[0])
 
     # inst_df = pd.concat([inst_df, other_row], axis=0)
-    st.write(inst_df)
     inst_df['pct'] = inst_df.Shares #/ floatShares
 
-    fig = px.pie(inst_df, values="pct")
+    fig = px.pie(inst_df, values="pct", names="Holder")
     fig.update_layout(
         template="plotly_dark",
         margin=dict(t=0, b=0, l=0, r=0),
