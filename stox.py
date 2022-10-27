@@ -447,7 +447,7 @@ def instit_pie(ticker):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)},
-        legend={'showlegend':True},
+        legend={'showlegend':True,'tracegroupgap': 0},
     )
     return fig
 
