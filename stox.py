@@ -446,7 +446,7 @@ def instit_pie(ticker):
         margin=dict(t=50, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)}
+        title={'text': 'TOP 10 HOLDERS', "font": dict(size=24), "standoff":0}
     )
     return fig
 
