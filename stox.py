@@ -204,9 +204,9 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["MARKET CAP", "AVG VOLUME", "PE RATIO", "DIVIDEND YIELD"]
         loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
 
-        smry_metrics = np.round([ginfo['current_price'], ginfo['previous_close'],
-                                 idict['dayHigh'], idict['dayLow']],
-                                2)  # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
+        smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
+                                 idict['dayHigh'], idict['dayLow']]
+        # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
@@ -220,9 +220,9 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
         loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
 
-        smry_metrics = np.round([idict['regularMarketPrice'], idict['previousClose'],
-                                 idict['dayHigh'], idict['dayLow']],
-                                2)  # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
+        smry_metrics = [idict['regularMarketPrice'], idict['previousClose'],
+                                 idict['dayHigh'], idict['dayLow']]
+        # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
         lmetrics = [idict["category"], idict["exchange"], idict["market"], idict["exchangeTimezoneName"]]
