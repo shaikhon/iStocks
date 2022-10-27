@@ -69,18 +69,27 @@ def get_symbols_dict(today):
     with st.spinner(f"Downloading U.S. Ticker Symbols  -  Last Updated: {today}"):
         df = nasdaq_df().loc[:, ["Symbol", "Security Name", "ETF"]].iloc[:-1]  # drop last row is file creation time
         other_df = nasdaq_df(fname="otherlisted.txt").rename(columns={"ACT Symbol": "Symbol"}).loc[:,
-                   ["Symbol", "Security Name", "ETF"]].iloc[:-1]
+                   ["Symbol", "Security Name", "ETF", "Exchange"]].iloc[:-1]
 
         # Nasdaqlisted
         df["Name"] = df.Symbol + " - " + df['Security Name'].apply(lambda x: f"{x}".split('-')[0].strip())
-        df = df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
+        df = df.set_index('Symbol').drop(columns=['Security Name'], errors='ignore')
         df["ETF"] = df.ETF.mask(df.ETF.isna(), other='N')
+        df['Exchange'] = 'NASDAQ'
+
         # Otherlisted
         other_df["Name"] = other_df.Symbol + " - " + other_df['Security Name']
-        other_df = other_df.set_index('Name').drop(columns=['Security Name'], errors='ignore')
+        other_df = other_df.set_index('Symbol').drop(columns=['Security Name'], errors='ignore')
         other_df["ETF"] = other_df.ETF.mask(other_df.ETF.isna(), other='N')
-
+        mapper = {'A': "NYSEAMERICAN",
+                  'N': "NYSE",
+                  'P': "NYSEARCA",
+                  'Z': "BATS",
+                  'V': "IEXG"
+                  }
+        other_df["Exchange"] = other_df.Exchange.replace(mapper)
         merged = pd.concat([df, other_df])
+
     return merged.to_dict()
 
 
@@ -487,11 +496,7 @@ if 'rate' not in st.session_state:
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
-# GET SYMBOLS
-today = date.today().strftime("%D")
-ticker_etf_dict = get_symbols_dict(today)
-ticker_dict = ticker_etf_dict['Symbol']
-etf_dict = ticker_etf_dict['ETF']
+
 
 # # Old Method: symbol + name (NYSE) - fixed file
 # url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
@@ -514,6 +519,7 @@ lang = st.sidebar.radio(
 #################################### MAIN PAGE #########################################
 ########################################################################################
 ############################## Major Market Metrics ####################################
+################################ GOOGLE FINANCE ########################################
 "---"
 # MAJOR INDEXES (GOOGLE FINANCE):
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
@@ -541,12 +547,15 @@ with st.container():
 
     # djf_col, spf_col, nasf_col = st.columns(3)
     # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
-
-
 ########################################################################################
-################################ YAHOO FINANCE #########################################
-########################################################################################
-
+################################ NASDAQ LISTED #########################################
+# GET SYMBOLS
+today = date.today().strftime("%D")
+ticker_etf_dict = get_symbols_dict(today)  # cache-missed once per day
+ticker_dict = ticker_etf_dict['Name']
+etf_dict = ticker_etf_dict['ETF']
+exchange_dict = ticker_etf_dict['Exchange']
+################################ GOOGLE FINANCE ########################################
 ########################################################################################
 ################################# PRICE CHART  #########################################
 ########################################################################################
@@ -558,9 +567,15 @@ with st.container():
     # Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
-        list(ticker_dict), index=list(ticker_dict.values()).index('AMZN'), key="stock2")
+        list(ticker_dict.values()), index=list(ticker_dict).index('AMZN'), key="stock")
+    st.write(stock)
+    st.write(stock)
+    stock = stock.split('-')[0].strip() # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
+    st.write(stock)
+    st.write(stock)
+
     isetf = etf_dict[stock]
-    stock = ticker_dict[stock]  # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
+    exchange = exchange_dict[stock]
     ########################################################################################
     # STOCK INFO (Yfinance)
     ticker = get_ticker_info(stock)
@@ -906,12 +921,12 @@ if st.checkbox("TODO:"):
     'invested. As such, a DCF analysis is appropriate in any situation wherein a person'
     'is paying money in the present with expectations of receiving more money in the future. -investopedia'
 
-"---"
-st.info(f"This Page Automatically Reloads Every {st.session_state.rate} Seconds. "
-        f"You Change The Rate Below.")
-c1,c2=st.columns([1,2])
-st.session_state.rate = c1.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
-                                       step=10, key='reload_rate')
+# "---"
+# st.info(f"This Page Automatically Reloads Every {st.session_state.rate} Seconds. "
+#         f"You Change The Rate Below.")
+# c1,c2=st.columns([1,2])
+# st.session_state.rate = c1.number_input('Refresh Rate (seconds):', min_value=10, max_value=360, value=30,
+#                                        step=10, key='reload_rate')
 "---"
 with st.container():
     st.subheader("Get in touch:")
