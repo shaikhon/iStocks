@@ -239,7 +239,7 @@ def gf_metrics(ginfo, idict, isetf):
 
         for col, label, metric in zip(columns2, flabels, fmetrics):
             col.caption(label)
-            col.markdown(str(millify(metric)))
+            col.markdown(str(metric))
 
         for col, label, metric in zip(columns3, loclbl, lmetrics):
             col.caption(label)
