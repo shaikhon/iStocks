@@ -390,126 +390,6 @@ def google_stock_info(google_ticker):
 ##############################################################################
 ############################ PLOTS ###########################################
 ##############################################################################
-def plot_news_item(title, link, source, pub_when, thumb):
-    fig = go.Figure()
-
-    # Add axes
-    fig.add_trace(
-        go.Scatter(x=[0, 100], y=[0, 4],marker_opacity=0,mode='markers')
-    )
-    # Configure axes
-    fig.update_xaxes(
-        visible=False,
-    )
-    # Configure axes
-    fig.update_yaxes(
-        visible=False,
-    )
-
-    # Add box
-    fig.add_vrect(x0=0, x1=100, line_width=1, line_color="gray")
-
-    # Add image
-    fig.add_layout_image(
-        dict(
-            source=thumb,
-            xref="paper",
-            yref="paper",
-            x=.93,
-            y=0.5,
-            xanchor="right",
-            yanchor="middle",
-            sizex=.75,
-            sizey=.75,
-            sizing='contain',
-        )
-    )
-
-    words = flatten([line.split() for line in title.splitlines()])
-    n_lines = 1 if len(words) < 8 else 2
-    text = "<br>".join([" ".join(line) for line in np.array_split(words, n_lines)])
-    font = "Droid Sans"  # "Balto" , "Arial"
-
-    # add news headline text
-    fig.add_annotation(
-        x=1,
-        y=3,
-        xref="x",
-        yref="y",
-        xanchor="left",
-        yanchor="middle",
-        width=750,
-        text=text,
-        showarrow=False,
-        font=dict(
-            family=font,
-            size=14,
-            color="white",
-            # color="rgba(0,0,0,1)",
-        ),
-        align="left",
-        bordercolor='rgba(0,0,0,0)',
-        bgcolor='rgba(0,0,0,0)',
-        opacity=1,
-    )
-
-    # Add source and pub_date text
-    fig.add_annotation(
-        x=1,
-        y=.5,
-        xref="x",
-        yref="y",
-        xanchor="left",
-        yanchor="middle",
-        width=750,
-        text="   ".join((source, f'({pub_when})')),
-        showarrow=False,
-        font=dict(
-            family='Arial',
-            size=11,
-            color="white",
-            # color="rgba(0,0,0,1)",
-        ),
-        align="left",
-        bordercolor='rgba(0,0,0,0)',
-        bgcolor='rgba(0,0,0,0)',
-        opacity=1,
-    )
-
-    # # add clickable link (not working)
-    # fig.add_annotation(
-    #     x=1,
-    #     y=2.5,
-    #     xref="x",
-    #     yref="y",
-    #     xanchor="left",
-    #     yanchor="middle",
-    #     height=150,
-    #     width=1000,
-    #     text=f"<a href={link}>link link link</a>",
-    #     font=dict(
-    #         family='Arial',
-    #         size=200,
-    #         color="rgba(0,0,0,0)",),
-    #     showarrow=False,
-    #     align="left",
-    #     bordercolor='rgba(0,0,0,0)',
-    #     bgcolor='rgba(0,0,0,0)',
-    #     opacity=0,
-    # )
-
-    # update layout properties
-    fig.update_layout(
-        height=130,
-        width=1000,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(r=0, l=0, b=0, t=0),
-        title={'text': 'TOP NEWS', "font": dict(size=24)}
-
-    )
-
-    return fig
 
 
 def intraday(d):
@@ -730,6 +610,126 @@ def options(ticker, opt_type):
     st.plotly_chart(opt_scatter(df, exp_date), use_container_width=True)
 
 
+def plot_news_item(title, link, source, pub_when, thumb):
+    fig = go.Figure()
+
+    # Add axes
+    fig.add_trace(
+        go.Scatter(x=[0, 100], y=[0, 4],marker_opacity=0,mode='markers')
+    )
+    # Configure axes
+    fig.update_xaxes(
+        visible=False,
+    )
+    # Configure axes
+    fig.update_yaxes(
+        visible=False,
+    )
+
+    # Add box
+    fig.add_vrect(x0=0, x1=100, line_width=1, line_color="gray")
+
+    # Add image
+    fig.add_layout_image(
+        dict(
+            source=thumb,
+            xref="paper",
+            yref="paper",
+            x=.93,
+            y=0.5,
+            xanchor="right",
+            yanchor="middle",
+            sizex=.75,
+            sizey=.75,
+            sizing='contain',
+        )
+    )
+
+    words = flatten([line.split() for line in title.splitlines()])
+    n_lines = 1 if len(words) < 8 else 2
+    text = "<br>".join([" ".join(line) for line in np.array_split(words, n_lines)])
+    font = "Droid Sans"  # "Balto" , "Arial"
+
+    # add news headline text
+    fig.add_annotation(
+        x=1,
+        y=3,
+        xref="x",
+        yref="y",
+        xanchor="left",
+        yanchor="middle",
+        width=750,
+        text=text,
+        showarrow=False,
+        font=dict(
+            family=font,
+            size=14,
+            color="white",
+            # color="rgba(0,0,0,1)",
+        ),
+        align="left",
+        bordercolor='rgba(0,0,0,0)',
+        bgcolor='rgba(0,0,0,0)',
+        opacity=1,
+    )
+
+    # Add source and pub_date text
+    fig.add_annotation(
+        x=1,
+        y=.5,
+        xref="x",
+        yref="y",
+        xanchor="left",
+        yanchor="middle",
+        width=750,
+        text="   ".join((source, f'({pub_when})')),
+        showarrow=False,
+        font=dict(
+            family='Arial',
+            size=11,
+            color="white",
+            # color="rgba(0,0,0,1)",
+        ),
+        align="left",
+        bordercolor='rgba(0,0,0,0)',
+        bgcolor='rgba(0,0,0,0)',
+        opacity=1,
+    )
+
+    # # add clickable link (not working)
+    # fig.add_annotation(
+    #     x=1,
+    #     y=2.5,
+    #     xref="x",
+    #     yref="y",
+    #     xanchor="left",
+    #     yanchor="middle",
+    #     height=150,
+    #     width=1000,
+    #     text=f"<a href={link}>link link link</a>",
+    #     font=dict(
+    #         family='Arial',
+    #         size=200,
+    #         color="rgba(0,0,0,0)",),
+    #     showarrow=False,
+    #     align="left",
+    #     bordercolor='rgba(0,0,0,0)',
+    #     bgcolor='rgba(0,0,0,0)',
+    #     opacity=0,
+    # )
+
+    # update layout properties
+    fig.update_layout(
+        height=130,
+        width=1000,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(r=0, l=0, b=0, t=0),
+    )
+
+    return fig
+
+
 ########################################################################################
 ########################################################################################
 #################################### MAIN Code #########################################
@@ -938,8 +938,10 @@ with st.expander(stock + ' Balance Sheet'):
 ###################################### NEWS ############################################
 ########################################################################################
 '---'
-for item in news:
-    st.plotly_chart(plot_news_item(*list(item.values())[1:]), use_container_width=True)
+with st.container():
+    st.subheader("TOP NEWS")
+    for item in news:
+        st.plotly_chart(plot_news_item(*list(item.values())[1:]), use_container_width=True)
 
 ########################################################################################
 ##################################### TESTING ##########################################
