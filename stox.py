@@ -247,9 +247,9 @@ def gf_metrics(ginfo, idict, isetf):
                 metric = f"{metric:,}"
             col.markdown(metric)
 
-    with st.expander("Click here for tips:"):
-        st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, "
-                "suggesting that a company is relatively undervalued.  -Investopedia")
+    # with st.expander("Click here for tips:"):
+    #     st.text("* PEG RATIO : Price/Earnings-to-Growth lower than 1.0 is best, "
+    #             "suggesting that a company is relatively undervalued.  -Investopedia")
 
     return
 
@@ -649,7 +649,7 @@ def opt_table(df, kind, spread=5):
         margin=dict(t=50, b=0, l=10, r=10),
         title_text="<b>"+kind+" Options Chain<b>",
         title_x=.5,
-        title_font=dict(size=30))
+        title_font=dict(size=24))
 
     return fig
 
@@ -673,7 +673,7 @@ def opt_scatter(df, exp_date):
     fig.update_layout(
         template="plotly_dark",
         title_text="<b>Strike vs. "+y_label+"          Expiration: "+exp_date+"<b>",
-        title_font=dict(size=30),
+        title_font=dict(size=24),
         title_x=0.5,
         coloraxis_colorbar=dict(yanchor="bottom", y=0, len=0.75,
                                 title={"text": "Implied<br>Volatility (%)",}),
@@ -710,7 +710,7 @@ def bs_df(df):
 
 
 def options(ticker, opt_type):
-    opt_col1, opt_col2 = st.columns([4, 1], gap="small")
+    opt_col1, opt_col2 = st.columns([2, 1], gap="small")
     opt_col1.header(stock + "  " + opt_type + "s")
 
     exp_date = opt_col2.selectbox(
