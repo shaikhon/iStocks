@@ -205,7 +205,7 @@ def gf_metrics(ginfo, idict, isetf):
         loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
 
         smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
-                                 idict['dayHigh'], idict['dayLow']]
+                        "$"+idict['dayHigh'], "$"+idict['dayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
