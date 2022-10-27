@@ -395,9 +395,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
 
     # Add axes
     fig.add_trace(
-        go.Scatter(x=[0, 100], y=[0, 4],
-                   marker_opacity=0,
-                   mode='markers')
+        go.Scatter(x=[0, 100], y=[0, 4],marker_opacity=0,mode='markers')
     )
     # Configure axes
     fig.update_xaxes(
@@ -507,6 +505,8 @@ def plot_news_item(title, link, source, pub_when, thumb):
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(r=0, l=0, b=0, t=0),
+        title={'text': 'TOP NEWS', "font": dict(size=24)}
+
     )
 
     return fig
@@ -550,22 +550,23 @@ def intraday(d):
 
 
 @st.cache(allow_output_mutation=True)
-def instit_pie(ticker, floatShares):
+def instit_pie(ticker):
     inst_df = ticker.institutional_holders
-    other_row = {"Holder": "Other", "Shares": floatShares - inst_df.Shares.sum(), "Date Reported": None,
-                 "% Out": None, "Value": None}
-    other_row = pd.DataFrame(other_row, index=[0])
+    # other_row = {"Holder": "Other", "Shares": floatShares - inst_df.Shares.sum(), "Date Reported": None,
+    #              "% Out": None, "Value": None}
+    # other_row = pd.DataFrame(other_row, index=[0])
 
-    inst_df = pd.concat([inst_df, other_row], axis=0)
+    # inst_df = pd.concat([inst_df, other_row], axis=0)
 
-    inst_df['pct'] = inst_df.Shares / floatShares
+    inst_df['pct'] = inst_df.Shares #/ floatShares
 
-    fig = px.pie(inst_df, values="pct", names="Holder", title='Institutional Holders')
+    fig = px.pie(inst_df, values="pct")
     fig.update_layout(
         template="plotly_dark",
-        margin=dict(t=25,b=0,l=0,r=0),
+        margin=dict(t=25, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)}
     )
     return fig
 
@@ -574,13 +575,14 @@ def instit_pie(ticker, floatShares):
 def etf_holdings_pie(df):
     df['holdingPercent'] = df.holdingPercent.round(2)
     fig = px.pie(df, values="holdingPercent", names="holdingName",
-                 title='TOP 10 HOLDINGS',
 )
     fig.update_layout(
         template="plotly_dark",
         margin=dict(t=25,b=0,l=0,r=0),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",)
+        plot_bgcolor="rgba(0,0,0,0)",
+        title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)}
+    )
     return fig
 
 
@@ -598,9 +600,11 @@ def px_income(df):
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
         yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
-                                                          "font":dict(size=24),
-                                                          "standoff": 25}),
-        xaxis=dict(showline=False,showgrid=False, title={"standoff": 25})
+                                                          "font":dict(size=18),
+                                                          "standoff": 20}),
+        xaxis=dict(showline=False,showgrid=False),
+        title={'text': 'PROFITS ', "font": dict(size=24)}
+
     )
     return fig
 
@@ -712,7 +716,7 @@ def bs_df(df):
 
 def options(ticker, opt_type):
     opt_col1, opt_col2 = st.columns([2, 1], gap="small")
-    opt_col1.header(stock + "  " + opt_type + "s")
+    opt_col1.header(stock + "  " + opt_type.upper() + "S")
 
     exp_date = opt_col2.selectbox(
         'Expiration:',
@@ -853,14 +857,34 @@ ginfo, news = google_stock_info(gticker)
 
 "---"
 gf_metrics(ginfo, idict, isetf)
+"---"
+
 ################## Target Price Bar ############################
 # recommendation = "RECOMMENDATION"
 # idict["recommendationKey"]
 
+
+
+########################################################################################
+################################ EARNINGS Expander #####################################
+########################################################################################
+with st.expander(stock + ' Financial Health'):
+    qtab, ytab = st.tabs(["Quarterly", "Yearly"])
+
+    with qtab:
+        df = ticker.quarterly_financials.T
+        if not df.empty:
+            st.plotly_chart(px_income(df), use_container_width=True)
+
+    with ytab:
+        df = ticker.financials.T
+        if not df.empty:
+            st.plotly_chart(px_income(df), use_container_width=True)
+
+
 #################################################################
 ####################### OPTIONS #################################
 #################################################################
-"---"
 # with st.container():
 with st.expander(stock + ' Options'):
 
@@ -875,21 +899,6 @@ with st.expander(stock + ' Options'):
         options(ticker, opt_type)
 
 ########################################################################################
-################################ EARNINGS Expander #####################################
-########################################################################################
-with st.expander(stock + ' Earnings'):
-    qtab, ytab = st.tabs(["Quarterly", "Yearly"])
-
-    with qtab:
-        df = ticker.quarterly_financials.T
-        if not df.empty:
-            st.plotly_chart(px_income(df), use_container_width=True)
-
-    with ytab:
-        df = ticker.financials.T
-        if not df.empty:
-            st.plotly_chart(px_income(df), use_container_width=True)
-########################################################################################
 ########################## HOLDERS - PIE Expander ######################################
 ########################################################################################
 with st.expander(stock + ' Holders'):
@@ -897,9 +906,9 @@ with st.expander(stock + ' Holders'):
     if 'N' in isetf:
         tab1, tab2 = st.tabs(["Institutions", "Insiders"])
         with tab1:
-                st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+                st.plotly_chart(instit_pie(ticker), use_container_width=True)
         with tab2:
-                st.plotly_chart(instit_pie(ticker, idict['floatShares']), use_container_width=True)
+                st.plotly_chart(instit_pie(ticker), use_container_width=True)
 
     else:
         tab1, tab2 = st.tabs(["Holdings", "Insiders"])
