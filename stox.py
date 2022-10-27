@@ -256,9 +256,133 @@ def get_index_info(index):
     return data['ticker_data']['title'], current, prev
 
 
+def google_stock_info(google_ticker):
+    data = scrape_google_finance(google_ticker)
+
+    info = data['ticker_data'] | data["about_panel"]  # dict
+    news = data["news"]["items"]  # list
+
+    return info, news
+
+
 ##############################################################################
 ############################ PLOTS ###########################################
 ##############################################################################
+def plot_news_item(title, link, source, pub_when, thumb):
+    fig = go.Figure()
+
+    # Add axes
+    fig.add_trace(
+        go.Scatter(x=[0, 100], y=[0, 4],
+                   marker_opacity=0,
+                   mode='markers')
+    )
+    # Configure axes
+    fig.update_xaxes(
+        visible=False,
+    )
+    # Configure axes
+    fig.update_yaxes(
+        visible=False,
+    )
+
+    # Add box
+    fig.add_vrect(x0=0, x1=100, line_width=1, line_color="gray")
+
+    # Add image
+    fig.add_layout_image(
+        dict(
+            source=thumb,
+            xref="x domain",
+            yref="y domain",
+            x=.93,
+            y=0.5,
+            xanchor="right",
+            yanchor="middle",
+            sizex=.75,
+            sizey=.75,
+        )
+    )
+
+    words = flatten([line.split() for line in title.splitlines()])
+    n_lines = 1 if len(words) < 10 else 2
+    text = "<br>".join([" ".join(line) for line in np.array_split(words, n_lines)])
+    font = "Droid Sans"  # "Balto" , "Arial"
+
+    # add news headline text
+    fig.add_annotation(
+        x=1,
+        y=3.5,
+        xref="x",
+        yref="y",
+        xanchor="left",
+        yanchor="middle",
+        width=750,
+        text=text,
+        showarrow=False,
+        font=dict(
+            family=font,
+            size=18,
+            color="rgba(1,1,1,1)",
+        ),
+        align="left",
+        bordercolor='rgba(0,0,0,0)',
+        bgcolor='rgba(0,0,0,0)',
+        opacity=1,
+    )
+
+    # Add source and pub_date text
+    fig.add_annotation(
+        x=1,
+        y=.5,
+        xref="x",
+        yref="y",
+        xanchor="left",
+        yanchor="middle",
+        width=750,
+        text="   ".join((source, f'({pub_when})')),
+        showarrow=False,
+        font=dict(
+            family='Arial',
+            size=14,
+            color="rgba(1,1,1,1)",
+        ),
+        align="left",
+        bordercolor='rgba(0,0,0,0)',
+        bgcolor='rgba(0,0,0,0)',
+        opacity=1,
+    )
+
+    # add clickable link
+    fig.add_annotation(
+        x=1,
+        y=2.5,
+        xref="x",
+        yref="y",
+        xanchor="left",
+        yanchor="middle",
+        height=150,
+        width=1000,
+        text=f"<a href={link}>link link link</a>",
+        showarrow=False,
+        align="left",
+        bordercolor='rgba(0,0,0,0)',
+        bgcolor='rgba(0,0,0,0)',
+        opacity=0,
+    )
+
+    # update layout properties
+    fig.update_layout(
+        height=150,
+        width=1000,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(r=0, l=0, b=0, t=0),
+    )
+
+    return fig
+
+
 def intraday(d):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -316,6 +440,7 @@ def instit_pie(ticker, floatShares):
     )
     return fig
 
+
 @st.cache(allow_output_mutation=True)
 def etf_holdings_pie(df):
     df['holdingPercent'] = df.holdingPercent.round(2)
@@ -328,6 +453,7 @@ def etf_holdings_pie(df):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",)
     return fig
+
 
 @st.cache(allow_output_mutation=True)
 def px_income(df):
@@ -346,7 +472,6 @@ def px_income(df):
                                                           "standoff": 25}),
         xaxis=dict(showline=False,showgrid=False, title={"standoff": 25})
     )
-
     return fig
 
 
@@ -489,14 +614,12 @@ titcol2.write(welcome)
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 
-
 # Session State:
 if 'rate' not in st.session_state:
     st.session_state.rate = 30       # refresh rate, seconds
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
-
 
 # # Old Method: symbol + name (NYSE) - fixed file
 # url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
@@ -555,7 +678,6 @@ ticker_etf_dict = get_symbols_dict(today)  # cache-missed once per day
 ticker_dict = ticker_etf_dict['Name']
 etf_dict = ticker_etf_dict['ETF']
 exchange_dict = ticker_etf_dict['Exchange']
-################################ GOOGLE FINANCE ########################################
 ########################################################################################
 ################################# PRICE CHART  #########################################
 ########################################################################################
@@ -568,12 +690,7 @@ with st.container():
     stock = plt_col1.selectbox(
         'Search a stock:',
         list(ticker_dict.values()), index=list(ticker_dict).index('AMZN'), key="stock")
-    st.write(stock)
-    st.write(stock)
     stock = stock.split('-')[0].strip() # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
-    st.write(stock)
-    st.write(stock)
-
     isetf = etf_dict[stock]
     exchange = exchange_dict[stock]
     ########################################################################################
@@ -596,8 +713,11 @@ with st.container():
     st.plotly_chart(intraday(d), use_container_width=True)
 
 ########################################################################################
-################################# TICKER METRICS  ######################################
+################################ GOOGLE FINANCE ########################################
+gticker=stock+":"+exchange
+ginfo, news = google_stock_info(gticker)
 ########################################################################################
+################################# TICKER METRICS  ######################################
 # Calculations:
 div_yld = 0 if idict["dividendYield"] is None else idict["dividendYield"]
 # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
@@ -733,18 +853,15 @@ with st.expander(stock + ' Balance Sheet'):
 ########################################################################################
 ###################################### NEWS ############################################
 ########################################################################################
-
-# FIND EXCHANGE AT WHICH TICKER IS TRADED
-#       MODIFY get_symbols_dict(): create "echange" column in df
-# SCRAPE NEWS OFF GOOGLE FIN.
-
-
-
-
+'---'
+for item in news:
+    fig = plot_news_item(*list(item.values())[1:])
+    fig.show()
 
 ########################################################################################
 ##################################### TESTING ##########################################
 ########################################################################################
+ginfo
 # n_cols = 10
 # df1 = pd.DataFrame(
 #     np.random.randn(50,n_cols),
