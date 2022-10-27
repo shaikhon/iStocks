@@ -322,7 +322,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
         font=dict(
             family=font,
             size=18,
-            color="rgba(1,1,1,1)",
+            color="rgba(0,0,0,1)",
         ),
         align="left",
         bordercolor='rgba(0,0,0,0)',
@@ -344,7 +344,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
         font=dict(
             family='Arial',
             size=14,
-            color="rgba(1,1,1,1)",
+            color="rgba(0,0,0,1)",
         ),
         align="left",
         bordercolor='rgba(0,0,0,0)',
