@@ -854,8 +854,7 @@ with st.expander(stock + ' Balance Sheet'):
 ########################################################################################
 '---'
 for item in news:
-    fig = plot_news_item(*list(item.values())[1:])
-    fig.show()
+    st.plotly_chart(plot_news_item(*list(item.values())[1:]), use_container_width=True)
 
 ########################################################################################
 ##################################### TESTING ##########################################
