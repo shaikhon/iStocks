@@ -847,8 +847,8 @@ gticker=stock+":"+exchange
 ginfo, news = google_stock_info(gticker)
 ########################################################################################
 ################################# TICKER METRICS  ######################################
-"---"
-yf_metrics(idict, isetf)
+# "---"
+# yf_metrics(idict, isetf)
 
 "---"
 gf_metrics(ginfo, idict, isetf)
