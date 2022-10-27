@@ -304,14 +304,14 @@ def plot_news_item(title, link, source, pub_when, thumb):
     )
 
     words = flatten([line.split() for line in title.splitlines()])
-    n_lines = 1 if len(words) < 10 else 2
+    n_lines = 1 if len(words) < 8 else 2
     text = "<br>".join([" ".join(line) for line in np.array_split(words, n_lines)])
     font = "Droid Sans"  # "Balto" , "Arial"
 
     # add news headline text
     fig.add_annotation(
         x=1,
-        y=3.5,
+        y=3,
         xref="x",
         yref="y",
         xanchor="left",
@@ -321,7 +321,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
         showarrow=False,
         font=dict(
             family=font,
-            size=18,
+            size=16,
             color="white",
             # color="rgba(0,0,0,1)",
         ),
