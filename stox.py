@@ -865,17 +865,19 @@ gf_metrics(ginfo, idict, isetf)
 
 
 ########################################################################################
-################################ EARNINGS Expander #####################################
+################################ FINANCIAL HEALTH ######################################
 ########################################################################################
 with st.expander(stock + ' Financial Health'):
     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
 
     with qtab:
+        st.subheader(stock + "PROFITS")
         df = ticker.quarterly_financials.T
         if not df.empty:
             st.plotly_chart(px_income(df), use_container_width=True)
 
     with ytab:
+        st.subheader(stock + "PROFITS")
         df = ticker.financials.T
         if not df.empty:
             st.plotly_chart(px_income(df), use_container_width=True)
@@ -905,9 +907,11 @@ with st.expander(stock + ' Holders'):
     if 'N' in isetf:
         tab1, tab2 = st.tabs(["Institutions", "Insiders"])
         with tab1:
-                st.plotly_chart(instit_pie(ticker), use_container_width=True)
+            st.subheader(stock + " TOP 10 INSTITUTIONS")
+            st.plotly_chart(instit_pie(ticker), use_container_width=True)
         with tab2:
-                st.plotly_chart(instit_pie(ticker), use_container_width=True)
+            st.subheader(stock + " TOP 10 INSTITUTIONS")
+            st.plotly_chart(instit_pie(ticker), use_container_width=True)
 
     else:
         tab1, tab2 = st.tabs(["Holdings", "Insiders"])
