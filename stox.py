@@ -300,6 +300,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
             yanchor="middle",
             sizex=.75,
             sizey=.75,
+            sizing='contain',
         )
     )
 
@@ -344,7 +345,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
         showarrow=False,
         font=dict(
             family='Arial',
-            size=10,
+            size=11,
             color="white",
             # color="rgba(0,0,0,1)",
         ),
@@ -378,7 +379,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
 
     # update layout properties
     fig.update_layout(
-        height=150,
+        height=130,
         width=1000,
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
