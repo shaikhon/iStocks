@@ -443,7 +443,7 @@ def instit_pie(ticker):
     fig = px.pie(inst_df, values="pct")
     fig.update_layout(
         template="plotly_dark",
-        margin=dict(t=10, b=0, l=0, r=0),
+        margin=dict(t=40, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         title={'text': 'TOP 10 HOLDERS', "font": dict(size=24)}
