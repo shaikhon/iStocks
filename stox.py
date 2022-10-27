@@ -354,27 +354,27 @@ def plot_news_item(title, link, source, pub_when, thumb):
         opacity=1,
     )
 
-    # add clickable link
-    fig.add_annotation(
-        x=1,
-        y=2.5,
-        xref="x",
-        yref="y",
-        xanchor="left",
-        yanchor="middle",
-        height=150,
-        width=1000,
-        text=f"<a href={link}>link link link</a>",
-        font=dict(
-            family='Arial',
-            size=50,
-            color="rgba(0,0,0,0)",),
-        showarrow=False,
-        align="left",
-        bordercolor='rgba(0,0,0,0)',
-        bgcolor='rgba(0,0,0,0)',
-        opacity=0,
-    )
+    # # add clickable link (not working)
+    # fig.add_annotation(
+    #     x=1,
+    #     y=2.5,
+    #     xref="x",
+    #     yref="y",
+    #     xanchor="left",
+    #     yanchor="middle",
+    #     height=150,
+    #     width=1000,
+    #     text=f"<a href={link}>link link link</a>",
+    #     font=dict(
+    #         family='Arial',
+    #         size=200,
+    #         color="rgba(0,0,0,0)",),
+    #     showarrow=False,
+    #     align="left",
+    #     bordercolor='rgba(0,0,0,0)',
+    #     bgcolor='rgba(0,0,0,0)',
+    #     opacity=0,
+    # )
 
     # update layout properties
     fig.update_layout(
