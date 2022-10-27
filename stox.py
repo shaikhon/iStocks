@@ -851,7 +851,7 @@ ginfo, news = google_stock_info(gticker)
 yf_metrics(idict, isetf)
 
 "---"
-gf_metrics(idict, isetf)
+gf_metrics(ginfo, idict, isetf)
 ################## Target Price Bar ############################
 # recommendation = "RECOMMENDATION"
 # idict["recommendationKey"]
