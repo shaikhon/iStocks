@@ -26,9 +26,8 @@ st.set_page_config(
 ##############################################################################
 #############################  FUNCTIONS #####################################
 ##############################################################################
-# def get_tickers(ftp_url):
-#     r = requests.get(ftp_url)
-#     return [entry.partition('|')[0] for entry in r.text.splitlines()]
+def flatten(mylist):
+    return [item for sublist in mylist for item in sublist]
 
 def get_tickers(date_str):
     date_int = int(date_str) - 5
