@@ -468,7 +468,7 @@ def etf_holdings_pie(df):
 @st.cache(allow_output_mutation=True)
 def px_income(df):
     fig = px.scatter(df, x=df.index, y="Net Income", trendline='ols')
-    fig.update_traces(marker_size=14, marker_color="magenta")
+    fig.update_traces(marker_size=14, marker_color="magenta", hovertemplate=None)
 
     fig.update_layout(
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
