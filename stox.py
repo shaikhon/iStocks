@@ -498,8 +498,8 @@ def bs_fig(df):
 
     fig.update_layout(
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
-    #     template="plotly_dark",
-    #     height=500,
+        template="plotly_dark",
+        height=500,
         margin=dict(t=0,b=0,l=0,r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -909,11 +909,11 @@ with st.expander(stock + ' Financial Health'):
     st.subheader(stock + " BALANCE SHEET")
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
-        df = ticker.quarterly_financials.T
+        df = ticker.quarterly_balance_sheet.T
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
     with ybtab:
-        df = ticker.financials.T
+        df = ticker.balance_sheet.T
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
 
