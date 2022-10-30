@@ -923,10 +923,12 @@ with st.expander(stock + ' Financial Health'):
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
 
-
+    '---'
     st.subheader(stock + " SHORT INTEREST")
 
-
+    st.metric("SHORT INTEREST", idict['sharesShort'],idict['sharesShortPriorMonth']-idict['sharesShort'])
+    idict['sharesShortPriorMonth']
+    idict['sharesShortPriorMonth']
 
 #################################################################
 ####################### OPTIONS #################################
