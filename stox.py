@@ -487,6 +487,33 @@ def px_income(df):
     )
     return fig
 
+@st.cache(allow_output_mutation=True)
+def bs_fig(df):
+
+    fig = px.scatter(df, x=df.index,
+                     y=['Cash', 'Total Assets', 'Total Liab',
+                        'Good Will', 'Long Term Debt','Total Stockholder Equity',
+                       ])
+    fig.update_traces(mode="markers+lines", marker_size=14) #, marker_color="magenta")
+
+    fig.update_layout(
+        hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
+    #     template="plotly_dark",
+    #     height=500,
+        margin=dict(t=0,b=0,l=0,r=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=True,
+        yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
+                                                          "font":dict(size=18),
+                                                          "standoff": 20}),
+        xaxis=dict(showline=False,showgrid=False),
+        title={'text': 'PROFITS ', "font": dict(size=24)}
+
+    )
+
+
+    return fig
 
 @st.cache(allow_output_mutation=True)
 def parse_headers(hdrs):
@@ -868,19 +895,31 @@ gf_metrics(ginfo, idict, isetf)
 ################################ FINANCIAL HEALTH ######################################
 ########################################################################################
 with st.expander(stock + ' Financial Health'):
+    st.subheader(stock + " PROFITS")
     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
-
     with qtab:
-        st.subheader(stock + "PROFITS")
         df = ticker.quarterly_financials.T
         if not df.empty:
             st.plotly_chart(px_income(df), use_container_width=True)
-
     with ytab:
-        st.subheader(stock + "PROFITS")
         df = ticker.financials.T
         if not df.empty:
             st.plotly_chart(px_income(df), use_container_width=True)
+
+    st.subheader(stock + " BALANCE SHEET")
+    qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
+    with qbtab:
+        df = ticker.quarterly_financials.T
+        if not df.empty:
+            st.plotly_chart(bs_fig(df), use_container_width=True)
+    with ybtab:
+        df = ticker.financials.T
+        if not df.empty:
+            st.plotly_chart(bs_fig(df), use_container_width=True)
+
+
+    st.subheader(stock + " SHORT INTEREST")
+
 
 
 #################################################################
