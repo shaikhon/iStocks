@@ -926,7 +926,7 @@ with st.expander(stock + ' Financial Health'):
     '---'
     st.subheader(stock + " SHORT INTEREST")
 
-    st.metric("SHORT INTEREST", idict['sharesShort'],idict['sharesShortPriorMonth']-idict['sharesShort'])
+    st.metric("SHORT INTEREST", f"${idict['sharesShort']:,}",idict['sharesShortPriorMonth']-idict['sharesShort'])
     idict['sharesShortPriorMonth']
     idict['sharesShortPriorMonth']
 
