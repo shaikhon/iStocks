@@ -494,26 +494,29 @@ def bs_fig(df):
                      y=['Cash', 'Total Assets', 'Total Liab',
                         'Good Will', 'Long Term Debt','Total Stockholder Equity',
                        ])
-    fig.update_traces(mode="markers+lines", marker_size=14) #, marker_color="magenta")
+    fig.update_traces(mode="markers+lines", marker_size=14, hovertemplate=None)
 
     fig.update_layout(
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
+        hovermode="x",
         template="plotly_dark",
         height=500,
-        margin=dict(t=0,b=0,l=0,r=0),
+        margin=dict(t=0, b=0, l=0, r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=True,
         yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
-                                                          "font":dict(size=18),
+                                                          "font": dict(size=18),
                                                           "standoff": 20}),
-        xaxis=dict(showline=False,showgrid=False),
+        xaxis=dict(showline=False, showgrid=False),
         title={'text': 'PROFITS ', "font": dict(size=24)}
 
     )
 
 
     return fig
+
+
 
 @st.cache(allow_output_mutation=True)
 def parse_headers(hdrs):
