@@ -915,7 +915,7 @@ with st.expander(stock + ' Financial Health'):
     st.subheader(stock + " BALANCE SHEET")
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
-        df = ticker.quarterly_balance_sheet.T.round(1)
+        df = ticker.quarterly_balance_sheet.T.astype(int)
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
     with ybtab:
