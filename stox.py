@@ -916,11 +916,10 @@ with st.expander(stock + ' Financial Health'):
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
         df = ticker.quarterly_balance_sheet.T
-        df = df.mask(df.isna(), 0).astype(int)
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
     with ybtab:
-        df = ticker.balance_sheet.T.round(1)
+        df = ticker.balance_sheet.T
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
 
