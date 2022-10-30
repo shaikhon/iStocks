@@ -505,7 +505,7 @@ def bs_fig(df):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=True,
-        yaxis=dict(showline=False, showgrid=True, title={"text": "Net Income ($USD)",
+        yaxis=dict(showline=False, showgrid=True, title={"text": "$USD",
                                                           "font": dict(size=18),
                                                           "standoff": 20}),
         xaxis=dict(showline=False, showgrid=False),
@@ -912,11 +912,11 @@ with st.expander(stock + ' Financial Health'):
     st.subheader(stock + " BALANCE SHEET")
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
-        df = ticker.quarterly_balance_sheet.T
+        df = ticker.quarterly_balance_sheet.T.round(1)
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
     with ybtab:
-        df = ticker.balance_sheet.T
+        df = ticker.balance_sheet.T.round(1)
         if not df.empty:
             st.plotly_chart(bs_fig(df), use_container_width=True)
 
