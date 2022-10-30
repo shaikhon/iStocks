@@ -482,7 +482,7 @@ def px_income(df):
                                                           "font":dict(size=18),
                                                           "standoff": 20}),
         xaxis=dict(showline=False,showgrid=False),
-        title={'text': 'PROFITS ', "font": dict(size=24)}
+        # title={'text': 'PROFITS ', "font": dict(size=24)}
 
     )
     return fig
@@ -509,7 +509,7 @@ def bs_fig(df):
                                                           "font": dict(size=18),
                                                           "standoff": 20}),
         xaxis=dict(showline=False, showgrid=False),
-        title={'text': 'PROFITS ', "font": dict(size=24)}
+        # title={'text': 'PROFITS ', "font": dict(size=24)}
 
     )
 
@@ -909,6 +909,7 @@ with st.expander(stock + ' Financial Health'):
         if not df.empty:
             st.plotly_chart(px_income(df), use_container_width=True)
 
+    '---'
     st.subheader(stock + " BALANCE SHEET")
     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
     with qbtab:
