@@ -384,35 +384,30 @@ def google_stock_info(google_ticker):
 
     return info, news
 
-#           hash_funcs={datetime.date:hash})
 
-@st.cache(allow_output_mutation=True)
-def latest_short(today):
+def short_rquest(today):
 
     today = datetime.strptime(today, "%Y-%m-%d") #strict format
 
     y = datetime.strftime(today, "%Y")
     ym = datetime.strftime(today, "%Y%m")
     ymd = datetime.strftime(today, '%Y%m%d')
-
     url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{ymd}.txt"
+    return requests.get(url)
 
-    r = requests.get(url)
+
+@st.cache(allow_output_mutation=True)
+def latest_short(today):
+
+    r = short_rquest(today)
     not_found = '404 Not Found' in r.text
 
     yesterday = datetime.now() - timedelta(1)
 
     while not_found:
-        y = datetime.strftime(yesterday, "%Y")
-        ym = datetime.strftime(yesterday, "%Y%m")
-        ymd = datetime.strftime(yesterday, '%Y%m%d')
-
-        url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{ymd}.txt"
-        r = requests.get(url)
+        r = short_rquest(yesterday)
         not_found = '404 Not Found' in r.text
-
         yesterday -= timedelta(1)
-
     return r
 
 
