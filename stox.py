@@ -3,15 +3,13 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import streamlit as st
-import requests, json, re
+import requests, ftplib, re, math
+
+from io import BytesIO
 from parsel import Selector
 from itertools import zip_longest
+from datetime import date, datetime, timedelta
 
-import requests, ftplib
-from io import BytesIO
-import math
-import time
-from datetime import date
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -386,6 +384,50 @@ def google_stock_info(google_ticker):
 
     return info, news
 
+
+def latest_short(today):
+    y = datetime.strftime(today, "%Y")
+    ym = datetime.strftime(today, "%Y%m")
+    ymd = datetime.strftime(today, '%Y%m%d')
+
+    url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{ymd}.txt"
+
+    r = requests.get(url)
+    not_found = '404 Not Found' in r.text
+
+    yesterday = datetime.now() - timedelta(1)
+
+    while (not_found):
+        y = datetime.strftime(yesterday, "%Y")
+        ym = datetime.strftime(yesterday, "%Y%m")
+        ymd = datetime.strftime(yesterday, '%Y%m%d')
+
+        url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{ymd}.txt"
+        r = requests.get(url)
+        not_found = '404 Not Found' in r.text
+
+        yesterday -= timedelta(1)
+
+    return r
+
+
+@st.cache(allow_output_mutation=True)
+def short_dict(today):
+    r = latest_short(today)  # latest short data url response
+
+    # lines[0] = Date|Symbol|Short Exempt Volume|Short Volume|Total Volume|Market
+    lines = r.text.splitlines()  # comma-sep stock list
+
+    words = [line.split("|") for line in lines]  # list per stock, list of lists
+
+    # Daily Short Ratio (Volume):
+    sr = {word[1]: {words[0][3]: word[3],
+                    words[0][2]: word[2],
+                    words[0][4]: word[4],
+                    'Daily Short Ratio': round((int(word[3]) - int(word[2])) / int(word[4]), 2),
+                    words[0][0]: word[0]} for word in words[1:]}
+
+    return sr, r.headers['Last-Modified']
 
 ##############################################################################
 ############################ PLOTS ###########################################
@@ -775,7 +817,6 @@ author = 'Obai Shaikh'
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 titcol1, titcol2, titcol3 = st.columns([2,2,2], gap="small")
 titcol2.write(welcome)
-titcol2.write(author)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
@@ -926,11 +967,20 @@ with st.expander(stock + ' Financial Health'):
 
     '---'
     st.subheader(stock + " SHORT INTEREST")
+    dstab, mstab = st.tabs(["Daily", "Monthly"])
+    with dstab:
+        today = datetime.now()
+        datetime.strftime(today, "%A %d-%B-%Y")
+        sr, last_mod = short_dict(today)
 
-    st.metric("SHORT INTEREST", f"${millify(idict['sharesShort'])} Shares",
-              f"{round((idict['sharesShort']-idict['sharesShortPriorMonth'])/idict['sharesShortPriorMonth']*100,1)}% MoM",
-              delta_color="inverse",
-              help="Shares short this month")
+        sr[stock]
+        # daily short volume, daily short ratio, NYSE
+
+    with mstab:
+        st.metric("SHORT INTEREST", f"${millify(idict['sharesShort'])} Shares",
+                  f"{round((idict['sharesShort']-idict['sharesShortPriorMonth'])/idict['sharesShortPriorMonth']*100,1)}% MoM",
+                  delta_color="inverse",
+                  help="Shares short this month")
 
 #################################################################
 ####################### OPTIONS #################################
@@ -1184,6 +1234,7 @@ if st.checkbox("TODO:"):
 "---"
 with st.container():
     st.subheader("Get in touch:")
+    st.write('Author: '+author)
     images =['./images/GitHub-Mark-Light.png', './images/LI-In-Bug.png', './images/Twitter-logo.png']
     site_names =['GitHub', 'LinkedIn','Twitter']
     links = ['https://github.com/shaikhon','https://www.linkedin.com/in/obai-shaikh/','https://twitter.com/ObaiShaikh']
