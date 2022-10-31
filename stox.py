@@ -386,7 +386,7 @@ def google_stock_info(google_ticker):
 
 
 @st.cache(allow_output_mutation=True,
-          hash_funcs={datetime:date.strftime})
+          hash_funcs={date:date.strftime})
 def latest_short(today):
     y = datetime.strftime(today, "%Y")
     ym = datetime.strftime(today, "%Y%m")
