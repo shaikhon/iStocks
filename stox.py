@@ -212,7 +212,7 @@ def gf_metrics(ginfo, idict, isetf):
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
 
         lmetrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                    idict["employees"], f'[{idict["shortName"]}]({idict["website"]})']
+                    idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
 
 
     else:  # for ETFs
