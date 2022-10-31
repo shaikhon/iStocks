@@ -385,6 +385,7 @@ def google_stock_info(google_ticker):
     return info, news
 
 
+@st.cache(allow_output_mutation=True)
 def latest_short(today):
     y = datetime.strftime(today, "%Y")
     ym = datetime.strftime(today, "%Y%m")
@@ -409,6 +410,7 @@ def latest_short(today):
         yesterday -= timedelta(1)
 
     return r
+
 
 def short_dict(today):
     # today = datetime.strptime(today, "%Y-%m-%d")
