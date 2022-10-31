@@ -410,8 +410,6 @@ def latest_short(today):
 
     return r
 
-#builtins.method_descriptor
-@st.cache(allow_output_mutation=True,hash_funcs={'datetime.date': 'strftime'})
 def short_dict(today):
     # today = datetime.strptime(today, "%Y-%m-%d")
     r = latest_short(today)  # latest short data url response
@@ -971,10 +969,10 @@ with st.expander(stock + ' Financial Health'):
     dstab, mstab = st.tabs(["Daily", "Monthly"])
     with dstab:
         today_datetime = datetime.now()
-        today_str = datetime.strftime(today_datetime, "%Y-%m-%d")
+        # today_str = datetime.strftime(today_datetime, "%Y-%m-%d")
         datetime.strftime(today_datetime, "%A %d-%B-%Y")
 
-        sr, last_mod = short_dict(today_str)
+        sr, last_mod = short_dict(today_datetime)
 
         sr[stock]
         # daily short volume, daily short ratio, NYSE
