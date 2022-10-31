@@ -385,7 +385,7 @@ def google_stock_info(google_ticker):
     return info, news
 
 
-# @st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def short_request(today):
 
     # today = datetime.strptime(today, "%Y-%m-%d") #strict format
@@ -983,15 +983,15 @@ with st.expander(stock + ' Financial Health'):
         # datetime.strftime(today_datetime, "%A %d-%B-%Y")
 
         sr, last_mod = short_dict()
-
         ss = sr[stock]
-
-        # snames = list(ss)
 
         scols = st.columns(len(ss))
         for scol, (k,v) in zip(scols, ss.items()):
             if "Date" not in k:
-                scol.metric(k,f"{float(v):,}")
+                if "Ratio" in k:
+                    scol.metric(k,v)
+                else:
+                    scol.metric(k,f"{float(v):,}")
 
         st.write("As Of: "+last_mod)
         # daily short volume, daily short ratio, NYSE
