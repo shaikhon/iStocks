@@ -991,9 +991,9 @@ with st.expander(stock + ' Financial Health'):
         scols = st.columns(len(ss))
         for scol, (k,v) in zip(scols, ss.items()):
             if "Date" not in k:
-                scol.metric(k,v)
+                scol.metric(k,f"{float(v):,}")
 
-        st.write("AS OF: "+ss["Date"])
+        st.write("As Of: "+last_mod)
         # daily short volume, daily short ratio, NYSE
 
     with mstab:
