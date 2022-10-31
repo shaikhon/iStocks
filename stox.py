@@ -212,7 +212,7 @@ def gf_metrics(ginfo, idict, isetf):
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
 
         lmetrics = [idict["sector"], idict["city"] + ", " + idict["country"],
-                    ginfo["employees"], f'[{idict["shortName"]}]({idict["website"]})']
+                    idict["employees"], f'[{idict["shortName"]}]({idict["website"]})']
 
 
     else:  # for ETFs
@@ -769,12 +769,13 @@ def plot_news_item(title, link, source, pub_when, thumb):
 # TITLE & LOGO:
 # title = '💎 **U.S. Stocks App** 💎'
 title = '💎 U.S. Stocks App 💎'
-welcome = 'The Smart App for Analyzing U.S. Stocks'' by Obai Shaikh'
-
+welcome = 'The Smart App for Analyzing U.S. Stocks'
+author = 'Obai Shaikh'
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 titcol1, titcol2, titcol3 = st.columns([2,2,2], gap="small")
 titcol2.write(welcome)
+titcol2.write(author)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
