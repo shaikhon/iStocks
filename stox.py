@@ -384,10 +384,13 @@ def google_stock_info(google_ticker):
 
     return info, news
 
+#           hash_funcs={datetime.date:hash})
 
-@st.cache(allow_output_mutation=True,
-          hash_funcs={datetime.date:hash})
+@st.cache(allow_output_mutation=True)
 def latest_short(today):
+
+    today = datetime.strptime(today, "%Y-%m-%d") #strict format
+
     y = datetime.strftime(today, "%Y")
     ym = datetime.strftime(today, "%Y%m")
     ymd = datetime.strftime(today, '%Y%m%d')
@@ -399,7 +402,7 @@ def latest_short(today):
 
     yesterday = datetime.now() - timedelta(1)
 
-    while (not_found):
+    while not_found:
         y = datetime.strftime(yesterday, "%Y")
         ym = datetime.strftime(yesterday, "%Y%m")
         ymd = datetime.strftime(yesterday, '%Y%m%d')
@@ -413,9 +416,11 @@ def latest_short(today):
     return r
 
 
-def short_dict(today):
-    # today = datetime.strptime(today, "%Y-%m-%d")
-    r = latest_short(today)  # latest short data url response
+def short_dict():
+    today_datetime = datetime.now()
+    today_str = datetime.strftime(today_datetime, "%Y-%m-%d")  #strict format
+
+    r = latest_short(today_str)  # latest short data url response
 
     # lines[0] = Date|Symbol|Short Exempt Volume|Short Volume|Total Volume|Market
     lines = r.text.splitlines()  # comma-sep stock list
@@ -432,7 +437,9 @@ def short_dict(today):
     return sr, r.headers['Last-Modified']
 
 ##############################################################################
+##############################################################################
 ############################ PLOTS ###########################################
+##############################################################################
 ##############################################################################
 
 
@@ -815,10 +822,14 @@ def plot_news_item(title, link, source, pub_when, thumb):
 title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
+
+today = datetime.now()
+today_str = datetime.strftime(today, "%A %d-%B-%Y")
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 titcol1, titcol2, titcol3 = st.columns([2,2,2], gap="small")
 titcol2.write(welcome)
+titcol1.text(today_str)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
@@ -971,11 +982,11 @@ with st.expander(stock + ' Financial Health'):
     st.subheader(stock + " SHORT INTEREST")
     dstab, mstab = st.tabs(["Daily", "Monthly"])
     with dstab:
-        today_datetime = datetime.now()
+        # today_datetime = datetime.now()
         # today_str = datetime.strftime(today_datetime, "%Y-%m-%d")
-        datetime.strftime(today_datetime, "%A %d-%B-%Y")
+        # datetime.strftime(today_datetime, "%A %d-%B-%Y")
 
-        sr, last_mod = short_dict(today_datetime)
+        sr, last_mod = short_dict()
 
         ss = sr[stock]
 
