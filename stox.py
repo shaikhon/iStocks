@@ -411,7 +411,7 @@ def latest_short(today):
     return r
 
 
-@st.cache(allow_output_mutation=True,hash_funcs={datetime.date: strftime})
+@st.cache(allow_output_mutation=True,hash_funcs={datetime.date: 'strftime'})
 def short_dict(today):
     # today = datetime.strptime(today, "%Y-%m-%d")
     r = latest_short(today)  # latest short data url response
