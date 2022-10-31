@@ -989,7 +989,7 @@ with st.expander(stock + ' Financial Health'):
         # snames = list(ss)
 
         scols = st.columns(len(ss))
-        for scol, (k,v) in zip(scols, ss):
+        for scol, (k,v) in zip(scols, ss.items()):
             if "Date" not in k:
                 scol.metric(k,v)
 
