@@ -385,27 +385,28 @@ def google_stock_info(google_ticker):
     return info, news
 
 
-def short_rquest(today):
+# @st.cache(allow_output_mutation=True)
+def short_request(today):
 
-    today = datetime.strptime(today, "%Y-%m-%d") #strict format
-
-    y = datetime.strftime(today, "%Y")
-    ym = datetime.strftime(today, "%Y%m")
-    ymd = datetime.strftime(today, '%Y%m%d')
-    url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{ymd}.txt"
+    # today = datetime.strptime(today, "%Y-%m-%d") #strict format
+    # y = datetime.strftime(today, "%Y")
+    # ym = datetime.strftime(today, "%Y%m")
+    # ymd = datetime.strftime(today, '%Y%m%d')
+    y = today[:4]
+    ym = today[:6]
+    url = f"https://ftp.nyse.com/ShortData/NYSEshvol/NYSEshvol{y}/NYSEshvol{ym}/NYSEshvol{today}.txt"
     return requests.get(url)
 
 
 @st.cache(allow_output_mutation=True)
 def latest_short(today):
 
-    r = short_rquest(today)
+    r = short_request(today)
     not_found = '404 Not Found' in r.text
-
     yesterday = datetime.now() - timedelta(1)
 
     while not_found:
-        r = short_rquest(yesterday)
+        r = short_request(yesterday.strftime('%Y%m%d'))
         not_found = '404 Not Found' in r.text
         yesterday -= timedelta(1)
     return r
@@ -413,7 +414,7 @@ def latest_short(today):
 
 def short_dict():
     today_datetime = datetime.now()
-    today_str = datetime.strftime(today_datetime, "%Y-%m-%d")  #strict format
+    today_str = datetime.strftime(today_datetime, "%Y%m%d")  #strict format
 
     r = latest_short(today_str)  # latest short data url response
 
