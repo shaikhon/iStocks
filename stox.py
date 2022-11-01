@@ -977,17 +977,17 @@ with st.expander(stock + ' Financial Health'):
             with profit_cols[1]:
                 st.subheader(stock + " BALANCE SHEET")
                 st.plotly_chart(bs_fig(bs), use_container_width=True)
-    '---'
-    st.subheader(stock + " BALANCE SHEET")
-    qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
-    with qbtab:
-        df = ticker.quarterly_balance_sheet.T
-        if not df.empty:
-            st.plotly_chart(bs_fig(df), use_container_width=True)
-    with ybtab:
-        df = ticker.balance_sheet.T
-        if not df.empty:
-            st.plotly_chart(bs_fig(df), use_container_width=True)
+    # '---'
+    # st.subheader(stock + " BALANCE SHEET")
+    # qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
+    # with qbtab:
+    #     df = ticker.quarterly_balance_sheet.T
+    #     if not df.empty:
+    #         st.plotly_chart(bs_fig(df), use_container_width=True)
+    # with ybtab:
+    #     df = ticker.balance_sheet.T
+    #     if not df.empty:
+    #         st.plotly_chart(bs_fig(df), use_container_width=True)
 
     '---'
     st.subheader(stock + " SHORT INTEREST")
