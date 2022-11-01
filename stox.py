@@ -951,7 +951,7 @@ gf_metrics(ginfo, idict, isetf)
 ################################ FINANCIAL HEALTH ######################################
 ########################################################################################
 with st.expander(stock + ' Financial Health'):
-    st.subheader(stock + " PROFITS")
+    st.subheader(stock + " BALANCE SHEET HEALTH")
     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
     with qtab:
         qf = ticker.quarterly_financials.T
@@ -960,8 +960,10 @@ with st.expander(stock + ' Financial Health'):
         if not qf.empty:
             profit_cols = st.columns(2)
             with profit_cols[0]:
+                st.subheader(stock + " PROFITS")
                 st.plotly_chart(px_income(qf), use_container_width=True)
             with profit_cols[1]:
+                st.subheader(stock + " BALANCE SHEET")
                 st.plotly_chart(bs_fig(bs), use_container_width=True)
     with ytab:
         yfin = ticker.financials.T
@@ -970,8 +972,10 @@ with st.expander(stock + ' Financial Health'):
         if not yfin.empty:
             profit_cols = st.columns(2)
             with profit_cols[0]:
+                st.subheader(stock + " PROFITS")
                 st.plotly_chart(px_income(yfin), use_container_width=True)
             with profit_cols[1]:
+                st.subheader(stock + " BALANCE SHEET")
                 st.plotly_chart(bs_fig(bs), use_container_width=True)
     '---'
     st.subheader(stock + " BALANCE SHEET")
