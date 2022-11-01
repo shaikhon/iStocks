@@ -522,7 +522,7 @@ def px_income(df):
         hovermode="x",
 
         template="plotly_dark",
-        height=250,
+        # height=250,
         margin=dict(t=0,b=0,l=0,r=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
