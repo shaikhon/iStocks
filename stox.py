@@ -820,12 +820,14 @@ welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
 
 today = datetime.now()
-today_str = datetime.strftime(today, "%A %d-%B-%Y")
+today_str = datetime.strftime(today, "%A, %d %B %Y ")
+time_str = datetime.strftime(today, "%I-%M-%S %Z")
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-titcol1, titcol2, titcol3 = st.columns([2,2,2], gap="small")
-titcol2.write(welcome)
+titcol1, titcol2, titcol3 = st.columns(3, gap="small")
 titcol1.text(today_str)
+# titcol2.write(welcome)
+titcol3.text(time_str)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
