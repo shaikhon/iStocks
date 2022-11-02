@@ -4,6 +4,7 @@ import pandas as pd
 import yfinance as yf
 import streamlit as st
 import requests, ftplib, re, math
+from pytz import timezone
 
 from io import BytesIO
 from parsel import Selector
@@ -819,12 +820,13 @@ title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
 
-today = datetime.now()
-today_str = datetime.strftime(today, "%A, %d %B %Y ")
+tz = timezone('EST')
+today = datetime.now(tz)
+today_str = datetime.strftime(today, "%A, %d %B %Y")
 time_str = datetime.strftime(today, "%I:%M:%S %p")
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-titcol1, titcol2, titcol3 = st.columns([2,1,1], gap="small")
+titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
 titcol1.text(today_str)
 # titcol2.write(welcome)
 titcol3.text(time_str)
