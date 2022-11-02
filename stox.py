@@ -820,7 +820,7 @@ title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
 
-tz = timezone('ET')
+tz = timezone('US/Eastern')
 today = datetime.now(tz)
 today_str = datetime.strftime(today, "%A, %d %B %Y")
 time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
