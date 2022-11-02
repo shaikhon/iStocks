@@ -440,18 +440,23 @@ def short_dict():
 ##############################################################################
 
 
-def intraday(d):
+def intraday(d, idict):
+    pev = idict['previousClose']
+    ts = d.index
+    current_price = d['Close'][-1]
+    color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
+
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    fig.add_trace(go.Bar(x=d.index, y=d["Volume"], opacity=.65,
+    fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.65,
                          marker={
                              "color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=True)
 
-    fig.add_trace(go.Scatter(mode="lines", x=d.index, y=d["Close"],
-                             line={"color": "lime", "width": 2, },
+    fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
+                             line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}' + '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                              ),
                   secondary_y=False)
@@ -930,7 +935,7 @@ with st.container():
     d = ticker.history(period=period, interval=interval,
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
-    st.plotly_chart(intraday(d), use_container_width=True)
+    st.plotly_chart(intraday(d, idict), use_container_width=True)
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
