@@ -1273,7 +1273,7 @@ if st.checkbox("TODO:"):
 "---"
 with st.container():
     st.subheader("Get in touch:")
-    st.write('Author: '+author)
+    st.text('Author: '+author)
     images =['./images/GitHub-Mark-Light.png', './images/LI-In-Bug.png', './images/Twitter-logo.png']
     site_names =['GitHub', 'LinkedIn','Twitter']
     links = ['https://github.com/shaikhon','https://www.linkedin.com/in/obai-shaikh/','https://twitter.com/ObaiShaikh']
