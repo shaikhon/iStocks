@@ -821,7 +821,7 @@ author = 'Obai Shaikh'
 
 today = datetime.now()
 today_str = datetime.strftime(today, "%A, %d %B %Y ")
-time_str = datetime.strftime(today, "%I-%M-%S %Z")
+time_str = datetime.strftime(today, "%I:%M:%S %p")
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 titcol1, titcol2, titcol3 = st.columns(3, gap="small")
