@@ -930,20 +930,30 @@ with st.container():
 
     st.header(idict['shortName'])
     # col2: duration
-    period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
+    # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
+    period_dict=dict([("1D", ("1d",['1m','2m','5m','15m','30m','60m','90m','1h'])),
+      ("1W", ("5d",['1m','2m','5m','15m','30m','60m','90m','1h','1d'])),
+      ("1M", ("1mo",['2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk'])),
+      ("1Y", ("1y",['1h','1d','5d','1wk','1mo','3mo'])),
+      ("5Y", ("5y",['1d','5d','1wk','1mo','3mo'])),
+      ("Max", ("max",['1d','5d','1wk','1mo','3mo']))])
 
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
     # col3: interval
-    interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
-                                index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
 
 
     period_tabs = st.tabs(list(period_dict))
 
-    for ptab, (period_name, period) in zip(period_tabs, period_dict.items()):
+    for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
         with ptab:
-            st.write(period_name)
+            interval = plt_col3.selectbox("Interval:",
+                                          # ['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo',
+                                          #  '3mo'],
+                                          interval_lst,
+                                          index=0, help="fetch data by interval (intraday only if period < 60 days)",
+                                          key="interval")
+
             d = ticker.history(period=period, interval=interval, prepost=True,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
