@@ -946,6 +946,7 @@ with st.container():
                    '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
+    after_hours = plt_col2.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     # col3: interval
     interval = plt_col3.selectbox("Interval:",
                                   list(offset_dict),
@@ -958,7 +959,7 @@ with st.container():
     for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
         with ptab:
 
-            d = ticker.history(period=period, interval=interval_lst[0], prepost=True,
+            d = ticker.history(period=period, interval=interval_lst[0], prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
             st.write(d.head(5))
             if interval in interval_lst:
