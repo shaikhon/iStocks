@@ -941,9 +941,10 @@ with st.container():
 
     st.plotly_chart(intraday(d, idict), use_container_width=True)
 
-    dtab, wtab = st.tabs(["1D", "1W"])
-    with dtab:
+    period_tabs = st.tabs(["1D", "1W"])
+    with period_tabs[0]:
         st.write("1D")
+        st.write(period_tabs)
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
