@@ -858,6 +858,8 @@ if 'rate' not in st.session_state:
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
 ########################################################################################
 # TODO: ADD LOGO HERE: STOX
+# TODO: 1D, 1W, 1M intraday as tabs (like RH)
+# TODO: candles
 # Language input
 lang = st.sidebar.radio(
     'Langauge:',
@@ -910,8 +912,8 @@ exchange_dict = ticker_etf_dict['Exchange']
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1,_, plt_col2, plt_col3, rfrsh_col = st.columns([3,1,1,1,1],gap="small")
-    # Ticker input
+    plt_col1,_, plt_col2, plt_col3, rfrsh_col = st.columns([3, 1, 1, 1, 1], gap="small")
+    # col1: Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
         list(ticker_dict.values()), index=list(ticker_dict).index('AMZN'), key="stock")
@@ -927,8 +929,10 @@ with st.container():
     idict = ticker.info
 
     st.header(idict['shortName'])
+    # col2: duration
     period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
                                 index=0, key="period")
+    # col3: interval
     interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
                                 index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
 
@@ -936,6 +940,10 @@ with st.container():
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
     st.plotly_chart(intraday(d, idict), use_container_width=True)
+
+    dtab, wtab = st.tabs(["1D", "1W"])
+    with dtab:
+        st.write("1D")
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
