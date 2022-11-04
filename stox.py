@@ -932,7 +932,7 @@ with st.container():
     interval = plt_col3.selectbox("Interval:",['1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'],
                                 index=0,help="fetch data by interval (intraday only if period < 60 days)", key="interval")
 
-    d = ticker.history(period=period, interval=interval,
+    d = ticker.history(period=period, interval=interval, prepost=True,
                        rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
 
     st.plotly_chart(intraday(d, idict), use_container_width=True)
