@@ -960,7 +960,7 @@ with st.container():
 
             d = ticker.history(period=period, interval=interval_lst[0], prepost=True,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
-            d.head(5)
+            st.write(d.head(5))
             if interval in interval_lst:
                 offset = offset_dict[interval]
                 st.write(f"interval_lst={interval_lst}")
@@ -979,7 +979,7 @@ with st.container():
                 st.info(f"The selected interval is not allowed, please select a different interval.")
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
-            d.head(5)
+            st.write(d.head(5))
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
 gticker=stock+":"+exchange
