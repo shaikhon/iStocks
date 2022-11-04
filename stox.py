@@ -968,11 +968,11 @@ with st.container():
                 st.write(f"offset={offset}")
                 d = pd.DataFrame(
                     dict(
-                        Open=d.Open.resample(interval, closed='right', label='right').first(),
-                        High=d.High.resample(interval, closed='right', label='right').max(),
-                        Low=d.Low.resample(interval, closed='right', label='right').min(),  # low
-                        Close=d.Close.resample(interval, closed='right', label='right').last(),
-                        Volume=d.Volume.resample(interval, closed='right', label='right').sum()
+                        Open=d.Open.resample(offset, closed='right', label='right').first(),
+                        High=d.High.resample(offset, closed='right', label='right').max(),
+                        Low=d.Low.resample(offset, closed='right', label='right').min(),  # low
+                        Close=d.Close.resample(offset, closed='right', label='right').last(),
+                        Volume=d.Volume.resample(offset, closed='right', label='right').sum()
                     )
                 )
             else:
