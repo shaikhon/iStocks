@@ -952,7 +952,9 @@ with st.container():
                                           #  '3mo'],
                                           interval_lst,
                                           index=0, help="fetch data by interval (intraday only if period < 60 days)",
-                                          key="interval")
+                                          # key="interval",
+                                          key=period_name,
+                                          )
 
             d = ticker.history(period=period, interval=interval, prepost=True,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
