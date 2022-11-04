@@ -825,7 +825,10 @@ title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
 
-tz = timezone('US/Eastern')
+# tz = timezone('US/Eastern')
+tz = timezone('America/New_York')
+
+
 today = datetime.now(tz)
 today_str = datetime.strftime(today, "%A, %d %B %Y")
 time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
@@ -931,33 +934,45 @@ with st.container():
     st.header(idict['shortName'])
     # col2: duration
     # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
-    period_dict=dict([("1D", ("1d",['1m','2m','5m','15m','30m','60m','90m','1h'])),
-      ("1W", ("5d",['1m','2m','5m','15m','30m','60m','90m','1h','1d'])),
-      ("1M", ("1mo",['2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk'])),
-      ("1Y", ("1y",['1h','1d','5d','1wk','1mo','3mo'])),
-      ("5Y", ("5y",['1d','5d','1wk','1mo','3mo'])),
-      ("Max", ("max",['1d','5d','1wk','1mo','3mo']))])
+    period_dict=dict([("1D", ("1d", ['1m','2m','5m','15m','30m','1h'])),
+      ("1W", ("1wk", ['1m','2m','5m','15m','30m','1h','1d'])),
+      ("1M", ("1mo", ['2m','5m','15m','30m','1h','1d','5d','1wk'])),
+      ("1Y", ("1y", ['1h','1d','5d','1wk','1mo','3mo'])),
+      ("5Y", ("5y", ['1d','5d','1wk','1mo','3mo'])),
+      ("Max", ("max", ['1d','5d','1wk','1mo','3mo']))])
 
+    offset_dict = {'1m': '1T', '2m': '2T', '5m': '5T', '15m': '15T',
+                   '30m': '30T', '1h': '1H', '1d': '1D', '1wk': '1W',
+                   '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
     # col3: interval
-
+    interval = plt_col3.selectbox("Interval:",
+                                  list(offset_dict),
+                                  index=0, help="fetch data by interval (intraday only if period < 60 days)",
+                                  key="interval",
+                                  )
 
     period_tabs = st.tabs(list(period_dict))
 
     for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
         with ptab:
-            interval = plt_col3.selectbox("Interval:",
-                                          # ['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo',
-                                          #  '3mo'],
-                                          interval_lst,
-                                          index=0, help="fetch data by interval (intraday only if period < 60 days)",
-                                          # key="interval",
-                                          key=period_name,
-                                          )
 
-            d = ticker.history(period=period, interval=interval, prepost=True,
+            d = ticker.history(period=period, interval=interval_lst[0], prepost=True,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
+            if interval in interval_lst:
+                offset = offset_dict[interval]
+                d = pd.DataFrame(
+                    dict(
+                        Open=d.Open.resample(interval, closed='right', label='right').first(),
+                        High=d.High.resample(interval, closed='right', label='right').max(),
+                        Low=d.Low.resample(interval, closed='right', label='right').min(),  # low
+                        Close=d.Close.resample(interval, closed='right', label='right').last(),
+                        Volume=d.Volume.resample(interval, closed='right', label='right').sum()
+                    )
+                )
+            else:
+                st.info(f"The selected interval is not allowed, please select a different interval.")
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
 
