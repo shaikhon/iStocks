@@ -975,7 +975,7 @@ with st.container():
                         Close=d.Close.resample(offset, closed='right', label='right').last(),
                         Volume=d.Volume.resample(offset, closed='right', label='right').sum()
                     )
-                )
+                ).dropna()
             else:
                 st.info(f"The selected interval is not allowed, please select a different interval.")
 
