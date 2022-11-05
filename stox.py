@@ -964,7 +964,7 @@ with st.container():
                                           )
 
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
-                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
+                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").dropna()
             # st.write(d.head(5))
             # if interval in interval_lst:
             #     offset = offset_dict[interval]
