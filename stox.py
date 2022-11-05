@@ -915,7 +915,7 @@ exchange_dict = ticker_etf_dict['Exchange']
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1, plt_col2, _, plt_col3, rfrsh_col = st.columns([3, 1, 1, 1, 2], gap="small")
+    plt_col1, plt_col2, _, plt_col3, rfrsh_col = st.columns([3, 1, 1, 1, 1.5], gap="small")
     # col1: Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
