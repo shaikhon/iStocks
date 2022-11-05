@@ -960,7 +960,7 @@ with st.container():
                                           interval_lst,
                                           # list(offset_dict),
                                           index=0, help="fetch data by interval (intraday only if period < 60 days)",
-                                          key="interval",
+                                          key=period_name,
                                           )
 
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
