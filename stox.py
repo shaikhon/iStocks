@@ -965,7 +965,7 @@ with st.container():
                                           key=period_name,
                                           )
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
-                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
+                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
             # d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
 
