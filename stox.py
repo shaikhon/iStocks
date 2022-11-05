@@ -454,14 +454,16 @@ def intraday(d, idict):
                                            + '<br><i>Time</i>: %{x| %H:%M}'
                                            + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
-                  secondary_y=False)
+                  secondary_y=True)
 
     fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.65,
                          marker={
                              "color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
-                         ), secondary_y=True)
+                         ),
+                  # secondary_y=False
+                  )
 
 
 
