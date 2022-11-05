@@ -942,7 +942,7 @@ with st.container():
       ("Max", ("max", ['1d','5d','1wk','1mo','3mo']))])
 
     offset_dict = {'1m': '1T', '2m': '2T', '5m': '5T', '15m': '15T',
-                   '30m': '30T', '1h': '1H', '1d': '1D', '1wk': '1W',
+                   '30m': '30T', '1h': '1H', '1d': '1D', '5d': '5B',
                    '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
