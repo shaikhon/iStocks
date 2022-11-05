@@ -931,7 +931,6 @@ with st.container():
     # TICKER INFORMATION DICT
     idict = ticker.info
 
-    st.header(idict['shortName'])
     # col2: duration
     # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
     period_dict=dict([("1D", ("1d", ['1m','2m','5m','15m','30m','1h'])),
@@ -948,36 +947,41 @@ with st.container():
     #                             index=0, key="period")
     after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     # col3: interval
-    interval = plt_col2.selectbox("Interval:",
-                                  list(offset_dict),
-                                  index=0, help="fetch data by interval (intraday only if period < 60 days)",
-                                  key="interval",
-                                  )
+
 
     period_tabs = st.tabs(list(period_dict))
 
     for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
         with ptab:
+            pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
 
-            d = ticker.history(period=period, interval=interval_lst[0], prepost=after_hours,
+            pcol1.header(idict['shortName'])
+            interval = pcol3.selectbox("Interval:",
+                                          interval_lst,
+                                          # list(offset_dict),
+                                          index=0, help="fetch data by interval (intraday only if period < 60 days)",
+                                          key="interval",
+                                          )
+
+            d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
-            st.write(d.head(5))
-            if interval in interval_lst:
-                offset = offset_dict[interval]
-                st.write(f"interval_lst={interval_lst}")
-                st.write(f"interval={interval}")
-                st.write(f"offset={offset}")
-                d = pd.DataFrame(
-                    dict(
-                        Open=d.Open.resample(offset, closed='right', label='right').first(),
-                        High=d.High.resample(offset, closed='right', label='right').max(),
-                        Low=d.Low.resample(offset, closed='right', label='right').min(),  # low
-                        Close=d.Close.resample(offset, closed='right', label='right').last(),
-                        Volume=d.Volume.resample(offset, closed='right', label='right').sum()
-                    )
-                ).dropna()
-            else:
-                st.info(f"The selected interval is not allowed, please select a different interval.")
+            # st.write(d.head(5))
+            # if interval in interval_lst:
+            #     offset = offset_dict[interval]
+            #     st.write(f"interval_lst={interval_lst}")
+            #     st.write(f"interval={interval}")
+            #     st.write(f"offset={offset}")
+            #     d = pd.DataFrame(
+            #         dict(
+            #             Open=d.Open.resample(offset, closed='right', label='right').first(),
+            #             High=d.High.resample(offset, closed='right', label='right').max(),
+            #             Low=d.Low.resample(offset, closed='right', label='right').min(),  # low
+            #             Close=d.Close.resample(offset, closed='right', label='right').last(),
+            #             Volume=d.Volume.resample(offset, closed='right', label='right').sum()
+            #         )
+            #     ).dropna()
+            # else:
+            #     st.info(f"The selected interval is not allowed, please select a different interval.")
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
