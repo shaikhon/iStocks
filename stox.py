@@ -476,9 +476,10 @@ def intraday(d, idict):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
-        yaxis=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($USD)", "standoff": 10}),
-        yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Volume", "standoff": 1.5}),
-        xaxis=dict(showline=False, title={"font":dict(size=24), "standoff": 10})
+        yaxis=dict(showgrid=False, title={"font":dict(size=24),"text": "Volume", "standoff": 10}),
+        yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($USD)", "standoff": 10}),
+        xaxis=dict(showline=False, #title={"font":dict(size=24), "standoff": 10}
+                   )
     )
     return fig
 
