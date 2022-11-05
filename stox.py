@@ -457,7 +457,7 @@ def intraday(d, idict):
 
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
-                             hovertemplate='<i>Price</i>: $%{y:.2f}' + '<br><i>Date</i>: %{x|%a, %d %b %y}'
+                             hovertemplate='<i>Price</i>: $%{y:.2f}' + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>'
                              + '<br><i>Time</i>: %{x| %H:%M}',
                              ),
                   secondary_y=False)
