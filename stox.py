@@ -448,13 +448,6 @@ def intraday(d, idict):
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.65,
-                         marker={
-                             "color": "magenta",  # "#0FCFFF"
-                         },
-                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
-                         ), secondary_y=True)
-
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}'
@@ -462,6 +455,16 @@ def intraday(d, idict):
                                            + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
                   secondary_y=False)
+
+    fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.65,
+                         marker={
+                             "color": "magenta",  # "#0FCFFF"
+                         },
+                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
+                         ), secondary_y=True)
+
+
+
     # limegreen, lime, #E1FF00, #ccff00
 
     fig.update_layout(
@@ -936,8 +939,8 @@ with st.container():
     # col2: duration
     # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
     period_dict=dict([("1D", ("1d", ['1m','2m','5m','15m','30m','1h'])),
-      ("1W", ("5d", ['1m','2m','5m','15m','30m','1h','1d'])),
-      ("1M", ("1mo", ['2m','5m','15m','30m','1h','1d','5d','1wk'])),
+      ("1W", ("5d", ['1m','2m','5m','15m','30m','1h'])),
+      ("1M", ("1mo", ['15m','30m','1h','1d'])),
       ("1Y", ("1y", ['1h','1d','5d','1wk','1mo','3mo'])),
       ("5Y", ("5y", ['1d','5d','1wk','1mo','3mo'])),
       ("Max", ("max", ['1d','5d','1wk','1mo','3mo']))])
