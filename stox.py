@@ -934,15 +934,15 @@ with st.container():
     # col2: duration
     # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
     period_dict=dict([("1D", ("1d", ['1m','2m','5m','15m','30m','1h'])),
-      ("1W", ("1wk", ['1m','2m','5m','15m','30m','1h','1d'])),
+      ("1W", ("5d", ['1m','2m','5m','15m','30m','1h','1d'])),
       ("1M", ("1mo", ['2m','5m','15m','30m','1h','1d','5d','1wk'])),
       ("1Y", ("1y", ['1h','1d','5d','1wk','1mo','3mo'])),
       ("5Y", ("5y", ['1d','5d','1wk','1mo','3mo'])),
       ("Max", ("max", ['1d','5d','1wk','1mo','3mo']))])
 
-    offset_dict = {'1m': '1T', '2m': '2T', '5m': '5T', '15m': '15T',
-                   '30m': '30T', '1h': '1H', '1d': '1D', '5d': '5B',
-                   '1mo': '1M', '3mo': '3M'}
+    # offset_dict = {'1m': '1T', '2m': '2T', '5m': '5T', '15m': '15T',
+    #                '30m': '30T', '1h': '1H', '1d': '1D', '5d': '5B',
+    #                '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
     after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
