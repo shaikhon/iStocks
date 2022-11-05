@@ -457,7 +457,7 @@ def intraday(d, idict):
 
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
-                             hovertemplate='<i>Price</i>: $%{y:.2f}' 
+                             hovertemplate='<i>Price</i>: $%{y:.2f}'
                                            + '<br><i>Time</i>: %{x| %H:%M}'
                                            + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
@@ -966,7 +966,8 @@ with st.container():
                                           )
 
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
-                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").dropna()
+                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
+            d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
             # if interval in interval_lst:
             #     offset = offset_dict[interval]
