@@ -946,7 +946,7 @@ with st.container():
                    '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
-    after_hours = rfrsh_col.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
+    after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     # col3: interval
     interval = plt_col2.selectbox("Interval:",
                                   list(offset_dict),
