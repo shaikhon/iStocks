@@ -964,11 +964,11 @@ with st.container():
                                           index=0, help="fetch data by interval (intraday only if period < 60 days)",
                                           key=period_name,
                                           )
-            after_hours
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore")
-            d = d.loc[d.index.dayofweek < 5]
+            # d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
+
             # if interval in interval_lst:
             #     offset = offset_dict[interval]
             #     st.write(f"interval_lst={interval_lst}")
