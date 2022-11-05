@@ -915,7 +915,7 @@ exchange_dict = ticker_etf_dict['Exchange']
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1, plt_col2, _, plt_col3, rfrsh_col = st.columns([3, 1, 1, 2, 1], gap="small")
+    plt_col1, plt_col2, _, plt_col3, rfrsh_col = st.columns([3, 1, 1, 1, 2], gap="small")
     # col1: Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
@@ -946,7 +946,7 @@ with st.container():
                    '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
-    after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
+    after_hours = rfrsh_col.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     # col3: interval
     interval = plt_col2.selectbox("Interval:",
                                   list(offset_dict),
