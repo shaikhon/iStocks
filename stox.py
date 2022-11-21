@@ -572,7 +572,7 @@ def intraday_prophet(d, idict):
 
     # plot yhat
     fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
-                             line=dict(color='rgba(0,0,0,1)', width=1),
+                             line=dict(color='rgba(255,255,255,1)', width=1),
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                              showlegend=False),
@@ -585,8 +585,8 @@ def intraday_prophet(d, idict):
     fig.add_trace(go.Scatter(x=x + x[::-1],
                              y=upper + lower[::-1],
                              fill='toself',
-                             fillcolor='rgba(0,100,80,.25)',
-                             line=dict(color='rgba(255,255,255,0)'),
+                             fillcolor='rgba(200,255,255,.25)',
+                             line=dict(color='rgba(255,255,255,1)'),
                              hoverinfo='skip',
                              showlegend=False),
                   secondary_y=False)
@@ -1153,7 +1153,7 @@ with st.container():
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
             st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
-            
+
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
 gticker=stock+":"+exchange
