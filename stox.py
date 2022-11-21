@@ -979,9 +979,7 @@ def prophecy(d, forecast_period=15):
     # merge
     d = gm_forecast.merge(d, how='outer', on='ds')
 
-    fig = intraday_prophet(d)
-
-    return fig
+    return d
 
 ########################################################################################
 ########################################################################################
@@ -1155,6 +1153,7 @@ with st.container():
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
             st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
+            
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
 gticker=stock+":"+exchange
