@@ -985,8 +985,7 @@ def prophecy(d, forecast_period=15):
 ########################################################################################
 #################################### MAIN Code #########################################
 ########################################################################################
-########################################################################################
-# TITLE & LOGO:
+################################## TITLE & LOGO ########################################
 # title = '💎 **U.S. Stocks App** 💎'
 title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
@@ -1038,8 +1037,7 @@ lang = st.sidebar.radio(
 ########################################################################################
 #################################### MAIN PAGE #########################################
 ########################################################################################
-############################## Major Market Metrics ####################################
-################################ GOOGLE FINANCE ########################################
+################################## Major Markets #######################################
 "---"
 # MAJOR INDEXES (GOOGLE FINANCE):
 dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
@@ -1076,13 +1074,13 @@ ticker_dict = ticker_etf_dict['Name']
 etf_dict = ticker_etf_dict['ETF']
 exchange_dict = ticker_etf_dict['Exchange']
 ########################################################################################
-################################# PRICE CHART  #########################################
+############################### STOCKS DASHBOARD #######################################
 ########################################################################################
 "---"
 with st.container():
     st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
 
-    plt_col1, plt_col2, _, rfrsh_col, plt_col3 = st.columns([3, 1, 1, 1, 1.25], gap="small")
+    plt_col1, plt_col2, _, rfrsh_col, plt_col3 = st.columns([3, 1, 1, 1, 2], gap="small")
     # col1: Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
@@ -1152,7 +1150,8 @@ with st.container():
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
-            st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
+            if period_name in ["1d", "5d"]:
+                st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
