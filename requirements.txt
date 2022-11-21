@@ -1,7 +1,9 @@
 requests
 numpy
-pandas
-plotly
 parsel
+pandas
+pandas_market_calendars
+prophet
+plotly
 yfinance
 streamlit

@@ -3,17 +3,21 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import streamlit as st
-import requests, ftplib, re, math
-from pytz import timezone
+from prophet import Prophet
+
 
 from io import BytesIO
 from parsel import Selector
 from itertools import zip_longest
+import requests, ftplib, re, math
 from datetime import date, datetime, timedelta
+from pytz import timezone, all_timezones
+import pandas_market_calendars as mcal
 
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
 
 st.set_page_config(
     page_title="STOX APP",
@@ -27,6 +31,62 @@ st.set_page_config(
 ##############################################################################
 def flatten(mylist):
     return [item for sublist in mylist for item in sublist]
+
+def nyse_hrs():
+    ny = 'America/New_York'
+    ry = 'Asia/Kuwait'
+    ry_tz = timezone(ry)
+    ny_tz = timezone(ny)
+
+    ry_today = datetime.now(ry_tz)
+    ny_today = datetime.now(ny_tz)
+    ry_tm = datetime.now(ry_tz) + timedelta(4)
+    ny_tm = datetime.now(ny_tz) + timedelta(4)
+
+    # now_fmt = "%d-%b-%y   %I:%M%p   GMT%Z"
+    now_fmt = "%I:%M %p"
+    date_fmt = "%d-%b-%y"
+    ry_now_str = ry_today.strftime(now_fmt)
+    ny_now_str = ny_today.strftime(now_fmt)
+
+    ry_today_str, ny_today_str = ry_today.strftime(date_fmt), ny_today.strftime(date_fmt)
+    ry_tm_str, ny_tm_str = ry_tm.strftime(date_fmt), ny_tm.strftime(date_fmt)
+
+    ry_tz_str, ny_tz_str = ry_today.strftime("GMT%Z"), ny_today.strftime("GMT%Z")
+    #     print(ry_today_str)
+    #     print(ny_today_str)
+
+    # Create a calendar
+    nyse = mcal.get_calendar('NYSE')
+
+    ry_mkt_sch = nyse.schedule(start_date=ry_today_str, end_date=ry_tm_str, tz=ry)
+    ny_mkt_sch = nyse.schedule(start_date=ny_today_str, end_date=ny_tm_str, tz=ny)
+    #     print(ry_mkt_sch)
+    #     print(ny_mkt_sch)
+
+    # print(today_sch.values)
+    # print(50*"*")
+
+    ry_open_str = ry_mkt_sch.market_open.iloc[0].strftime(now_fmt)
+    ry_close_str = ry_mkt_sch.market_close.iloc[0].strftime(now_fmt)
+
+    ny_open_str = ny_mkt_sch.market_open.iloc[0].strftime(now_fmt)
+    ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
+
+    # np_close = today_sch.market_close.values[0]
+    # opend, opent = str(np_open).split('T') #[:10] #("%Y-%b-%d   %I:%M:%S%p   GMT%Z")
+    # print(f"Market Opens: {open_d}   {open_t[:5]}")
+    print(50 * "*")
+    print("TIMEZONE       NEW YORK         RIYADH")
+    print(50 * "^")
+    print(f"TIME NOW:      {ny_now_str}        {ry_now_str}")
+    print(50 * "^")
+    #     print(f"HOURS           NEW YORK         RIYADH")
+    print(f"NYSE Open:     {ny_open_str}        {ry_open_str}")
+    print(f"NYSE Close:    {ny_close_str}        {ry_close_str}")
+    print(50 * "^")
+    print(f"DATE:          {ny_today_str}        {ry_today_str}")
+
 
 def get_tickers(date_str):
     date_int = int(date_str) - 5
@@ -438,8 +498,6 @@ def short_dict():
 ############################ PLOTS ###########################################
 ##############################################################################
 ##############################################################################
-
-
 def intraday(d, idict):
     pev = idict['previousClose']
     ts = d.index
@@ -480,6 +538,69 @@ def intraday(d, idict):
         yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($USD)", "standoff": 10}),
         xaxis=dict(showline=False, #title={"font":dict(size=24), "standoff": 10}
                    )
+    )
+    return fig
+
+
+def intraday_prophet(d, idict):
+    pev = idict['previousClose']
+    current_price = d['Close'][-1]
+    color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
+
+    x = d.index.to_list()
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # plot price
+    fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
+                             line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
+                                   "width": 2,
+                                   },
+                             hovertemplate='<i>Price</i>: $%{y:.2f}'
+                                           + '<br><i>Time</i>: %{x| %H:%M}'
+                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
+                             ),
+                  secondary_y=False)
+
+    # plot volume bars
+    fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
+                         marker={
+                             "color": "magenta",  # "#0FCFFF"
+                         },
+                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
+                         ), secondary_y=True)
+
+    # plot yhat
+    fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
+                             line=dict(color='rgba(0,0,0,1)', width=1),
+                             hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
+                                           '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+                             showlegend=False),
+                  secondary_y=False)
+
+    # plot trend error bands
+    upper = d.trend_upper.to_list()
+    lower = d.trend_lower.to_list()
+
+    fig.add_trace(go.Scatter(x=x + x[::-1],
+                             y=upper + lower[::-1],
+                             fill='toself',
+                             fillcolor='rgba(0,100,80,.25)',
+                             line=dict(color='rgba(255,255,255,0)'),
+                             hoverinfo='skip',
+                             showlegend=False),
+                  secondary_y=False)
+
+    fig.update_layout(
+        hovermode="closest",
+        hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
+        #                   template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
+        yaxis=dict(showgrid=False, title={"text": "Price ($)", "standoff": 1}),
+        yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1}),
+        xaxis=dict(showline=False)
     )
     return fig
 
@@ -822,6 +943,46 @@ def plot_news_item(title, link, source, pub_when, thumb):
     return fig
 
 
+def prophecy(d, forecast_period=15):
+    '''
+    prophecy - FORECAST FUTURE STOCK PRICE
+
+    Inputs:
+    d                  Price history DataFrame (yfinance)
+    forecast_period    Number of minutes of future forecast to predict
+
+    '''
+    d.index.names = ['ds']  # rename index to ds
+    d = d.tz_localize(None)  # make timezone naive, for prophet
+
+    ds = d.reset_index()  # make index (ds) a column
+    ds = ds.loc[:, ['ds', 'Close']].rename(columns={'Close': 'y'})
+
+    # Make the prophet model and fit on the data
+    gm_prophet = Prophet(n_changepoints=len(ds), changepoint_prior_scale=1.0, changepoint_range=1.0,
+                         #                      yearly_seasonality=False,weekly_seasonality=False,daily_seasonality=False,
+                         #                      seasonality_mode='multiplicative',
+                         #                      uncertainty_samples=1000,
+                         #                      seasonality_prior_scale=0.01,
+                         #                      mcmc_samples=0,
+                         )
+    gm_prophet.fit(ds)
+
+    # predict:
+    # Make a future dataframe
+    gm_forecast = gm_prophet.make_future_dataframe(periods=forecast_period, freq='T')
+    # Make predictions
+    gm_forecast = gm_prophet.predict(gm_forecast)
+    # gm_forecast
+    gm_forecast = gm_forecast.set_index(gm_forecast.ds).loc[:, ['yhat', 'yhat_lower', 'yhat_upper',
+                                                                'trend', 'trend_lower', 'trend_upper']]
+    # merge
+    d = gm_forecast.merge(d, how='outer', on='ds')
+
+    fig = intraday_prophet(d)
+
+    return fig
+
 ########################################################################################
 ########################################################################################
 #################################### MAIN Code #########################################
@@ -956,7 +1117,6 @@ with st.container():
     after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     # col3: interval
 
-
     period_tabs = st.tabs(list(period_dict))
 
     for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
@@ -994,6 +1154,7 @@ with st.container():
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
+            st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
 gticker=stock+":"+exchange
