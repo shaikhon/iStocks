@@ -1120,8 +1120,7 @@ with st.container():
             pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
 
             pcol1.header(idict['shortName'])
-            pcol1.subheader(period_name)
-            
+
             interval = pcol3.selectbox("Interval:",
                                           interval_lst,
                                           # list(offset_dict),
@@ -1152,7 +1151,7 @@ with st.container():
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
-            if period_name in ["1d", "5d"]:
+            if period_name in ["1D", "1W"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
 
 ########################################################################################
