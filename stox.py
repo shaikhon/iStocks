@@ -1120,6 +1120,8 @@ with st.container():
             pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
 
             pcol1.header(idict['shortName'])
+            pcol1.subheader(period_name)
+            
             interval = pcol3.selectbox("Interval:",
                                           interval_lst,
                                           # list(offset_dict),
