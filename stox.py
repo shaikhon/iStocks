@@ -1152,7 +1152,7 @@ with st.container():
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
-            if period_name in ["1D", "1W"]:
+            if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
 
 ########################################################################################
