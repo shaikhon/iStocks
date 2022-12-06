@@ -570,14 +570,14 @@ def intraday_prophet(d, idict):
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=True)
 
-    # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
-                             # line=dict(color='rgba(255,255,255,1)', width=1),
-                             line=dict(color=color, width=1),
-                             hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
-                                           '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
-                             showlegend=False),
-                  secondary_y=False)
+    # # plot yhat
+    # fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
+    #                          # line=dict(color='rgba(255,255,255,1)', width=1),
+    #                          line=dict(color=color, width=1),
+    #                          hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
+    #                                        '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+    #                          showlegend=False),
+    #               secondary_y=False)
 
     # plot trend error bands
     upper = d.trend_upper.to_list()
