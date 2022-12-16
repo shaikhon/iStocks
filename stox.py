@@ -560,7 +560,7 @@ def intraday_prophet(d, idict):
                                            + '<br><i>Time</i>: %{x| %H:%M}'
                                            + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
-                  secondary_y=False)
+                  secondary_y=True)
 
     # plot volume bars
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
@@ -568,7 +568,7 @@ def intraday_prophet(d, idict):
                              "color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
-                         ), secondary_y=True)
+                         ), secondary_y=False)
 
     # # plot yhat
     # fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
@@ -592,6 +592,17 @@ def intraday_prophet(d, idict):
                              showlegend=False),
                   secondary_y=False)
 
+    # plot price
+    fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
+                             line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
+                                   "width": 2,
+                                   },
+                             hovertemplate='<i>Price</i>: $%{y:.2f}'
+                                           + '<br><i>Time</i>: %{x| %H:%M}'
+                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
+                             ),
+                  secondary_y=True)
+    
     fig.update_layout(
         hovermode="closest",
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
