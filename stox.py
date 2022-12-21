@@ -570,14 +570,14 @@ def intraday_prophet(d, d_original, idict):
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=False)
 
-    # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
-                             # line=dict(color='rgba(255,255,255,1)', width=1),
-                             line=dict(color=color, width=1),
-                             hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
-                                           '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
-                             showlegend=False),
-                  secondary_y=False)
+    # # plot yhat
+    # fig.add_trace(go.Scatter(mode='lines', x=x, y=d.yhat,
+    #                          # line=dict(color='rgba(255,255,255,1)', width=1),
+    #                          line=dict(color=color, width=1),
+    #                          hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
+    #                                        '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+    #                          showlegend=False),
+    #               secondary_y=False)
 
     # plot trend error bands
     upper = d.trend_upper.to_list()
@@ -592,16 +592,16 @@ def intraday_prophet(d, d_original, idict):
                              showlegend=False),
                   secondary_y=True)
 
-    # # plot price
-    # fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
-    #                          line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
-    #                                "width": 2,
-    #                                },
-    #                          hovertemplate='<i>Price</i>: $%{y:.2f}'
-    #                                        + '<br><i>Time</i>: %{x| %H:%M}'
-    #                                        + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
-    #                          ),
-    #               secondary_y=True)
+    # plot price
+    fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
+                             line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
+                                   "width": 2,
+                                   },
+                             hovertemplate='<i>Price</i>: $%{y:.2f}'
+                                           + '<br><i>Time</i>: %{x| %H:%M}'
+                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
+                             ),
+                  secondary_y=True)
     
     fig.update_layout(
         hovermode="closest",
