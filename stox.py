@@ -1163,9 +1163,10 @@ with st.container():
             # else:
             #     st.info(f"The selected interval is not allowed, please select a different interval.")
 
-            st.plotly_chart(intraday(d, idict), use_container_width=True)
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
+            else:
+                st.plotly_chart(intraday(d, idict), use_container_width=True)
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
