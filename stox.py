@@ -1202,7 +1202,7 @@ with st.expander(stock + ' Financial Health'):
                 st.plotly_chart(px_income(qf), use_container_width=True)
             with profit_cols[1]:
                 st.subheader(stock + " BALANCE SHEET")
-                st.plotly_chart(bs_fig(bs), use_container_width=True)
+                # st.plotly_chart(bs_fig(bs), use_container_width=True)
     with ytab:
         yfin = ticker.financials.T
         bs = ticker.balance_sheet.T
@@ -1214,7 +1214,7 @@ with st.expander(stock + ' Financial Health'):
                 st.plotly_chart(px_income(yfin), use_container_width=True)
             with profit_cols[1]:
                 st.subheader(stock + " BALANCE SHEET")
-                st.plotly_chart(bs_fig(bs), use_container_width=True)
+                # st.plotly_chart(bs_fig(bs), use_container_width=True)
     # '---'
     # st.subheader(stock + " BALANCE SHEET")
     # qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
