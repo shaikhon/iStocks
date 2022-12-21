@@ -542,9 +542,9 @@ def intraday(d, idict):
     return fig
 
 
-def intraday_prophet(d, idict):
+def intraday_prophet(d, d_original, idict):
     pev = idict['previousClose']
-    current_price = d['Close'][-1]
+    current_price = d_original['Close'][-1]
     color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
 
     x = d.index.to_list()
@@ -1164,7 +1164,7 @@ with st.container():
             st.plotly_chart(intraday(d, idict), use_container_width=True)
             st.write(d.head(5))
             if period_name in ["1D"]:
-                st.plotly_chart(intraday_prophet(prophecy(d), idict), use_container_width=True)
+                st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
