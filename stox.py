@@ -955,7 +955,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
     return fig
 
 
-def prophecy(d, forecast_period=15):
+def prophecy(d, forecast_period=5):
     '''
     prophecy - FORECAST FUTURE STOCK PRICE
 
