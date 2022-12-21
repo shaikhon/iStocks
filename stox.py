@@ -528,6 +528,7 @@ def intraday(d, idict):
     # limegreen, lime, #E1FF00, #ccff00
 
     fig.update_layout(
+        hovermode="closest",
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
         template="plotly_dark",
         margin=dict(t=10,b=10,l=10,r=10),
@@ -606,16 +607,13 @@ def intraday_prophet(d, d_original, idict):
     fig.update_layout(
         hovermode="closest",
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
-        #                   template="plotly_dark",
+        template="plotly_dark",
+        margin=dict(t=10, b=10, l=10, r=10),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
-        # yaxis=dict(showgrid=False, title={"text": "Price ($)", "standoff": 1}),
-        # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1}),
-
         yaxis=dict(showgrid=False, title={"font": dict(size=24), "text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font": dict(size=24), "text": "Price ($USD)", "standoff": 10}),
-
         xaxis=dict(showline=False)
     )
     return fig
