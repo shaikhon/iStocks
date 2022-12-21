@@ -610,8 +610,12 @@ def intraday_prophet(d, d_original, idict):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
-        yaxis=dict(showgrid=False, title={"text": "Price ($)", "standoff": 1}),
-        yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1}),
+        # yaxis=dict(showgrid=False, title={"text": "Price ($)", "standoff": 1}),
+        # yaxis2=dict(showgrid=False, title={"text": "Volume", "standoff": 1}),
+
+        yaxis=dict(showgrid=False, title={"font": dict(size=24), "text": "Volume", "standoff": 10}),
+        yaxis2=dict(showgrid=False, title={"font": dict(size=24), "text": "Price ($USD)", "standoff": 10}),
+
         xaxis=dict(showline=False)
     )
     return fig
@@ -1162,7 +1166,6 @@ with st.container():
             #     st.info(f"The selected interval is not allowed, please select a different interval.")
 
             st.plotly_chart(intraday(d, idict), use_container_width=True)
-            st.write(d.head(5))
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
 
