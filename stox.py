@@ -590,18 +590,18 @@ def intraday_prophet(d, d_original, idict):
                              line=dict(color='rgba(255,255,255,1)'),
                              hoverinfo='skip',
                              showlegend=False),
-                  secondary_y=False)
-
-    # plot price
-    fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
-                             line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
-                                   "width": 2,
-                                   },
-                             hovertemplate='<i>Price</i>: $%{y:.2f}'
-                                           + '<br><i>Time</i>: %{x| %H:%M}'
-                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
-                             ),
                   secondary_y=True)
+
+    # # plot price
+    # fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
+    #                          line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
+    #                                "width": 2,
+    #                                },
+    #                          hovertemplate='<i>Price</i>: $%{y:.2f}'
+    #                                        + '<br><i>Time</i>: %{x| %H:%M}'
+    #                                        + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
+    #                          ),
+    #               secondary_y=True)
     
     fig.update_layout(
         hovermode="closest",
