@@ -1022,6 +1022,7 @@ tlbls = ['DATE', 'MARKET','TIME NOW']
 columns = st.columns([2,2,1], gap="small")
 for col, tlbl, time_info in zip(columns, tlbls, time_infos):
     col.caption(tlbl)
+    col.text(tlbl)
     col.markdown(time_info)
 
 # titlbl1, titlbl2, titlbl3 = st.columns([2,2,1], gap="small")
