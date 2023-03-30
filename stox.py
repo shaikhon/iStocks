@@ -544,7 +544,7 @@ def intraday(d, idict):
 
 
 def intraday_prophet(d, d_original, idict):
-    idict
+    print(idict)
     pev = idict['previousClose']
     current_price = d_original['Close'][-1]
     color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
