@@ -499,10 +499,13 @@ def short_dict():
 ##############################################################################
 ##############################################################################
 def intraday(d, idict):
-    pev = idict['previousClose']
-    ts = d.index
+    pev = idict['regularMarketPreviousClose']
+    open = idict['regularMarketOpen']
+
     current_price = d['Close'][-1]
-    color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
+    color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
+
+    ts = d.index
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -544,7 +547,7 @@ def intraday(d, idict):
 
 
 def intraday_prophet(d, d_original, idict):
-    print(idict)
+    # print(idict)
     pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
 
