@@ -263,7 +263,7 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["MARKET CAP", "AVG VOLUME", "PE RATIO", "DIVIDEND YIELD"]
         loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
 
-        smry_metrics = [ginfo['current_price'], ginfo['regularMarketPreviousClose'],
+        smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
                         "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
