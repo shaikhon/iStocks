@@ -1016,10 +1016,22 @@ today_str = datetime.strftime(today, "%A, %d %B %Y")
 time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
 # st.title(title)
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
-titcol1.text(today_str)
+
+time_infos = [today_str, 'CLOSED', time_str]
+tlbls = ['DATE', 'MARKET','TIME NOW']
+columns = st.columns([2,2,1], gap="small")
+for col, tlbl, time_info in zip(columns, tlbls, time_infos):
+    col.caption(tlbl)
+    col.markdown(time_info)
+
+# titlbl1, titlbl2, titlbl3 = st.columns([2,2,1], gap="small")
+# titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
+
+# col.markdown(str(metric))
+
+# titcol1.text(today_str)
 # titcol2.write(welcome)
-titcol3.text(time_str)
+# titcol3.text(time_str)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
