@@ -261,7 +261,7 @@ def gf_metrics(ginfo, idict, isetf):
     if 'N' in isetf:  # for stocks
 
         flabels = ["MARKET CAP", "AVG VOLUME", "PE RATIO", "DIVIDEND YIELD"]
-        loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
+        loclbl = ["REGION", "EPS", "FORWARD EARNINGS", "BOOK VALUE"]
 
         smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
                         "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
@@ -270,8 +270,7 @@ def gf_metrics(ginfo, idict, isetf):
 
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
 
-        lmetrics = [idict["region"],
-                    idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
+        lmetrics = [idict["region"], idict['epsCurrentYear'], idict['epsForward'], [{idict["bookValue"]}]]
 
     else:  # for ETFs
 
