@@ -263,8 +263,8 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["MARKET CAP", "AVG VOLUME", "PE RATIO", "DIVIDEND YIELD"]
         loclbl = ["SECTOR", "HEADQUARTERS", "EMPLOYEES", "WEBSITE"]
 
-        smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
-                        "$"+str(idict['dayHigh']), "$"+str(idict['dayLow'])]
+        smry_metrics = [ginfo['current_price'], ginfo['regularMarketPreviousClose'],
+                        "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
@@ -279,8 +279,8 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
         loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
 
-        smry_metrics = [idict['regularMarketPrice'], idict['previousClose'],
-                                 idict['dayHigh'], idict['dayLow']]
+        smry_metrics = [idict['regularMarketPrice'], idict['regularMarketPreviousClose'],
+                                 idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
