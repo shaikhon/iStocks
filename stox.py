@@ -1021,9 +1021,8 @@ time_infos = [today_str, 'CLOSED', time_str]
 tlbls = ['DATE', 'MARKET','TIME NOW']
 columns = st.columns([2,2,1], gap="small")
 for col, tlbl, time_info in zip(columns, tlbls, time_infos):
-    col.caption(tlbl)
-    col.text(tlbl)
     col.markdown(time_info)
+    col.caption(tlbl)
 
 # titlbl1, titlbl2, titlbl3 = st.columns([2,2,1], gap="small")
 # titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
