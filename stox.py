@@ -1193,6 +1193,7 @@ gf_metrics(ginfo, idict, isetf)
 ########################################################################################
 ################################ FINANCIAL HEALTH ######################################
 ########################################################################################
+# "yfinance failed to decrypt Yahoo data response"
 # with st.expander(stock + ' Financial Health'):
 #     st.subheader(stock + " BALANCE SHEET HEALTH")
 #     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
@@ -1301,18 +1302,19 @@ with st.expander(stock + ' Holders'):
 ########################################################################################
 ################################# BALANCE SHEET ########################################
 ########################################################################################
-with st.expander(stock + ' Balance Sheet'):
-    qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
-    with qbtab:
-        df = (ticker.quarterly_balance_sheet // 1000000)
-        if not df.empty:
-            st.dataframe(bs_df(df), use_container_width=True)
-            st.text("* in Millions")
-    with ybtab:
-        df = (ticker.balance_sheet // 1000000)
-        if not df.empty:
-            st.dataframe(bs_df(df), use_container_width=True)
-            st.text("* in Millions")
+# "yfinance failed to decrypt Yahoo data response"
+# with st.expander(stock + ' Balance Sheet'):
+#     qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
+#     with qbtab:
+#         df = (ticker.quarterly_balance_sheet // 1000000)
+#         if not df.empty:
+#             st.dataframe(bs_df(df), use_container_width=True)
+#             st.text("* in Millions")
+#     with ybtab:
+#         df = (ticker.balance_sheet // 1000000)
+#         if not df.empty:
+#             st.dataframe(bs_df(df), use_container_width=True)
+#             st.text("* in Millions")
 
 ########################################################################################
 ###################################### NEWS ############################################
