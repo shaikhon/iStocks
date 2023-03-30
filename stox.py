@@ -547,6 +547,7 @@ def intraday(d, idict):
 
 
 def intraday_prophet(d, d_original, idict):
+
     print(idict)
     pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
@@ -555,7 +556,6 @@ def intraday_prophet(d, d_original, idict):
     color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
 
     x = d.index.to_list()
-
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # # plot price
@@ -1168,6 +1168,8 @@ with st.container():
             #     ).dropna()
             # else:
             #     st.info(f"The selected interval is not allowed, please select a different interval.")
+            
+            print(idict)
 
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
