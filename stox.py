@@ -1190,76 +1190,75 @@ gf_metrics(ginfo, idict, isetf)
 # idict["recommendationKey"]
 
 
-
 ########################################################################################
 ################################ FINANCIAL HEALTH ######################################
 ########################################################################################
-with st.expander(stock + ' Financial Health'):
-    st.subheader(stock + " BALANCE SHEET HEALTH")
-    qtab, ytab = st.tabs(["Quarterly", "Yearly"])
-    with qtab:
-        qf = ticker.quarterly_financials.T
-        bs = ticker.quarterly_balance_sheet.T
-
-        if not qf.empty:
-            profit_cols = st.columns(2)
-            with profit_cols[0]:
-                st.subheader(stock + " PROFITS")
-                st.plotly_chart(px_income(qf), use_container_width=True)
-            with profit_cols[1]:
-                st.subheader(stock + " BALANCE SHEET")
-                # st.plotly_chart(bs_fig(bs), use_container_width=True)
-    with ytab:
-        yfin = ticker.financials.T
-        bs = ticker.balance_sheet.T
-
-        if not yfin.empty:
-            profit_cols = st.columns(2)
-            with profit_cols[0]:
-                st.subheader(stock + " PROFITS")
-                st.plotly_chart(px_income(yfin), use_container_width=True)
-            with profit_cols[1]:
-                st.subheader(stock + " BALANCE SHEET")
-                # st.plotly_chart(bs_fig(bs), use_container_width=True)
-    # '---'
-    # st.subheader(stock + " BALANCE SHEET")
-    # qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
-    # with qbtab:
-    #     df = ticker.quarterly_balance_sheet.T
-    #     if not df.empty:
-    #         st.plotly_chart(bs_fig(df), use_container_width=True)
-    # with ybtab:
-    #     df = ticker.balance_sheet.T
-    #     if not df.empty:
-    #         st.plotly_chart(bs_fig(df), use_container_width=True)
-
-    '---'
-    st.subheader(stock + " SHORT INTEREST")
-    dstab, mstab = st.tabs(["Daily", "Monthly"])
-    with dstab:
-        # today_datetime = datetime.now()
-        # today_str = datetime.strftime(today_datetime, "%Y-%m-%d")
-        # datetime.strftime(today_datetime, "%A %d-%B-%Y")
-
-        sr, last_mod = short_dict()
-        ss = sr[stock]
-
-        scols = st.columns(len(ss))
-        for scol, (k,v) in zip(scols, ss.items()):
-            if "Date" not in k:
-                if "Ratio" in k:
-                    scol.metric(k,v)
-                else:
-                    scol.metric(k,f"{float(v):,}")
-
-        st.write("As Of: "+last_mod)
-        # daily short volume, daily short ratio, NYSE
-
-    with mstab:
-        st.metric("SHORT INTEREST", f"${millify(idict['sharesShort'])} Shares",
-                  f"{round((idict['sharesShort']-idict['sharesShortPriorMonth'])/idict['sharesShortPriorMonth']*100,1)}% MoM",
-                  delta_color="inverse",
-                  help="Shares short this month")
+# with st.expander(stock + ' Financial Health'):
+#     st.subheader(stock + " BALANCE SHEET HEALTH")
+#     qtab, ytab = st.tabs(["Quarterly", "Yearly"])
+#     with qtab:
+#         qf = ticker.quarterly_financials.T
+#         bs = ticker.quarterly_balance_sheet.T
+#
+#         if not qf.empty:
+#             profit_cols = st.columns(2)
+#             with profit_cols[0]:
+#                 st.subheader(stock + " PROFITS")
+#                 st.plotly_chart(px_income(qf), use_container_width=True)
+#             with profit_cols[1]:
+#                 st.subheader(stock + " BALANCE SHEET")
+#                 # st.plotly_chart(bs_fig(bs), use_container_width=True)
+#     with ytab:
+#         yfin = ticker.financials.T
+#         bs = ticker.balance_sheet.T
+#
+#         if not yfin.empty:
+#             profit_cols = st.columns(2)
+#             with profit_cols[0]:
+#                 st.subheader(stock + " PROFITS")
+#                 st.plotly_chart(px_income(yfin), use_container_width=True)
+#             with profit_cols[1]:
+#                 st.subheader(stock + " BALANCE SHEET")
+#                 # st.plotly_chart(bs_fig(bs), use_container_width=True)
+#     # '---'
+#     # st.subheader(stock + " BALANCE SHEET")
+#     # qbtab, ybtab = st.tabs(["Quarterly", "Yearly"])
+#     # with qbtab:
+#     #     df = ticker.quarterly_balance_sheet.T
+#     #     if not df.empty:
+#     #         st.plotly_chart(bs_fig(df), use_container_width=True)
+#     # with ybtab:
+#     #     df = ticker.balance_sheet.T
+#     #     if not df.empty:
+#     #         st.plotly_chart(bs_fig(df), use_container_width=True)
+#
+#     '---'
+#     st.subheader(stock + " SHORT INTEREST")
+#     dstab, mstab = st.tabs(["Daily", "Monthly"])
+#     with dstab:
+#         # today_datetime = datetime.now()
+#         # today_str = datetime.strftime(today_datetime, "%Y-%m-%d")
+#         # datetime.strftime(today_datetime, "%A %d-%B-%Y")
+#
+#         sr, last_mod = short_dict()
+#         ss = sr[stock]
+#
+#         scols = st.columns(len(ss))
+#         for scol, (k,v) in zip(scols, ss.items()):
+#             if "Date" not in k:
+#                 if "Ratio" in k:
+#                     scol.metric(k,v)
+#                 else:
+#                     scol.metric(k,f"{float(v):,}")
+#
+#         st.write("As Of: "+last_mod)
+#         # daily short volume, daily short ratio, NYSE
+#
+#     with mstab:
+#         st.metric("SHORT INTEREST", f"${millify(idict['sharesShort'])} Shares",
+#                   f"{round((idict['sharesShort']-idict['sharesShortPriorMonth'])/idict['sharesShortPriorMonth']*100,1)}% MoM",
+#                   delta_color="inverse",
+#                   help="Shares short this month")
 
 #################################################################
 ####################### OPTIONS #################################
