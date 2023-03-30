@@ -270,9 +270,8 @@ def gf_metrics(ginfo, idict, isetf):
 
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
 
-        lmetrics = [idict["sector"], idict["city"] + ", " + idict["country"],
+        lmetrics = [idict["region"],
                     idict["fullTimeEmployees"], f'[{idict["shortName"]}]({idict["website"]})']
-
 
     else:  # for ETFs
 
@@ -525,8 +524,6 @@ def intraday(d, idict):
                          ),
                   # secondary_y=False
                   )
-
-
 
     # limegreen, lime, #E1FF00, #ccff00
 
