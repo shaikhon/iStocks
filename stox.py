@@ -270,7 +270,7 @@ def gf_metrics(ginfo, idict, isetf):
 
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
 
-        lmetrics = [idict["region"], idict['epsCurrentYear'], idict['epsForward'], [{idict["bookValue"]}]]
+        lmetrics = [idict["region"], idict['epsCurrentYear'], idict['epsForward'], {idict["bookValue"]}]
 
     else:  # for ETFs
 
