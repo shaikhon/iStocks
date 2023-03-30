@@ -1168,7 +1168,7 @@ with st.container():
             #     ).dropna()
             # else:
             #     st.info(f"The selected interval is not allowed, please select a different interval.")
-            
+
             print(idict)
 
             if period_name in ["1D"]:
