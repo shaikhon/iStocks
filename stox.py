@@ -254,23 +254,24 @@ def yf_metrics(idict, isetf):
 
 def gf_metrics(ginfo, idict, isetf):
     # Calculations:
-    div_yld = 0 if "-" in ginfo["dividend_yield"] else ginfo["dividend_yield"]
+    # div_yld = 0 if "-" in ginfo["dividend_yield"] else ginfo["dividend_yield"]
     # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
     smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
 
     if 'N' in isetf:  # for stocks
 
-        flabels = ["MARKET CAP", "AVG VOLUME", "PE RATIO", "DIVIDEND YIELD"]
-        loclbl = ["REGION", "EPS", "FORWARD EARNINGS", "BOOK VALUE"]
+        flabels = ["MARKET CAP", "AVG VOLUME", "EPS", "FORWARD EPS"]
+        loclbl = ["REGION", "FOUNDED", "EMPLOYEES", "CEO"]
+        # loclbl = ["REGION", "EPS", "FORWARD EPS", "BOOK VALUE"]
 
         smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
                         "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
-        peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
+        # peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
-        fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], peg, div_yld]
+        fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], idict['epsCurrentYear'],  idict['epsForward']]
 
-        lmetrics = [idict["region"], idict['epsCurrentYear'], idict['epsForward'], {idict["bookValue"]}]
+        lmetrics = [idict["region"], ginfo['founded'], ginfo['employees'], ginfo["ceo"]]
 
     else:  # for ETFs
 
@@ -281,7 +282,9 @@ def gf_metrics(ginfo, idict, isetf):
                                  idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
-        fmetrics = [idict["totalAssets"], idict["volume"], avg_return, div_yld]
+        # trailingThreeMonthReturns
+        fmetrics = [idict["totalAssets"], idict["volume"], avg_return, 0]
+        # netAssets, ytdReturn
         lmetrics = [idict["category"], idict["exchange"], idict["market"], idict["exchangeTimezoneName"]]
 
     with st.container():
@@ -1178,8 +1181,6 @@ with st.container():
             # else:
             #     st.info(f"The selected interval is not allowed, please select a different interval.")
 
-            idict
-
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
             else:
@@ -1341,6 +1342,7 @@ with st.container():
 ########################################################################################
 ##################################### TESTING ##########################################
 ########################################################################################
+idict
 ginfo
 # n_cols = 10
 # df1 = pd.DataFrame(
