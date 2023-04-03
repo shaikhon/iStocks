@@ -274,7 +274,7 @@ def gf_metrics(ginfo, idict, isetf):
         lmetrics = [idict["region"], ginfo['founded'], ginfo['employees'], ginfo["ceo"]]
 
     else:  # for ETFs
-
+        # NEED FIXING
         flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
         loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
 
