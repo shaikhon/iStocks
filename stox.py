@@ -1143,7 +1143,6 @@ with st.container():
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
 
-    plt_col3.metric(nas_name, f"{idict['open']:,}", round(idict['open']-idict['previousClose'],2))
 
     # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     after_hours = False
@@ -1165,6 +1164,11 @@ with st.container():
                                           )
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
+            d
+
+            # PRICE METRIC
+            # plt_col3.metric(nas_name, f"{idict['currentPrice']:,}", round(idict['currentPrice']-idict['previousClose'],2))
+
             # d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
 
