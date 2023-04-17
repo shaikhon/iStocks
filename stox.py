@@ -278,7 +278,7 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
         loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
 
-        smry_metrics = [idict['regularMarketPrice'], idict['regularMarketPreviousClose'],
+        smry_metrics = [idict['regularMarketPrice'], idict['previousClose'],
                                  idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
@@ -1142,7 +1142,11 @@ with st.container():
     #                '1mo': '1M', '3mo': '3M'}
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
-    after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
+
+    plt_col3.metric(nas_name, f"{idict['open']:,}", round(idict['open']-idict['previousClose'],2))
+
+    # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
+    after_hours = False
     # col3: interval
 
     period_tabs = st.tabs(list(period_dict))
@@ -1537,7 +1541,8 @@ with st.container():
         cc.image(image, use_column_width=False, width=70)
         cc.markdown(f"[{site}]({link})")
 
-if rfrsh_col.button('Refresh', help="You can also refresh by pressing 'R'"):
-    st.experimental_rerun()
+# REFRESH BUTTON
+# if rfrsh_col.button('Refresh', help="You can also refresh by pressing 'R'"):
+#     st.experimental_rerun()
 # time.sleep(st.session_state.rate)
 # st.experimental_rerun()
