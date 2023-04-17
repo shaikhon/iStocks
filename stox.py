@@ -1146,13 +1146,11 @@ with st.container():
     # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
     #                             index=0, key="period")
 
-
     # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     after_hours = False
-    # col3: interval
 
+    # PRICE CHART
     period_tabs = st.tabs(list(period_dict))
-
     for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
         with ptab:
             pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
@@ -1167,11 +1165,6 @@ with st.container():
                                           )
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
-            d
-            currentPrice = d.Close.tolist()[-1]
-
-            # PRICE METRIC
-            plt_col3.metric(nas_name, f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
 
             # d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
@@ -1197,6 +1190,10 @@ with st.container():
                 st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
             else:
                 st.plotly_chart(intraday(d, idict), use_container_width=True)
+
+    currentPrice = d.Close.tolist()[-1]
+    # PRICE METRIC
+    plt_col3.metric(nas_name, f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
