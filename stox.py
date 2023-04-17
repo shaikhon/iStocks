@@ -257,6 +257,8 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
     # div_yld = 0 if "-" in ginfo["dividend_yield"] else ginfo["dividend_yield"]
     # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
     smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
+    smry_metrics = [currentPrice, "$" + str(idict['previousClose']),
+                    "$" + str(idict['regularMarketDayHigh']), "$" + str(idict['regularMarketDayLow'])]
     idict
     ginfo
     if 'N' in isetf:  # for stocks
@@ -264,9 +266,9 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         flabels = ["MARKET CAP", "AVG VOLUME", "FORWARD EPS", "TRAILING EPS"]
         loclbl = ["SECTOR", "FOUNDED", "EMPLOYEES", "CEO"]
         # loclbl = ["REGION", "EPS", "FORWARD EPS", "BOOK VALUE"]
-
-        smry_metrics = [currentPrice, ginfo['previous_close'],
-                        "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
+        # trailingPE
+        # smry_metrics = [currentPrice, ginfo['previous_close'],
+        #                 "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         # peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
@@ -275,17 +277,18 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
 
     else:  # for ETFs
         # NEED FIXING
-        flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
-        loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
+        flabels = ["MARKET CAP", "TOTAL ASSETS", "AVG VOLUME", "TRAILING PE"]
+        # "3YR AVG RETURN", "DIVIDEND YIELD", ytdReturn
+        loclbl = ["FOUNDED", "CATEGORY", 'EXCHANGE', "TIME ZONE"]
 
-        smry_metrics = [currentPrice, idict['previousClose'],
-                                 idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
+        # smry_metrics = [currentPrice, idict['previousClose'],
+        #                          idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         # trailingThreeMonthReturns
-        fmetrics = [idict["totalAssets"], idict["volume"], avg_return, 0]
+        fmetrics = [ginfo["market_cap"], idict["totalAssets"], idict["volume"], idict['trailingPE']]
         # netAssets, ytdReturn
-        lmetrics = [idict["category"], idict["exchange"], idict["market"], idict["exchangeTimezoneName"]]
+        lmetrics = [ginfo["founded"], idict["category"], idict["exchange"], idict["timeZoneFullName"]]
 
     with st.container():
         st.header(stock + ' Summary')
