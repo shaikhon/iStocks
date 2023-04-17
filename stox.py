@@ -1317,13 +1317,13 @@ with st.expander(stock + ' Holders'):
             st.subheader(stock + " TOP 10 INSTITUTIONS")
             st.plotly_chart(instit_pie(ticker), use_container_width=True)
 
-    else:
-        tab1, tab2 = st.tabs(["Holdings", "Insiders"])
-        df = pd.DataFrame(idict['holdings'])
-        with tab1:
-                st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
-        with tab2:
-                st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
+    # else:
+    #     tab1, tab2 = st.tabs(["Holdings", "Insiders"])
+    #     df = pd.DataFrame(idict['holdings'])
+    #     with tab1:
+    #             st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
+    #     with tab2:
+    #             st.plotly_chart(etf_holdings_pie(df), use_container_width=True)
 
 ########################################################################################
 ################################# BALANCE SHEET ########################################
