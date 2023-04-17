@@ -252,7 +252,7 @@ def yf_metrics(idict, isetf):
 
 
 
-def gf_metrics(ginfo, idict, isetf):
+def gf_metrics(currentPrice, ginfo, idict, isetf):
     # Calculations:
     # div_yld = 0 if "-" in ginfo["dividend_yield"] else ginfo["dividend_yield"]
     # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
@@ -265,7 +265,7 @@ def gf_metrics(ginfo, idict, isetf):
         loclbl = ["SECTOR", "FOUNDED", "EMPLOYEES", "CEO"]
         # loclbl = ["REGION", "EPS", "FORWARD EPS", "BOOK VALUE"]
 
-        smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
+        smry_metrics = [currentPrice, ginfo['previous_close'],
                         "$"+str(idict['regularMarketDayHigh']), "$"+str(idict['regularMarketDayLow'])]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         # peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
@@ -278,7 +278,7 @@ def gf_metrics(ginfo, idict, isetf):
         flabels = ["TOTAL ASSETS", "AVG VOLUME", "3YR AVG RETURN", "DIVIDEND YIELD"]
         loclbl = ["CATEGORY", 'EXCHANGE', "MARKET", "TIME ZONE"]
 
-        smry_metrics = [idict['regularMarketPrice'], idict['previousClose'],
+        smry_metrics = [currentPrice, idict['previousClose'],
                                  idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
@@ -1165,7 +1165,7 @@ with st.container():
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
             d
-            currentPrice = d.Close[-1]
+            currentPrice = d.Close.tolist()[-1]
 
             # PRICE METRIC
             plt_col3.metric(nas_name, f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
@@ -1205,7 +1205,7 @@ ginfo, news = google_stock_info(gticker)
 # yf_metrics(idict, isetf)
 
 "---"
-gf_metrics(ginfo, idict, isetf)
+gf_metrics(currentPrice, ginfo, idict, isetf)
 "---"
 
 ################## Target Price Bar ############################
