@@ -269,7 +269,7 @@ def gf_metrics(ginfo, idict, isetf):
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         # peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
-        fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], idict['epsCurrentYear'],  idict['epsForward']]
+        # fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], idict['epsCurrentYear'],  idict['epsForward']]
 
         lmetrics = [idict["region"], ginfo['founded'], ginfo['employees'], ginfo["ceo"]]
 
