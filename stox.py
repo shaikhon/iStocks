@@ -262,7 +262,7 @@ def gf_metrics(ginfo, idict, isetf):
     if 'N' in isetf:  # for stocks
 
         flabels = ["MARKET CAP", "AVG VOLUME", "FORWARD EPS", "TRAILING EPS"]
-        loclbl = ["HQ", "FOUNDED", "EMPLOYEES", "CEO"]
+        loclbl = ["SECTOR", "FOUNDED", "EMPLOYEES", "CEO"]
         # loclbl = ["REGION", "EPS", "FORWARD EPS", "BOOK VALUE"]
 
         smry_metrics = [ginfo['current_price'], ginfo['previous_close'],
@@ -271,7 +271,7 @@ def gf_metrics(ginfo, idict, isetf):
         # peg = 0 if "-" in ginfo["p/e_ratio"] else ginfo["p/e_ratio"]
 
         fmetrics = [ginfo["market_cap"], ginfo['avg_volume'], idict['forwardEps'],  idict['trailingEps']]
-        lmetrics = [ginfo["headquarters"], ginfo['founded'], ginfo['employees'], ginfo["ceo"]]
+        lmetrics = [idict["sector"], ginfo['founded'], ginfo['employees'], ginfo["ceo"]]
 
     else:  # for ETFs
         # NEED FIXING
