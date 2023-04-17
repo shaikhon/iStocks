@@ -1193,7 +1193,7 @@ with st.container():
 
     currentPrice = d.Close.tolist()[-1]
     # PRICE METRIC
-    plt_col3.metric(nas_name, f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
+    plt_col3.metric(stock+" PRICE", f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
 
 ########################################################################################
 ################################ GOOGLE FINANCE ########################################
