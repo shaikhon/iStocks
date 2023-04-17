@@ -1165,9 +1165,10 @@ with st.container():
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
             d
+            currentPrice = d.Close[-1]
 
             # PRICE METRIC
-            # plt_col3.metric(nas_name, f"{idict['currentPrice']:,}", round(idict['currentPrice']-idict['previousClose'],2))
+            plt_col3.metric(nas_name, f"{currentPrice:,}", round(currentPrice-idict['previousClose'],2))
 
             # d = d.loc[d.index.dayofweek < 5]
             # st.write(d.head(5))
