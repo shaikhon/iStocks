@@ -1119,7 +1119,7 @@ with st.container():
     # col1: Ticker input
     stock = plt_col1.selectbox(
         'Search a stock:',
-        list(ticker_dict.values()), index=list(ticker_dict).index('AMZN'), key="stock")
+        list(ticker_dict.values()), index=list(ticker_dict).index('SPY'), key="stock")
     stock = stock.split('-')[0].strip() # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
     isetf = etf_dict[stock]
     exchange = exchange_dict[stock]
