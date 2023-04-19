@@ -258,7 +258,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
     # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
     smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
     smry_metrics = [currentPrice, "$" + str(idict['previousClose']),
-                    "$" + str(idict['regularMarketDayHigh']), "$" + str(idict['regularMarketDayLow'])]
+                    f"${idict['regularMarketDayHigh']:7.2}", "$" + str(idict['regularMarketDayLow'])]
     idict
     ginfo
     if 'N' in isetf:  # for stocks
@@ -286,7 +286,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         # trailingThreeMonthReturns
-        fmetrics = [ginfo["market_cap"], idict["totalAssets"], millify(idict["volume"]), idict['trailingPE']]
+        fmetrics = [ginfo["market_cap"], "$"+millify(idict["totalAssets"]), "$"+millify(idict["volume"]), round(idict['trailingPE'],1)]
         # netAssets, ytdReturn
         lmetrics = [idict["quoteType"], idict["category"], ginfo["founded"], idict["timeZoneFullName"]]
 
