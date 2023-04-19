@@ -286,7 +286,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
         avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         # trailingThreeMonthReturns
-        fmetrics = [ginfo["market_cap"], idict["totalAssets"], idict["volume"], idict['trailingPE']]
+        fmetrics = [ginfo["market_cap"], idict["totalAssets"], millify(idict["volume"]), idict['trailingPE']]
         # netAssets, ytdReturn
         lmetrics = [idict["quoteType"], idict["category"], ginfo["founded"], idict["timeZoneFullName"]]
 
