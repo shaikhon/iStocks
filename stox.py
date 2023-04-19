@@ -279,7 +279,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         # NEED FIXING
         flabels = ["MARKET CAP", "TOTAL ASSETS", "AVG VOLUME", "TRAILING PE"]
         # "3YR AVG RETURN", "DIVIDEND YIELD", ytdReturn
-        loclbl = ["FOUNDED", "TYPE", 'CATEGORY', "TIME ZONE"]
+        loclbl = ["TYPE", 'CATEGORY', "FOUNDED", "TIME ZONE"]
 
         # smry_metrics = [currentPrice, idict['previousClose'],
         #                          idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
@@ -288,7 +288,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         # trailingThreeMonthReturns
         fmetrics = [ginfo["market_cap"], idict["totalAssets"], idict["volume"], idict['trailingPE']]
         # netAssets, ytdReturn
-        lmetrics = [ginfo["founded"], idict["quoteType"], idict["category"], idict["timeZoneFullName"]]
+        lmetrics = [idict["quoteType"], idict["category"], ginfo["founded"], idict["timeZoneFullName"]]
 
     with st.container():
         st.header(stock + ' Summary')
