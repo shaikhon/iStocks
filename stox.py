@@ -257,8 +257,8 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
     # div_yld = 0 if "-" in ginfo["dividend_yield"] else ginfo["dividend_yield"]
     # fin_labels = ["REVENUE", "NET INCOME", "OPEX", ]
     smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
-    smry_metrics = [currentPrice, "$" + str(idict['previousClose']),
-                    f"${idict['regularMarketDayHigh']:7.2f}", "$" + str(idict['regularMarketDayLow'])]
+    smry_metrics = [f"${currentPrice}", "$" + str(idict['previousClose']),
+                    f"${idict['regularMarketDayHigh']:6.2f}", "$" + str(idict['regularMarketDayLow'])]
     idict
     ginfo
     if 'N' in isetf:  # for stocks
