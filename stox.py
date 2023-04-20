@@ -73,19 +73,20 @@ def nyse_hrs():
     ny_open_str = ny_mkt_sch.market_open.iloc[0].strftime(now_fmt)
     ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
 
-    # np_close = today_sch.market_close.values[0]
-    # opend, opent = str(np_open).split('T') #[:10] #("%Y-%b-%d   %I:%M:%S%p   GMT%Z")
-    # print(f"Market Opens: {open_d}   {open_t[:5]}")
-    print(50 * "*")
-    print("TIMEZONE       NEW YORK         RIYADH")
-    print(50 * "^")
-    print(f"TIME NOW:      {ny_now_str}        {ry_now_str}")
-    print(50 * "^")
-    #     print(f"HOURS           NEW YORK         RIYADH")
-    print(f"NYSE Open:     {ny_open_str}        {ry_open_str}")
-    print(f"NYSE Close:    {ny_close_str}        {ry_close_str}")
-    print(50 * "^")
-    print(f"DATE:          {ny_today_str}        {ry_today_str}")
+    c1 = ['TIMEZONE', 'DATE', 'TIME NOW', 'NYSE OPEN', 'NYSE CLOSE']
+    c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
+    c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
+
+    columns = st.columns([2, 1, 1], gap="small")
+    for item in c1:
+        columns[0].caption(item)
+    for item in c2:
+        columns[1].markdown(item)
+    for item in c3:
+        columns[2].markdown(item)
+
+
+
 
 
 def get_tickers(date_str):
@@ -1030,7 +1031,8 @@ for col, tlbl, time_info in zip(columns, tlbls, time_infos):
     col.caption(tlbl)
     col.markdown(time_info)
 
-
+'---'
+nyse_hrs()
 # titlbl1, titlbl2, titlbl3 = st.columns([2,2,1], gap="small")
 # titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
 
