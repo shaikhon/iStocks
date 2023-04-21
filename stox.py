@@ -61,11 +61,6 @@ def nyse_hrs():
 
     ry_mkt_sch = nyse.schedule(start_date=ry_today_str, end_date=ry_tm_str, tz=ry)
     ny_mkt_sch = nyse.schedule(start_date=ny_today_str, end_date=ny_tm_str, tz=ny)
-    #     print(ry_mkt_sch)
-    #     print(ny_mkt_sch)
-
-    # print(today_sch.values)
-    # print(50*"*")
 
     ry_open_str = ry_mkt_sch.market_open.iloc[0].strftime(now_fmt)
     ry_close_str = ry_mkt_sch.market_close.iloc[0].strftime(now_fmt)
@@ -77,7 +72,7 @@ def nyse_hrs():
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
-    columns = st.columns([2, 1, 1], gap="small")
+    columns = st.columns([1, 1, 1], gap="small")
     for item in c1:
         columns[0].caption(item)
     for item in c2:
