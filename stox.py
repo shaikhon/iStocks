@@ -1019,7 +1019,6 @@ def prophecy(d, forecast_period=5):
 #################################### MAIN Code #########################################
 ########################################################################################
 ################################## TITLE & LOGO ########################################
-# title = '💎 **U.S. Stocks App** 💎'
 title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
@@ -1027,7 +1026,7 @@ author = 'Obai Shaikh'
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-
+'---'
 # TIMEZONE DATE AND TIME
 nyse_hrs()
 
