@@ -81,6 +81,22 @@ def nyse_hrs():
         columns[2].markdown(item)
 
 
+def time_and_date():
+    # OLD
+    # tz = timezone('US/Eastern')
+    tz = timezone('America/New_York')
+    today = datetime.now(tz)
+    today_str = datetime.strftime(today, "%A, %d %B %Y")
+    time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
+    # st.title(title)
+    st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
+
+    time_infos = [today_str, None, time_str]
+    tlbls = ['DATE', None, 'TIME NOW']
+    columns = st.columns([2, 2, 1], gap="small")
+    for col, tlbl, time_info in zip(columns, tlbls, time_infos):
+        col.caption(tlbl)
+        col.markdown(time_info)
 
 
 
@@ -1008,45 +1024,19 @@ def prophecy(d, forecast_period=5):
 title = '💎 U.S. Stocks App 💎'
 welcome = 'The Smart App for Analyzing U.S. Stocks'
 author = 'Obai Shaikh'
-
-# tz = timezone('US/Eastern')
-tz = timezone('America/New_York')
-
-
-today = datetime.now(tz)
-today_str = datetime.strftime(today, "%A, %d %B %Y")
-time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
-# st.title(title)
-st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-
-time_infos = [today_str, None, time_str]
-tlbls = ['DATE', None,'TIME NOW']
-columns = st.columns([2,2,1], gap="small")
-for col, tlbl, time_info in zip(columns, tlbls, time_infos):
-    col.caption(tlbl)
-    col.markdown(time_info)
-
-'---'
-nyse_hrs()
-# titlbl1, titlbl2, titlbl3 = st.columns([2,2,1], gap="small")
-# titcol1, titcol2, titcol3 = st.columns([2,2,1], gap="small")
-
-# col.markdown(str(metric))
-
-# titcol1.text(today_str)
-# titcol2.write(welcome)
-# titcol3.text(time_str)
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 
-# Session State:
+# TIMEZONE DATE AND TIME
+nyse_hrs()
+
+# SESSION STATE:
 if 'rate' not in st.session_state:
     st.session_state.rate = 30       # refresh rate, seconds
 ########################################################################################
 #################################### SIDEBAR ###########################################
 ########################################################################################
-
 # # Old Method: symbol + name (NYSE) - fixed file
 # url="https://ftp.nyse.com/Reference%20Data%20Samples/NYSE%20GROUP%20SECURITY%20MASTER/" \
 #     "NYSEGROUP_US_REF_SECURITYMASTERPREMIUM_EQUITY_4.0_20220927.txt"
