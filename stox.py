@@ -89,7 +89,6 @@ def time_and_date():
     today_str = datetime.strftime(today, "%A, %d %B %Y")
     time_str = datetime.strftime(today, "%I:%M:%S %p %Z")
     # st.title(title)
-    st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 
     time_infos = [today_str, None, time_str]
     tlbls = ['DATE', None, 'TIME NOW']
@@ -1027,6 +1026,7 @@ author = 'Obai Shaikh'
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
+st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 
 # TIMEZONE DATE AND TIME
 nyse_hrs()
