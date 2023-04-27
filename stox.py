@@ -75,7 +75,7 @@ def nyse_hrs():
     columns = st.columns([2, 2, 1], gap="small")
     for item in c1:
         # columns[0].caption(item)
-        columns[0].title(item)
+        columns[0].header(item)
     for item in c2:
         columns[1].markdown(item)
     for item in c3:
@@ -1028,7 +1028,7 @@ author = 'Obai Shaikh'
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-st.markdown(f"<h1 style='text-align: center; color: lime;'>{welcome}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1 style='text-align: center; color: cyan;'>{welcome}</h1>", unsafe_allow_html=True)
 '---'
 # TIMEZONE DATE AND TIME
 nyse_hrs()
