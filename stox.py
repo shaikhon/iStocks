@@ -1028,7 +1028,7 @@ author = 'Obai Shaikh'
 # ":dollar: :moneybag: :money_with_wings: :fire:"
 # st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
-st.markdown(f"<h1 style='text-align: center; color: white; font-size: small'>{welcome}</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1 style='text-align: center; color: white; font-size: medium'>{welcome}</h1>", unsafe_allow_html=True)
 '---'
 # TIMEZONE DATE AND TIME
 nyse_hrs()
