@@ -75,11 +75,40 @@ def nyse_hrs():
     columns = st.columns([2, 2, 1], gap="small")
     for item in c1:
         # columns[0].caption(item)
-        columns[0].markdown(f":grey[{item}]")
+        columns[0].markdown(f":gray[{item}]")
     for item in c2:
         columns[1].markdown(item)
     for item in c3:
         columns[2].markdown(item)
+
+def major_markets():
+    # MAJOR INDEXES (GOOGLE FINANCE):
+    dj_index, sp_index, nas_index = ".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
+
+    # FUTURES (NOT WORKING):
+    # dj_fut, sp_fut, nas_fut="YMWOO:CBOT", "ESWOO:CME_EMINIS", "NQWOO:CME_EMINIS"
+
+    # Get indexes info (Google Finance)
+    dj_name, dj_current, dj_prev = get_index_info(dj_index)
+    sp_name, sp_current, sp_prev = get_index_info(sp_index)
+    nas_name, nas_current, nas_prev = get_index_info(nas_index)
+
+    # Get indexes futures info (Google Finance)
+    # spf_name, spf_current, spf_prev = get_index_info(sp_fut)
+
+    with st.container():
+        # st.subheader("Major Markets")
+        st.markdown("<h1 style='text-align: center; color: white;'>Major Markets</h1>", unsafe_allow_html=True)
+
+        # Print Index Metrics (Streamlit):
+        dj_col, sp_col, nas_col = st.columns(3)
+        dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current - dj_prev, 2))
+        sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current - sp_prev, 2))
+        nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current - nas_prev, 2))
+
+        # djf_col, spf_col, nasf_col = st.columns(3)
+        # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
+
 
 def time_and_date():
     # OLD
@@ -1062,37 +1091,18 @@ lang = st.sidebar.radio(
 ########################################################################################
 ################################## Major Markets #######################################
 "---"
-# MAJOR INDEXES (GOOGLE FINANCE):
-dj_index, sp_index, nas_index=".DJI:INDEXDJX", ".INX:INDEXSP", ".IXIC:INDEXNASDAQ"
-
-# FUTURES (NOT WORKING):
-# dj_fut, sp_fut, nas_fut="YMWOO:CBOT", "ESWOO:CME_EMINIS", "NQWOO:CME_EMINIS"
-
-# Get indexes info (Google Finance)
-dj_name, dj_current, dj_prev = get_index_info(dj_index)
-sp_name, sp_current, sp_prev = get_index_info(sp_index)
-nas_name, nas_current, nas_prev = get_index_info(nas_index)
-
-# Get indexes futures info (Google Finance)
-# spf_name, spf_current, spf_prev = get_index_info(sp_fut)
-
-with st.container():
-    # st.subheader("Major Markets")
-    st.markdown("<h1 style='text-align: center; color: white;'>Major Markets</h1>", unsafe_allow_html=True)
-
-    # Print Index Metrics (Streamlit):
-    dj_col, sp_col, nas_col = st.columns(3)
-    dj_col.metric(dj_name, f"{dj_current:,}", round(dj_current-dj_prev,2))
-    sp_col.metric(sp_name, f"{sp_current:,}", round(sp_current-sp_prev,2))
-    nas_col.metric(nas_name, f"{nas_current:,}", round(nas_current-nas_prev,2))
-
-    # djf_col, spf_col, nasf_col = st.columns(3)
-    # spf_col.metric(spf_name, f"{spf_current:,}", round(spf_current-spf_prev,2))
+# prints current prices of Dow Jones, SP500, and Nasdaq metrics
+major_markets()
 ########################################################################################
 ################################ NASDAQ LISTED #########################################
 # GET SYMBOLS
 today = date.today().strftime("%D")
-ticker_etf_dict = get_symbols_dict(today)  # cache-missed once per day
+today
+
+# nasdaq-listed stock list: cache-missed once per day
+ticker_etf_dict = get_symbols_dict(today)
+ticker_etf_dict
+
 ticker_dict = ticker_etf_dict['Name']
 etf_dict = ticker_etf_dict['ETF']
 exchange_dict = ticker_etf_dict['Exchange']
@@ -1101,12 +1111,12 @@ exchange_dict = ticker_etf_dict['Exchange']
 ########################################################################################
 "---"
 with st.container():
-    st.markdown("<h1 style='text-align: center; color: white;'>Stocks Dashboard</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: white;'>Smart Dashboard</h1>", unsafe_allow_html=True)
 
     plt_col1, plt_col2, _, rfrsh_col, plt_col3 = st.columns([3, 1, 1, 1, 2], gap="small")
     # col1: Ticker input
     stock = plt_col1.selectbox(
-        'Search a stock:',
+        'Select a stock:',
         list(ticker_dict.values()), index=list(ticker_dict).index('SPY'), key="stock")
     stock = stock.split('-')[0].strip() # FROM: stock=(short Name)    TO: stock=Symbol (4-letter)
     isetf = etf_dict[stock]
