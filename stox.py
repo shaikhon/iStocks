@@ -81,7 +81,6 @@ def nyse_hrs():
     for item in c3:
         columns[2].markdown(item)
 
-
 def time_and_date():
     # OLD
     # tz = timezone('US/Eastern')
