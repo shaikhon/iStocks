@@ -75,7 +75,7 @@ def nyse_hrs():
     columns = st.columns([2, 2, 1], gap="small")
     for item in c1:
         # columns[0].caption(item)
-        columns[0].markdown(":red["+item+"]")
+        columns[0].markdown(f":red[{item}]")
     for item in c2:
         columns[1].markdown(item)
     for item in c3:
