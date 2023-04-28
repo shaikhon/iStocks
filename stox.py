@@ -667,6 +667,41 @@ def intraday_prophet(d, d_original, idict):
     return fig
 
 
+def price_chart(idict):
+    period_dict = dict([("1D", ("1d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
+                        ("1W", ("5d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
+                        ("1M", ("1mo", ['15m', '30m', '1h', '1d'])),
+                        ("1Y", ("1y", ['1h', '1d', '1wk'])),
+                        ("5Y", ("5y", ['1d', '1wk', '1mo'])),
+                        ("Max", ("max", ['1d', '1wk', '1mo', '3mo']))])
+
+    # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
+    after_hours = False
+
+    # PRICE CHART
+    period_tabs = st.tabs(list(period_dict))
+    for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
+        with ptab:
+            pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
+
+            pcol1.header(idict['shortName'])
+
+            interval = pcol3.selectbox("Interval:",
+                                       interval_lst,
+                                       # list(offset_dict),
+                                       index=0, help="fetch data by interval (intraday only if period < 60 days)",
+                                       key=period_name,
+                                       )
+            d = ticker.history(period=period, interval=interval, prepost=after_hours,
+                               rounding=True).drop(columns=['Dividends', 'Stock Splits'],
+                                                   errors="ignore").drop_duplicates(keep='first')
+
+            if period_name in ["1D"]:
+                st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
+            else:
+                st.plotly_chart(intraday(d, idict), use_container_width=True)
+    return d
+
 # def plot_pie(df):
 #     df.loc[df['Market Cap'] < 5.e11, "Name"] = "Other"
 #     fig = px.pie(df, values='Market Cap', names='Name', title='Market Cap of US Companies')
@@ -1078,14 +1113,11 @@ if 'rate' not in st.session_state:
 # Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
 ########################################################################################
-# TODO: ADD LOGO HERE: STOX
-# TODO: 1D, 1W, 1M intraday as tabs (like RH)
 # TODO: candles
 # Language input
 lang = st.sidebar.radio(
     'Langauge:',
     ('English', 'العربية'))
-
 ########################################################################################
 #################################### MAIN PAGE #########################################
 ########################################################################################
@@ -1097,11 +1129,8 @@ major_markets()
 ################################ NASDAQ LISTED #########################################
 # GET SYMBOLS
 today = date.today().strftime("%D")
-today
-
-# nasdaq-listed stock list: cache-missed once per day
+# nasdaq-listed stock dict of dicts: cache-missed once per day
 ticker_etf_dict = get_symbols_dict(today)
-ticker_etf_dict
 
 ticker_dict = ticker_etf_dict['Name']
 etf_dict = ticker_etf_dict['ETF']
@@ -1128,66 +1157,8 @@ with st.container():
     lang_dict = get_lang_dict(lang)
     # TICKER INFORMATION DICT
     idict = ticker.info
-
-    # col2: duration
-    # period_dict=dict([("1D", "1d"), ("1W", "5d"), ("1M", "1mo"), ("1Y", "1y"), ("5Y", "5y"), ("Max", "max")])
-    period_dict=dict([("1D", ("1d", ['1m','2m','5m','15m','30m','1h'])),
-      ("1W", ("5d", ['1m','2m','5m','15m','30m','1h'])),
-      ("1M", ("1mo", ['15m','30m','1h','1d'])),
-      ("1Y", ("1y", ['1h','1d','1wk'])),
-      ("5Y", ("5y", ['1d','1wk','1mo'])),
-      ("Max", ("max", ['1d','1wk','1mo','3mo']))])
-
-    # offset_dict = {'1m': '1T', '2m': '2T', '5m': '5T', '15m': '15T',
-    #                '30m': '30T', '1h': '1H', '1d': '1D', '5d': '5B',
-    #                '1mo': '1M', '3mo': '3M'}
-    # period = plt_col2.selectbox("Duration:",["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"],
-    #                             index=0, key="period")
-
-    # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
-    after_hours = False
-
-    # PRICE CHART
-    period_tabs = st.tabs(list(period_dict))
-    for ptab, (period_name, (period, interval_lst)) in zip(period_tabs, period_dict.items()):
-        with ptab:
-            pcol1, _, pcol3 = st.columns([3, 2, 1], gap="small")
-
-            pcol1.header(idict['shortName'])
-
-            interval = pcol3.selectbox("Interval:",
-                                          interval_lst,
-                                          # list(offset_dict),
-                                          index=0, help="fetch data by interval (intraday only if period < 60 days)",
-                                          key=period_name,
-                                          )
-            d = ticker.history(period=period, interval=interval, prepost=after_hours,
-                               rounding=True).drop(columns=['Dividends', 'Stock Splits'], errors="ignore").drop_duplicates(keep='first')
-
-            # d = d.loc[d.index.dayofweek < 5]
-            # st.write(d.head(5))
-
-            # if interval in interval_lst:
-            #     offset = offset_dict[interval]
-            #     st.write(f"interval_lst={interval_lst}")
-            #     st.write(f"interval={interval}")
-            #     st.write(f"offset={offset}")
-            #     d = pd.DataFrame(
-            #         dict(
-            #             Open=d.Open.resample(offset, closed='right', label='right').first(),
-            #             High=d.High.resample(offset, closed='right', label='right').max(),
-            #             Low=d.Low.resample(offset, closed='right', label='right').min(),  # low
-            #             Close=d.Close.resample(offset, closed='right', label='right').last(),
-            #             Volume=d.Volume.resample(offset, closed='right', label='right').sum()
-            #         )
-            #     ).dropna()
-            # else:
-            #     st.info(f"The selected interval is not allowed, please select a different interval.")
-
-            if period_name in ["1D"]:
-                st.plotly_chart(intraday_prophet(prophecy(d),d, idict), use_container_width=True)
-            else:
-                st.plotly_chart(intraday(d, idict), use_container_width=True)
+    # plots price chart
+    d = price_chart(idict)
 
     currentPrice = d.Close.tolist()[-1]
     # PRICE METRIC
@@ -1201,7 +1172,6 @@ ginfo, news = google_stock_info(gticker)
 ################################# TICKER METRICS  ######################################
 # "---"
 # yf_metrics(idict, isetf)
-
 "---"
 gf_metrics(currentPrice, ginfo, idict, isetf)
 "---"
