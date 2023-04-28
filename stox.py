@@ -68,15 +68,15 @@ def nyse_hrs():
     ny_open_str = ny_mkt_sch.market_open.iloc[0].strftime(now_fmt)
     ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
 
-    c1 = [['TIMEZONE','   :earth_americas:'], ['DATE', '     :calendar:'], ['TIME NOW', '     :alarm_clock:'],
-          ['NYSE OPEN', '     :sunrise:'], ['NYSE CLOSE', '     :octagonal_sign:']]
+    c1 = [['TIMEZONE', '    ', ':earth_americas:'], ['DATE', '    ', ':calendar:'], ['TIME NOW', '    ', ':alarm_clock:'],
+          ['NYSE OPEN', '    ', ':sunrise:'], ['NYSE CLOSE', '    ', ':octagonal_sign:']]
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
     columns = st.columns([2, 2, 1], gap="small")
     for item in c1:
         # columns[0].caption(item)
-        columns[0].markdown(f":green[{item[0]}]"+item[1])
+        columns[0].markdown(f":green[{item[0]}]"+item[1]+item[2])
     for item in c2:
         columns[1].markdown(item)
     for item in c3:
