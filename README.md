@@ -1,6 +1,5 @@
-# iStox
-The intelligent U.S. Stocks Screener
-Link: [iStocks](https://istocks.streamlit.app/)
+# iStocks
+The Intelligent U.S. Stocks Screener is a web app that can be accessed via this ink: [iStocks](https://istocks.streamlit.app/)
 
 Features:
 - Fetches the live price info using yahoo finance
