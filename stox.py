@@ -590,7 +590,7 @@ def intraday(d, idict):
 
 def intraday_prophet(d, d_original, idict):
 
-    d
+    st.write(d)
     # pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
 
