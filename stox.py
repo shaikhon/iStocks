@@ -1075,8 +1075,6 @@ def prophecy(d, forecast_period=5):
     # merge
     d = gm_forecast.merge(d, how='outer', on='ds')
 
-    d
-    st.write(d)
 
     return d
 
