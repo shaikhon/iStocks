@@ -299,8 +299,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
     smrylbl = ["CURRENT PRICE", "PREV. CLOSE", "HIGH", "LOW"]
     smry_metrics = [f"${currentPrice}", "$" + str(idict['previousClose']),
                     f"${idict['regularMarketDayHigh']:6.2f}", "$" + str(idict['regularMarketDayLow'])]
-    idict
-    ginfo
+
     if 'N' in isetf:  # for stocks
 
         flabels = ["MARKET CAP", "AVG VOLUME", "FORWARD EPS", "TRAILING EPS"]
@@ -925,7 +924,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
 
     # Add axes
     fig.add_trace(
-        go.Scatter(x=[0, 100], y=[0, 4],marker_opacity=0,mode='markers')
+        go.Scatter(x=[0, 100], y=[0, 4], marker_opacity=0,mode='markers')
     )
     # Configure axes
     fig.update_xaxes(
@@ -1076,6 +1075,8 @@ def prophecy(d, forecast_period=5):
     # merge
     d = gm_forecast.merge(d, how='outer', on='ds')
 
+    d
+    
     return d
 
 ########################################################################################
