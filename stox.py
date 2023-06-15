@@ -323,7 +323,7 @@ def gf_metrics(currentPrice, ginfo, idict, isetf):
         # smry_metrics = [currentPrice, idict['previousClose'],
         #                          idict['regularMarketDayHigh'], idict['regularMarketDayLow']]
         # idict['fiftyTwoWeekHigh'], idict['fiftyTwoWeekLow']
-        avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
+        # avg_return = 0 if idict["threeYearAverageReturn"] is None else idict["threeYearAverageReturn"]
         # trailingThreeMonthReturns
         fmetrics = [ginfo["market_cap"], "$"+millify(idict["totalAssets"]), "$"+millify(idict["volume"]), round(idict['trailingPE'],1)]
         # netAssets, ytdReturn
@@ -924,7 +924,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
 
     # Add axes
     fig.add_trace(
-        go.Scatter(x=[0, 100], y=[0, 4], marker_opacity=0,mode='markers')
+        go.Scatter(x=[0, 100], y=[0, 4], marker_opacity=0, mode='markers')
     )
     # Configure axes
     fig.update_xaxes(
@@ -1076,6 +1076,7 @@ def prophecy(d, forecast_period=5):
     d = gm_forecast.merge(d, how='outer', on='ds')
 
     d
+    st.write(d)
 
     return d
 
