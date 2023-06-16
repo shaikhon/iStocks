@@ -618,7 +618,9 @@ def intrawmy(d, idict, period):
         yaxis=dict(showgrid=False, title={"font":dict(size=24),"text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($USD)", "standoff": 10}),
         xaxis=dict(showline=False,),
-        xaxis_tickformat='%d %B (%a)<br>%Y',
+        xaxis_ticklabelstep=2,
+        # xaxis_tickformat='%d %B (%a)<br>%Y',
+        
     )
     return fig
 
