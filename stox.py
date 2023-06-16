@@ -73,7 +73,7 @@ def nyse_hrs():
     c2 = ['NEW YORK | ', ny_today_str+' | ', ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
-    columns = st.columns(2, gap="small")
+    columns = st.columns(2)
     for item in c1:
         columns[0].markdown(item)
     for item1, item2 in zip(c2,c3):
