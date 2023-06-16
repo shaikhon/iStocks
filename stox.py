@@ -556,7 +556,7 @@ def intraday(d, idict, period):
 
     if ('5Y' in period) or ('Max' in period):
         '5Y or Max'
-        ts_format = "%b-%y"
+        ts_format = "%b-%Y"
     else:
         ts_format = "%b-%d"
 
@@ -709,6 +709,7 @@ def price_chart(idict):
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
             else:
+                interval_lst
                 st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
     return d
 
