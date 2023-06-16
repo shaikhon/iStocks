@@ -78,14 +78,6 @@ def nyse_hrs():
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
-    # columns = st.columns(2)
-    # for item in c1:
-    #     columns[0].markdown(item)
-    # for item1, item2 in zip(c2,c3):
-    #     columns[1].markdown(item1 + item2)
-    # # for item in c3:
-    # #     columns[2].markdown(item)
-
     with st.container():
         cols = st.columns([4,8,1])
         for item1, item2, item3 in zip(c1,c2,c3):
@@ -638,20 +630,20 @@ def intraday_prophet(d, d_original, idict):
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                              showlegend=False),
-                  secondary_y=False)
+                  secondary_y=True)
 
     # plot trend error bands
     upper = d.trend_upper.to_list()
     lower = d.trend_lower.to_list()
 
-    fig.add_trace(go.Scatter(x=x + x[::-1],
-                             y=upper + lower[::-1],
-                             fill='toself',
-                             fillcolor='rgba(255,255,255,.25)',
-                             line=dict(color='rgba(255,255,255,1)'),
-                             hoverinfo='skip',
-                             showlegend=False),
-                  secondary_y=True)
+    # fig.add_trace(go.Scatter(x=x + x[::-1],
+    #                          y=upper + lower[::-1],
+    #                          fill='toself',
+    #                          fillcolor='rgba(255,255,255,.25)',
+    #                          line=dict(color='rgba(255,255,255,1)'),
+    #                          hoverinfo='skip',
+    #                          showlegend=False),
+    #               secondary_y=True)
 
     # plot price
     fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
@@ -1052,7 +1044,7 @@ def plot_news_item(title, link, source, pub_when, thumb):
     return fig
 
 
-def prophecy(d, forecast_period=5):
+def prophecy(d, forecast_period=15):
     '''
     prophecy - FORECAST FUTURE STOCK PRICE
 
