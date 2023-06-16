@@ -576,7 +576,9 @@ def intraday(d, idict, period):
     if ('5Y' in period) or ('Max' in period):
         '5Y or Max'
         ts_format = "%b-%Y"
-        
+
+    elif '1Y' in period:
+        ts_format = "%I  %b-%d"
     else:
         ts_format = "%I:%M  %b-%d"
 
