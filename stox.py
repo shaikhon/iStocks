@@ -578,7 +578,7 @@ def intrawmy(d, idict, period):
         ts_format = "%b-%Y"
 
     elif '1Y' in period:
-        ts_format = "%b-%d"
+        ts_format = "%b %Y"
     else:
         ts_format = "%I:%M  %b-%d"
 
