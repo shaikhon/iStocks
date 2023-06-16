@@ -604,9 +604,7 @@ def intraday_prophet(d, d_original, idict):
 
     # x = d.index.to_list()
     x = d.index.strftime("%d-%m-%Y").to_list()
-
-
-
+    x
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # plot volume bars
@@ -618,6 +616,8 @@ def intraday_prophet(d, d_original, idict):
 
     # index of future 15 samples
     x_future = x[-15:]
+    x_future
+    
     # plot yhat
     fig.add_trace(go.Scatter(mode='lines', x=x_future, y=d.yhat.loc[x_future],
                              line=dict(color=color, width=2, dash='dash'),
