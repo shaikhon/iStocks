@@ -74,7 +74,8 @@ def nyse_hrs():
           f'TIME NOW :alarm_clock:',
           f'NYSE OPEN :white_check_mark:',
           f'NYSE CLOSE :octagonal_sign:']
-    c2 = ['NEW YORK &nbsp;&nbsp;|&nbsp;&nbsp; ', ny_today_str+' | ', ny_now_str, ny_open_str, ny_close_str]
+    
+    c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
     # columns = st.columns(2)
