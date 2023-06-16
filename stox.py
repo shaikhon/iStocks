@@ -605,17 +605,6 @@ def intraday_prophet(d, d_original, idict):
     x = d.index.to_list()
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    # # plot price
-    # fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
-    #                          line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
-    #                                "width": 2,
-    #                                },
-    #                          hovertemplate='<i>Price</i>: $%{y:.2f}'
-    #                                        + '<br><i>Time</i>: %{x| %H:%M}'
-    #                                        + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
-    #                          ),
-    #               secondary_y=True)
-
     # plot volume bars
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
                          marker={
@@ -626,24 +615,26 @@ def intraday_prophet(d, d_original, idict):
 
     # plot yhat
     fig.add_trace(go.Scatter(mode='lines', x=x[-15:], y=d.yhat.iloc[-15:],
-                             line=dict(color=color, width=1, dash='dash'),
+                             line=dict(color=color, width=2, dash='dash'),
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                              showlegend=False),
                   secondary_y=True)
 
     # plot trend error bands
-    upper = d.trend_upper.to_list()
-    lower = d.trend_lower.to_list()
+    # upper = d.trend_upper.to_list()
+    upper = d.yhat_upper.to_list()
+    lower = d.yhat_lower.to_list()
+    # lower = d.trend_lower.to_list()
 
-    # fig.add_trace(go.Scatter(x=x + x[::-1],
-    #                          y=upper + lower[::-1],
-    #                          fill='toself',
-    #                          fillcolor='rgba(255,255,255,.25)',
-    #                          line=dict(color='rgba(255,255,255,1)'),
-    #                          hoverinfo='skip',
-    #                          showlegend=False),
-    #               secondary_y=True)
+    fig.add_trace(go.Scatter(x=x + x[::-1],
+                             y=upper + lower[::-1],
+                             fill='toself',
+                             fillcolor='rgba(255,255,255,.25)',
+                             line=dict(color='rgba(255,255,255,1)'),
+                             hoverinfo='skip',
+                             showlegend=False),
+                  secondary_y=True)
 
     # plot price
     fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
