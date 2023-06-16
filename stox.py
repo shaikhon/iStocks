@@ -646,7 +646,6 @@ def intraday_prophet(d, d_original, idict):
 
     # index of future 15 samples
     x_future = x[-15:]
-    x_future
     
     # plot yhat
     fig.add_trace(go.Scatter(mode='lines', x=x_future, y=d.yhat.loc[x_future],
@@ -729,14 +728,13 @@ def price_chart(idict):
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
             else:
-                interval_lst
                 st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
             
             
-            d = ticker.history(period='max', interval='1m', prepost=after_hours,
-                               rounding=True).drop(columns=['Dividends', 'Stock Splits'],
-                                                   errors="ignore").drop_duplicates(keep='first')
-            st.plotly_chart(new_intraday(d))
+            # d = ticker.history(period='max', interval='1m', prepost=after_hours,
+            #                    rounding=True).drop(columns=['Dividends', 'Stock Splits'],
+            #                                        errors="ignore").drop_duplicates(keep='first')
+            # st.plotly_chart(new_intraday(d))
             
     return d
 
