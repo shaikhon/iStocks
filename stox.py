@@ -631,14 +631,14 @@ def intraday_prophet(d, d_original, idict):
     upper = d.trend_upper.to_list()
     lower = d.trend_lower.to_list()
 
-    # fig.add_trace(go.Scatter(x=x + x[::-1],
-    #                          y=upper + lower[::-1],
-    #                          fill='toself',
-    #                          fillcolor='rgba(255,255,255,.25)',
-    #                          line=dict(color='rgba(255,255,255,1)'),
-    #                          hoverinfo='skip',
-    #                          showlegend=False),
-    #               secondary_y=True)
+    fig.add_trace(go.Scatter(x=x + x[::-1],
+                             y=upper + lower[::-1],
+                             fill='toself',
+                             fillcolor='rgba(255,255,255,.25)',
+                             line=dict(color='rgba(255,255,255,1)'),
+                             hoverinfo='skip',
+                             showlegend=False),
+                  secondary_y=True)
 
     # plot price
     fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
