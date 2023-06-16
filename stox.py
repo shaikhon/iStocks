@@ -546,6 +546,24 @@ def short_dict():
 ############################ PLOTS ###########################################
 ##############################################################################
 ##############################################################################
+def new_intraday(df):
+    
+    fig = px.line(df, x='Date', y='AAPL.High', title='Time Series with Range Slider and Selectors')
+    
+    fig.update_xaxes(
+        rangeslider_visible=True,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])
+        )
+    )
+    return fig
+
 def intraday(d, idict, period):
     period
     # pev = idict['regularMarketPreviousClose']
@@ -559,7 +577,6 @@ def intraday(d, idict, period):
         ts_format = "%b-%Y"
         
     else:
-        'WEEK'
         ts_format = "%I:%M  %b-%d"
 
     # ts = d.index
@@ -598,8 +615,8 @@ def intraday(d, idict, period):
         showlegend=False,
         yaxis=dict(showgrid=False, title={"font":dict(size=24),"text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font":dict(size=24),"text": "Price ($USD)", "standoff": 10}),
-        xaxis=dict(showline=False, #title={"font":dict(size=24), "standoff": 10}
-                   )
+        xaxis=dict(showline=False,),
+        xaxis_tickformat='%d %B (%a)<br>%Y',
     )
     return fig
 
@@ -713,6 +730,9 @@ def price_chart(idict):
             else:
                 interval_lst
                 st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
+                
+            st.plotly_chart(new_intraday(d))
+            
     return d
 
 # def plot_pie(df):
