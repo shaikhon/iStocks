@@ -638,7 +638,7 @@ def intraday_prophet(d, d_original, idict):
 
     x = d.index.to_list()
     # x = d.index.strftime("%d-%m-%Y").to_list()
-    x
+    # x
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # plot volume bars
@@ -728,7 +728,6 @@ def price_chart(idict):
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'],
                                                    errors="ignore").drop_duplicates(keep='first')
-            d
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
             else:
