@@ -731,7 +731,11 @@ def price_chart(idict):
             else:
                 interval_lst
                 st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
-                
+            
+            
+            d = ticker.history(period='max', interval='1m', prepost=after_hours,
+                               rounding=True).drop(columns=['Dividends', 'Stock Splits'],
+                                                   errors="ignore").drop_duplicates(keep='first')
             st.plotly_chart(new_intraday(d))
             
     return d
