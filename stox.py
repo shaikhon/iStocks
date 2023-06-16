@@ -602,7 +602,11 @@ def intraday_prophet(d, d_original, idict):
     current_price = d_original['Close'][-1]
     color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
 
-    x = d.index.to_list()
+    # x = d.index.to_list()
+    x = d.index.strftime("%d-%m-%Y").to_list()
+
+
+
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # plot volume bars
