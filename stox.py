@@ -623,11 +623,12 @@ def intraday_prophet(d, d_original, idict):
 
     # plot trend error bands
     # upper = d.trend_upper.to_list()
-    upper = d.yhat_upper.to_list()
-    lower = d.yhat_lower.to_list()
+    upper = d.yhat_upper.to_list()[-15:]
+    lower = d.yhat_lower.to_list()[-15:]
     # lower = d.trend_lower.to_list()
+    x_temp = x[-15:]
 
-    fig.add_trace(go.Scatter(x=x + x[::-1],
+    fig.add_trace(go.Scatter(x=x_temp + x_temp[::-1],
                              y=upper + lower[::-1],
                              fill='toself',
                              fillcolor='rgba(255,255,255,.25)',
