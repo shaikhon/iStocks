@@ -68,9 +68,9 @@ def nyse_hrs():
     ny_open_str = ny_mkt_sch.market_open.iloc[0].strftime(now_fmt)
     ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
 
-    c1 = ['TIMEZONE :earth_americas: ', 'DATE     :calendar: ', 'TIME NOW :alarm_clock:',
+    c1 = ['TIMEZONE :earth_americas: &nbsp;', 'DATE :calendar: ', 'TIME NOW :alarm_clock:',
           'NYSE OPEN :white_check_mark:', 'NYSE CLOSE :octagonal_sign:']
-    c2 = ['NEW YORK | ', ny_today_str+' | ', ny_now_str, ny_open_str, ny_close_str]
+    c2 = ['NEW YORK &nbsp;|&nbsp; ', ny_today_str+' | ', ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
     # columns = st.columns(2)
@@ -83,7 +83,7 @@ def nyse_hrs():
 
     with st.container():
         for item1, item2, item3 in zip(c1,c2,c3):
-            st.markdown(item1 + item2 + '&nbsp;&nbsp;&nbsp;&nbsp;'+ item3)
+            st.markdown(item1 + item2 + item3)
 
 
 
