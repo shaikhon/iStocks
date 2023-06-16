@@ -567,11 +567,11 @@ def new_intraday(df):
 
 def intraday(d, idict, period):
     period
-    # pev = idict['regularMarketPreviousClose']
-    open = idict['regularMarketOpen']
+    pev = idict['regularMarketPreviousClose']
+    # open = idict['regularMarketOpen']
     
     current_price = d['Close'][-1]
-    color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
+    color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
 
     if ('5Y' in period) or ('Max' in period):
         '5Y or Max'
@@ -626,11 +626,11 @@ def intraday_prophet(d, d_original, idict):
 
     # st.write("intraday-prophet")
     # st.write(d)
-    # pev = idict['regularMarketPreviousClose']
-    open = idict['regularMarketOpen']
+    pev = idict['regularMarketPreviousClose']
+    # open = idict['regularMarketOpen']
 
     current_price = d_original['Close'][-1]
-    color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
+    color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
 
     x = d.index.to_list()
     # x = d.index.strftime("%d-%m-%Y").to_list()
@@ -1148,7 +1148,9 @@ if 'rate' not in st.session_state:
 # Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
 ########################################################################################
-# TODO: candles
+#TODO: candles
+# fix price chart color
+
 # Language input
 lang = st.sidebar.radio(
     'Langauge:',
