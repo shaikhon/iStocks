@@ -52,9 +52,9 @@ def nyse_hrs():
     ry_today_str, ny_today_str = ry_today.strftime(date_fmt), ny_today.strftime(date_fmt)
     ry_tm_str, ny_tm_str = ry_tm.strftime(date_fmt), ny_tm.strftime(date_fmt)
 
-    ry_tz_str, ny_tz_str = ry_today.strftime("GMT%Z"), ny_today.strftime("GMT%Z")
-    #     print(ry_today_str)
-    #     print(ny_today_str)
+    # ry_tz_str, ny_tz_str = ry_today.strftime("GMT%Z"), ny_today.strftime("GMT%Z")
+    # #     print(ry_today_str)
+    # #     print(ny_today_str)
 
     # Create a calendar
     nyse = mcal.get_calendar('NYSE')
@@ -68,18 +68,25 @@ def nyse_hrs():
     ny_open_str = ny_mkt_sch.market_open.iloc[0].strftime(now_fmt)
     ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
 
-    c1 = [['TIMEZONE',':earth_americas:'], ['DATE', ':calendar:'], ['TIME NOW', ':alarm_clock:'],
-          ['NYSE OPEN', ':sunrise:'], ['NYSE CLOSE', ':octagonal_sign:']]
+    c1 = [['TIMEZONE :earth_americas:'], ['DATE :calendar:'], ['TIME NOW :alarm_clock:'],
+          ['NYSE OPEN :white_check_mark:'], ['NYSE CLOSE :octagonal_sign:']]
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
-    columns = st.columns([2, 2, 1], gap="small")
-    for item in c1:
-        columns[0].markdown(item[0] + item[1])
-    for item in c2:
-        columns[1].markdown(item)
-    for item in c3:
-        columns[2].markdown(item)
+    # columns = st.columns([2, 2, 1], gap="small")
+    # for item in c1:
+    #     columns[0].markdown(item[0] + item[1])
+    # for item in c2:
+    #     columns[1].markdown(item)
+    # for item in c3:
+    #     columns[2].markdown(item)
+
+    with st.container():
+        for item1, item2, item3 in zip(c1,c2,c3):
+            st.markdown(item1,item2, item3)
+
+
+
 
 def major_markets():
     # MAJOR INDEXES (GOOGLE FINANCE):
@@ -1088,9 +1095,6 @@ title = '💎 iStocks 💎'
 
 welcome = 'The Smart App for U.S. Stocks'
 author = 'Obai Shaikh'
-# ":diamonds: :gem:  :fire:"
-# ":dollar: :moneybag: :money_with_wings: :fire:"
-# st.subheader('The Smart App for Analyzing U.S. Stocks by @ObaiShaikh')
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
 st.markdown(f"<h1 style='text-align: center; color: white; font-size: medium'>{welcome}</h1>", unsafe_allow_html=True)
 '---'
