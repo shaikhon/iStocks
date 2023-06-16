@@ -550,16 +550,17 @@ def intraday(d, idict, period):
     period
     # pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
-
+    
     current_price = d['Close'][-1]
     color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
 
     if ('5Y' in period) or ('Max' in period):
         '5Y or Max'
         ts_format = "%b-%Y"
-    elif 'W' in period:
+        
+    else:
         'WEEK'
-        ts_format = "%I:%M %b-%d"
+        ts_format = "%I:%M  %b-%d"
 
     # ts = d.index
     ts = d.index.strftime(ts_format) #.to_list()
