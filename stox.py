@@ -548,7 +548,7 @@ def short_dict():
 ##############################################################################
 def new_intraday(df):
     
-    fig = px.line(df, x='Date', y='AAPL.High', title='Time Series with Range Slider and Selectors')
+    fig = px.line(df, x='index', y='Close')
     
     fig.update_xaxes(
         rangeslider_visible=True,
