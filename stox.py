@@ -69,7 +69,7 @@ def nyse_hrs():
     ny_close_str = ny_mkt_sch.market_close.iloc[0].strftime(now_fmt)
 
     s = '&nbsp;'  # non break space
-    c1 = [f'TIMEZONE {5*s}:earth_americas: {2*s}',
+    c1 = [f'TIMEZONE {5*s} :earth_americas: {5*s}',
           f'DATE {15*s} :calendar: {5*s}',
           f'TIME NOW :alarm_clock:',
           f'NYSE OPEN :white_check_mark:',
