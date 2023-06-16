@@ -613,11 +613,10 @@ def intraday_prophet(d, d_original, idict):
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=False)
 
-    # index of last 15 samples
-    x_short = x[-15:]
-    x_short
+    # index of future 15 samples
+    x_future = x[-15:]
     # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x_short, y=d.yhat.loc[x_short],
+    fig.add_trace(go.Scatter(mode='lines', x=x_future, y=d.yhat.loc[x_future],
                              line=dict(color=color, width=2, dash='dash'),
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
@@ -626,11 +625,11 @@ def intraday_prophet(d, d_original, idict):
 
     # plot trend error bands
     # upper = d.trend_upper.to_list()
-    upper = d.yhat_upper.to_list()[-15:]
-    lower = d.yhat_lower.to_list()[-15:]
+    upper = d.yhat_upper.loc[x_future].to_list()
+    lower = d.yhat_lower.loc[x_future].to_list()
     # lower = d.trend_lower.to_list()
 
-    fig.add_trace(go.Scatter(x=x_short + x_short[::-1],
+    fig.add_trace(go.Scatter(x=x_future + x_future[::-1],
                              y=upper + lower[::-1],
                              fill='toself',
                              fillcolor='rgba(255,255,255,.25)',
