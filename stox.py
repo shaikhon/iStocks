@@ -73,7 +73,7 @@ def nyse_hrs():
           f'DATE {16*s} :calendar: {5*s}',
           f'TIME NOW {5*s} :alarm_clock: {5*s}',
           f'NYSE OPEN {3*s} :white_check_mark: {5*s}',
-          f'NYSE CLOSE {2*s} :octagonal_sign: {5*s}']
+          f'NYSE CLOSE {s} :octagonal_sign: {5*s}']
 
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
