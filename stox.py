@@ -613,8 +613,11 @@ def intraday_prophet(d, d_original, idict):
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=False)
 
+    # index of last 15 samples
+    x_short = x[-15:]
+    x_short
     # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x[-15:], y=d.yhat.iloc[-15:],
+    fig.add_trace(go.Scatter(mode='lines', x=x_short, y=d.yhat.iloc[-15:],
                              line=dict(color=color, width=2, dash='dash'),
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
@@ -626,9 +629,8 @@ def intraday_prophet(d, d_original, idict):
     upper = d.yhat_upper.to_list()[-15:]
     lower = d.yhat_lower.to_list()[-15:]
     # lower = d.trend_lower.to_list()
-    x_temp = x[-15:]
 
-    fig.add_trace(go.Scatter(x=x_temp + x_temp[::-1],
+    fig.add_trace(go.Scatter(x=x_short + x_short[::-1],
                              y=upper + lower[::-1],
                              fill='toself',
                              fillcolor='rgba(255,255,255,.25)',
