@@ -594,8 +594,8 @@ def intraday(d, idict):
 
 def intraday_prophet(d, d_original, idict):
 
-    st.write("intraday-prophet")
-    st.write(d)
+    # st.write("intraday-prophet")
+    # st.write(d)
     # pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
 
@@ -607,8 +607,7 @@ def intraday_prophet(d, d_original, idict):
 
     # plot volume bars
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
-                         marker={
-                             "color": "magenta",  # "#0FCFFF"
+                         marker={"color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
                          ), secondary_y=False)
