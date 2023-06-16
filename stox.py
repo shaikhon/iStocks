@@ -70,7 +70,7 @@ def nyse_hrs():
 
     c1 = ['TIMEZONE :earth_americas: ', 'DATE :calendar:', 'TIME NOW :alarm_clock:',
           'NYSE OPEN :white_check_mark:', 'NYSE CLOSE :octagonal_sign:']
-    c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
+    c2 = ['NEW YORK | ', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
     # columns = st.columns([2, 2, 1], gap="small")
