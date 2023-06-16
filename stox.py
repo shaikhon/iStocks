@@ -1094,7 +1094,7 @@ def prophecy(d, forecast_period=15):
     ds = ds.loc[:, ['ds', 'Close']].rename(columns={'Close': 'y'})
 
     # Make the prophet model and fit on the data
-    gm_prophet = Prophet(n_changepoints=len(ds), changepoint_prior_scale=0.10, changepoint_range=1.0,
+    gm_prophet = Prophet(n_changepoints=len(ds), changepoint_prior_scale=0.80, changepoint_range=0.80,
                          #                      yearly_seasonality=False,weekly_seasonality=False,daily_seasonality=False,
                          #                      seasonality_mode='multiplicative',
                          #                      uncertainty_samples=1000,
