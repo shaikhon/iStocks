@@ -549,7 +549,7 @@ def short_dict():
 def new_intraday(df):
     df
     
-    fig = px.line(df, x='ds', y='Close')
+    fig = px.line(df, x=df.index, y='Close')
     
     fig.update_xaxes(
         rangeslider_visible=True,
