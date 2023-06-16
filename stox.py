@@ -1085,7 +1085,8 @@ def prophecy(d, forecast_period=5):
 ################################## TITLE & LOGO ########################################
 title = '💎 iStocks 💎'
 # title = '💎 U.S. Stocks App 💎'
-welcome = 'The Smart App for Analyzing U.S. :us: Stocks'
+
+welcome = 'The Smart App for U.S. Stocks'
 author = 'Obai Shaikh'
 # ":diamonds: :gem:  :fire:"
 # ":dollar: :moneybag: :money_with_wings: :fire:"
