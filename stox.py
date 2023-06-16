@@ -557,11 +557,12 @@ def intraday(d, idict, period):
     if ('5Y' in period) or ('Max' in period):
         '5Y or Max'
         ts_format = "%b-%Y"
-    else:
+    elif 'W' in period:
+        ts_format = "%I:%M"
         ts_format = "%b-%d"
 
-    # ts = d.index
-    ts = d.index.strftime(ts_format) #.to_list()
+    ts = d.index
+    # ts = d.index.strftime(ts_format) #.to_list()
     # ts = d.index.strftime("%d-%m-%Y") #.to_list()
     ts
     
