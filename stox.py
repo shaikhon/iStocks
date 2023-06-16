@@ -578,7 +578,7 @@ def intraday(d, idict, period):
         ts_format = "%b-%Y"
 
     elif '1Y' in period:
-        ts_format = "%I  %b-%d"
+        ts_format = "%b-%d"
     else:
         ts_format = "%I:%M  %b-%d"
 
@@ -702,7 +702,7 @@ def price_chart(idict):
     period_dict = dict([("1D", ("1d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
                         ("1W", ("5d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
                         ("1M", ("1mo", ['15m', '30m', '1h', '1d'])),
-                        ("1Y", ("1y", ['1h', '1d', '1wk'])),
+                        ("1Y", ("1y", ['1d', '1wk'])),
                         ("5Y", ("5y", ['1d', '1wk', '1mo'])),
                         ("Max", ("max", ['1d', '1wk', '1mo', '3mo']))])
 
