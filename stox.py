@@ -70,11 +70,11 @@ def nyse_hrs():
 
     s = '&nbsp;'  # non break space
     c1 = [f'TIMEZONE {5*s} :earth_americas: {5*s}',
-          f'DATE {15*s} :calendar: {5*s}',
+          f'DATE {16*s} :calendar: {5*s}',
           f'TIME NOW :alarm_clock:',
           f'NYSE OPEN :white_check_mark:',
           f'NYSE CLOSE :octagonal_sign:']
-    
+
     c2 = ['NEW YORK', ny_today_str, ny_now_str, ny_open_str, ny_close_str]
     c3 = ['RIYADH', ry_today_str, ry_now_str, ry_open_str, ry_close_str]
 
@@ -88,7 +88,7 @@ def nyse_hrs():
 
     with st.container():
         for item1, item2, item3 in zip(c1,c2,c3):
-            st.markdown(item1 + item2 + item3)
+            st.markdown(item1 + item2 + f"{s} | {s}" + item3)
 
 
 
