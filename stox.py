@@ -87,7 +87,7 @@ def nyse_hrs():
     # #     columns[2].markdown(item)
 
     with st.container():
-        cols = st.columns(3)
+        cols = st.columns([1,10,1])
         for item1, item2, item3 in zip(c1,c2,c3):
             cols[1].markdown(item1 + item2 + f"{15*s}" + item3)
 
