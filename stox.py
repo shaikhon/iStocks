@@ -565,7 +565,7 @@ def new_intraday(df):
     )
     return fig
 
-def intraday(d, idict, period):
+def intrawmy(d, idict, period):
     period
     pev = idict['regularMarketPreviousClose']
     # open = idict['regularMarketOpen']
@@ -585,7 +585,6 @@ def intraday(d, idict, period):
     # ts = d.index
     ts = d.index.strftime(ts_format) #.to_list()
     # ts = d.index.strftime("%d-%m-%Y") #.to_list()
-    ts
     
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -700,7 +699,7 @@ def intraday_prophet(d, d_original, idict):
 
 def price_chart(idict):
     period_dict = dict([("1D", ("1d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
-                        ("1W", ("5d", ['1m', '2m', '5m', '15m', '30m', '1h'])),
+                        ("1W", ("5d", ['5m', '15m', '30m', '1h'])),
                         ("1M", ("1mo", ['15m', '30m', '1h', '1d'])),
                         ("1Y", ("1y", ['1d', '1wk'])),
                         ("5Y", ("5y", ['1d', '1wk', '1mo'])),
@@ -726,12 +725,11 @@ def price_chart(idict):
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'],
                                                    errors="ignore").drop_duplicates(keep='first')
-
+            d
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
             else:
-                st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
-            
+                st.plotly_chart(intrawmy(d, idict, period_name), use_container_width=True)
             
             # d = ticker.history(period='max', interval='1m', prepost=after_hours,
             #                    rounding=True).drop(columns=['Dividends', 'Stock Splits'],
