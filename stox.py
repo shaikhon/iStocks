@@ -546,15 +546,25 @@ def short_dict():
 ############################ PLOTS ###########################################
 ##############################################################################
 ##############################################################################
-def intraday(d, idict):
-    pev = idict['regularMarketPreviousClose']
+def intraday(d, idict, period):
+    period
+    # pev = idict['regularMarketPreviousClose']
     open = idict['regularMarketOpen']
 
     current_price = d['Close'][-1]
     color = 'lime' if current_price >= open else 'rgb(255, 49, 49)'
 
-    ts = d.index
+    if ('5Y' in period) or ('Max' in period):
+        '5Y or Max'
+        ts_format = "%b-%y"
+    else:
+        ts_format = "%b-%d"
 
+    # ts = d.index
+    ts = d.index.strftime(ts_format) #.to_list()
+    # ts = d.index.strftime("%d-%m-%Y") #.to_list()
+    ts
+    
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
@@ -699,7 +709,7 @@ def price_chart(idict):
             if period_name in ["1D"]:
                 st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
             else:
-                st.plotly_chart(intraday(d, idict), use_container_width=True)
+                st.plotly_chart(intraday(d, idict, period_name), use_container_width=True)
     return d
 
 # def plot_pie(df):
