@@ -617,7 +617,7 @@ def intraday_prophet(d, d_original, idict):
     x_short = x[-15:]
     x_short
     # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x_short, y=d.yhat.iloc[-15:],
+    fig.add_trace(go.Scatter(mode='lines', x=x_short, y=d.yhat.loc[x_short],
                              line=dict(color=color, width=2, dash='dash'),
                              hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
                                            '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
