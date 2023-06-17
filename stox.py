@@ -645,7 +645,8 @@ def intraday_prophet(d, d_original, idict):
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
                          marker={"color": "magenta",  # "#0FCFFF"
                          },
-                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'
+                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'+
+                                       '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                          ), secondary_y=False)
 
     # index of future 15 samples
@@ -698,6 +699,46 @@ def intraday_prophet(d, d_original, idict):
         xaxis=dict(showline=False)
     )
     return fig
+
+
+def prophecy(d, forecast_period=15):
+    '''
+    prophecy - FORECAST FUTURE STOCK PRICE
+
+    Inputs:
+    d                  Price history DataFrame (yfinance)
+    forecast_period    Number of minutes of future forecast to predict
+
+    '''
+    d.index.names = ['ds']  # rename index to ds
+    d = d.tz_localize(None)  # make timezone naive, for prophet
+
+    ds = d.reset_index()  # make index (ds) a column
+    ds = ds.loc[:, ['ds', 'Close']].rename(columns={'Close': 'y'})
+
+    # Make the prophet model and fit on the data
+    gm_prophet = Prophet(n_changepoints=len(ds), changepoint_prior_scale=0.80, changepoint_range=0.80,
+                         #                      yearly_seasonality=False,weekly_seasonality=False,daily_seasonality=False,
+                         #                      seasonality_mode='multiplicative',
+                         #                      uncertainty_samples=1000,
+                         #                      seasonality_prior_scale=0.01,
+                         #                      mcmc_samples=0,
+                         )
+    gm_prophet.fit(ds)
+
+    # predict:
+    # Make a future dataframe
+    gm_forecast = gm_prophet.make_future_dataframe(periods=forecast_period, freq='T')
+    # Make predictions
+    gm_forecast = gm_prophet.predict(gm_forecast)
+    # gm_forecast
+    gm_forecast = gm_forecast.set_index(gm_forecast.ds).loc[:, ['yhat', 'yhat_lower', 'yhat_upper',
+                                                                'trend', 'trend_lower', 'trend_upper']]
+    # merge
+    d = gm_forecast.merge(d, how='outer', on='ds')
+    d
+
+    return d
 
 
 def price_chart(idict):
@@ -1077,45 +1118,6 @@ def plot_news_item(title, link, source, pub_when, thumb):
 
     return fig
 
-
-def prophecy(d, forecast_period=15):
-    '''
-    prophecy - FORECAST FUTURE STOCK PRICE
-
-    Inputs:
-    d                  Price history DataFrame (yfinance)
-    forecast_period    Number of minutes of future forecast to predict
-
-    '''
-    d.index.names = ['ds']  # rename index to ds
-    d = d.tz_localize(None)  # make timezone naive, for prophet
-
-    ds = d.reset_index()  # make index (ds) a column
-    ds = ds.loc[:, ['ds', 'Close']].rename(columns={'Close': 'y'})
-
-    # Make the prophet model and fit on the data
-    gm_prophet = Prophet(n_changepoints=len(ds), changepoint_prior_scale=0.80, changepoint_range=0.80,
-                         #                      yearly_seasonality=False,weekly_seasonality=False,daily_seasonality=False,
-                         #                      seasonality_mode='multiplicative',
-                         #                      uncertainty_samples=1000,
-                         #                      seasonality_prior_scale=0.01,
-                         #                      mcmc_samples=0,
-                         )
-    gm_prophet.fit(ds)
-
-    # predict:
-    # Make a future dataframe
-    gm_forecast = gm_prophet.make_future_dataframe(periods=forecast_period, freq='T')
-    # Make predictions
-    gm_forecast = gm_prophet.predict(gm_forecast)
-    # gm_forecast
-    gm_forecast = gm_forecast.set_index(gm_forecast.ds).loc[:, ['yhat', 'yhat_lower', 'yhat_upper',
-                                                                'trend', 'trend_lower', 'trend_upper']]
-    # merge
-    d = gm_forecast.merge(d, how='outer', on='ds')
-
-
-    return d
 
 ########################################################################################
 ########################################################################################
