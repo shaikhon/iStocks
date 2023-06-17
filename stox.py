@@ -591,8 +591,9 @@ def intrawmy(d, idict, period):
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}'
-                                           + '<br><i>Time</i>: %{x| %H:%M}'
-                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
+                                           # + '<br><i>Time</i>: %{x| %H:%M}'
+                                           + '<br><i>Time</i>: %{x}'
+                                           # + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
                   secondary_y=True)
 
