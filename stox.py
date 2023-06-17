@@ -597,7 +597,6 @@ def intrawmy(d, idict, period):
                   secondary_y=False
                   )
 
-
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}'
@@ -607,9 +606,6 @@ def intrawmy(d, idict, period):
                              ),
                   secondary_y=True)
 
-
-
-    # limegreen, lime, #E1FF00, #ccff00
 
     fig.update_layout(
         hovermode="closest",
@@ -630,66 +626,79 @@ def intrawmy(d, idict, period):
     return fig
 
 
-def intraday_prophet(d, d_original, idict):
+def intraday_prophet(d, idict, period):
 
-    # st.write("intraday-prophet")
-    # st.write(d)
     pev = idict['regularMarketPreviousClose']
     # open = idict['regularMarketOpen']
-
-    current_price = d_original['Close'][-1]
+    current_price = d['Close'].dropna()[-1]
     color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
 
-    x = d.index.to_list()
-    # x = d.index.strftime("%d-%m-%Y").to_list()
-    # x
+    if ('Y' in period) or ('Max' in period):
+        'Y or Max'
+        # ts_format = "%b-%Y"
+        ts_format = "%d %b %Y"
+        x = d.index.strftime(ts_format)  # .to_list()
+        vol_hover = 'x'
+        price_hover = '<i>Price</i>: $%{y:.2f}<br><i>Time</i>: %{x}<br><extra></extra>'
+
+    elif ('W' in period) or ('1M' in period):
+        ts_format = "%H:%M  %b-%d"
+        x = d.index.strftime(ts_format)  # .to_list()
+        vol_hover = 'x'
+        price_hover = '<i>Price</i>: $%{y:.2f}<br><i>Time</i>: %{x}<br><extra></extra>'
+
+    else:
+        x = d.index.to_list()
+        vol_hover = 'x|%H:%M'
+        price_hover = '<i>Price</i>: $%{y:.2f}'+ '<br><i>Time</i>: %{x| %H:%M}'\
+                      + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>'
+
+        
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # plot volume bars (magenta)
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.75,
-                         marker={"color": "magenta",  # "#0FCFFF"
+                         marker={"color": "magenta",
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}'+
-                                       '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+                                       f'<br><i>Time</i>: %{vol_hover}<br><extra></extra>',
                          ), secondary_y=False)
-
-    # index of future 15 samples
-    x_future = x[-15:]
-    
-    # plot yhat
-    fig.add_trace(go.Scatter(mode='lines', x=x_future, y=d.yhat.loc[x_future],
-                             line=dict(color=color, width=2, dash='dash'),
-                             hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
-                                           '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
-                             showlegend=False),
-                  secondary_y=True)
-
-    # plot trend error bands
-    # upper = d.trend_upper.to_list()
-    upper = d.yhat_upper.loc[x_future].to_list()
-    lower = d.yhat_lower.loc[x_future].to_list()
-    # lower = d.trend_lower.to_list()
-
-    fig.add_trace(go.Scatter(x=x_future + x_future[::-1],
-                             y=upper + lower[::-1],
-                             fill='toself',
-                             fillcolor='rgba(255,255,255,.25)',
-                             line=dict(color='rgba(255,255,255,1)'),
-                             hoverinfo='skip',
-                             showlegend=False),
-                  secondary_y=True)
 
     # plot price
     fig.add_trace(go.Scatter(mode="lines", x=x, y=d["Close"],
-                             line={"color": color,  # limegreen, lime, #E1FF00, #ccff00
+                             line={"color": color,
                                    "width": 2,
                                    },
-                             hovertemplate='<i>Price</i>: $%{y:.2f}'
-                                           + '<br><i>Time</i>: %{x| %H:%M}'
-                                           + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
-                             ),
-                  secondary_y=True)
+                             hovertemplate=price_hover,
+                             ), secondary_y=True)
+
+    if 'yhat' in d:
+        # index of future 15 samples
+        x_future = x[-15:]
+        
+        # plot yhat
+        fig.add_trace(go.Scatter(mode='lines', x=x_future, y=d.yhat.loc[x_future],
+                                 line=dict(color=color, width=2, dash='dash'),
+                                 hovertemplate='<i>Forecast</i>: $%{y:.2f}' +
+                                               '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+                                 showlegend=False),
+                      secondary_y=True)
     
+        # plot trend error bands
+        upper = d.yhat_upper.loc[x_future].to_list()
+        lower = d.yhat_lower.loc[x_future].to_list()
+        # upper = d.trend_upper.to_list()
+        # lower = d.trend_lower.to_list()
+    
+        fig.add_trace(go.Scatter(x=x_future + x_future[::-1],
+                                 y=upper + lower[::-1],
+                                 fill='toself',
+                                 fillcolor='rgba(255,255,255,.2)',
+                                 line=dict(color='rgba(255,255,255,.75)'),
+                                 hoverinfo='skip',
+                                 showlegend=False),
+                      secondary_y=True)
+
     fig.update_layout(
         hovermode="closest",
         hoverlabel=dict(align="left", bgcolor="rgba(0,0,0,0)"),
@@ -773,10 +782,10 @@ def price_chart(idict):
             d = ticker.history(period=period, interval=interval, prepost=after_hours,
                                rounding=True).drop(columns=['Dividends', 'Stock Splits'],
                                                    errors="ignore").drop_duplicates(keep='first')
-            if period_name in ["1D"]:
-                st.plotly_chart(intraday_prophet(prophecy(d), d, idict), use_container_width=True)
-            else:
-                st.plotly_chart(intrawmy(d, idict, period_name), use_container_width=True)
+            # if period_name in ["1D"]:
+            st.plotly_chart(intraday_prophet(prophecy(d), idict, period_name), use_container_width=True)
+            # else:
+            #     st.plotly_chart(intrawmy(d, idict, period_name), use_container_width=True)
             
             # d = ticker.history(period='max', interval='1m', prepost=after_hours,
             #                    rounding=True).drop(columns=['Dividends', 'Stock Splits'],
