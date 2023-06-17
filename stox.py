@@ -586,6 +586,18 @@ def intrawmy(d, idict, period):
     
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
+    # plot volume bars (magenta)
+    fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.75,
+                         marker={
+                             "color": "magenta",  # "#0FCFFF"
+                         },
+                         hovertemplate='<i>Volume</i>: %{y:,}'+
+                         '<br><i>Time</i>: %{x}<br><extra></extra>',
+                         ),
+                  secondary_y=False
+                  )
+
+
     fig.add_trace(go.Scatter(mode="lines", x=ts, y=d["Close"],
                              line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}'
@@ -595,15 +607,7 @@ def intrawmy(d, idict, period):
                              ),
                   secondary_y=True)
 
-    fig.add_trace(go.Bar(x=ts, y=d["Volume"], opacity=.65,
-                         marker={
-                             "color": "magenta",  # "#0FCFFF"
-                         },
-                         hovertemplate='<i>Volume</i>: %{y:,}'+
-                         '<br><i>Time</i>: %{x}<br><extra></extra>',
-                         ),
-                  # secondary_y=False
-                  )
+
 
     # limegreen, lime, #E1FF00, #ccff00
 
@@ -641,8 +645,8 @@ def intraday_prophet(d, d_original, idict):
     # x
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    # plot volume bars
-    fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
+    # plot volume bars (magenta)
+    fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.75,
                          marker={"color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}'+
