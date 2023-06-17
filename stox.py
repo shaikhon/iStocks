@@ -635,7 +635,6 @@ def intraday_prophet(d, idict, period):
 
     if ('Y' in period) or ('Max' in period):
         'Y or Max'
-        # ts_format = "%b-%Y"
         ts_format = "%d %b %Y"
         x = d.index.strftime(ts_format)  # .to_list()
         vol_hover = 'x'
@@ -709,7 +708,7 @@ def intraday_prophet(d, idict, period):
         showlegend=False,
         yaxis=dict(showgrid=False, title={"font": dict(size=24), "text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font": dict(size=24), "text": "Price ($USD)", "standoff": 10}),
-        xaxis=dict(showline=False, ticklabelmode="period",)
+        xaxis=dict(showline=False, ticklabelstep=4, ticklabelmode="period",)
     )
     return fig
 
