@@ -580,7 +580,7 @@ def intrawmy(d, idict, period):
     elif '1Y' in period:
         ts_format = "%d %b %Y"
     else:
-        ts_format = "%I:%M  %b-%d"
+        ts_format = "%H:%M  %b-%d"
 
     # ts = d.index
     ts = d.index.strftime(ts_format) #.to_list()
