@@ -592,7 +592,7 @@ def intrawmy(d, idict, period):
                              line={"color": color, "width": 2, },
                              hovertemplate='<i>Price</i>: $%{y:.2f}'
                                            # + '<br><i>Time</i>: %{x| %H:%M}'
-                                           + '<br><i>Time</i>: %{x}'
+                                           + '<br><i>Time</i>: %{x}<br><extra></extra>'
                                            # + '<br><i>Date</i>: %{x|%a, %d %b %y}<extra></extra>',
                              ),
                   secondary_y=True)
