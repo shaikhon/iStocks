@@ -602,7 +602,7 @@ def intrawmy(d, idict, period):
                              "color": "magenta",  # "#0FCFFF"
                          },
                          hovertemplate='<i>Volume</i>: %{y:,}'+
-                         '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
+                         '<br><i>Time</i>: %{x}<br><extra></extra>',
                          ),
                   # secondary_y=False
                   )
