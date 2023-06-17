@@ -645,7 +645,7 @@ def intraday_prophet(d, d_original, idict):
     fig.add_trace(go.Bar(x=x, y=d["Volume"], opacity=.65,
                          marker={"color": "magenta",  # "#0FCFFF"
                          },
-                         hovertemplate='<i>Volume</i>: %{y:,}<extra></extra>'+
+                         hovertemplate='<i>Volume</i>: %{y:,}'+
                                        '<br><i>Time</i>: %{x|%H:%M}<br><extra></extra>',
                          ), secondary_y=False)
 
