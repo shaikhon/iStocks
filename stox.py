@@ -698,7 +698,7 @@ def intraday_prophet(d, d_original, idict):
         showlegend=False,
         yaxis=dict(showgrid=False, title={"font": dict(size=24), "text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font": dict(size=24), "text": "Price ($USD)", "standoff": 10}),
-        xaxis=dict(showline=False)
+        xaxis=dict(showline=False, ticklabelmode="period",)
     )
     return fig
 
