@@ -573,11 +573,9 @@ def intrawmy(d, idict, period):
     current_price = d['Close'][-1]
     color = 'lime' if current_price >= pev else 'rgb(255, 49, 49)'
 
-    if ('5Y' in period) or ('Max' in period):
-        '5Y or Max'
-        ts_format = "%b-%Y"
-
-    elif '1Y' in period:
+    if ('Y' in period) or ('Max' in period):
+        'Y or Max'
+        # ts_format = "%b-%Y"
         ts_format = "%d %b %Y"
     else:
         ts_format = "%H:%M  %b-%d"
