@@ -748,7 +748,6 @@ def prophecy(d, forecast_period=15):
                                                                 'trend', 'trend_lower', 'trend_upper']]
     # merge
     d = gm_forecast.merge(d, how='outer', on='ds')
-    d
 
     return d
 
