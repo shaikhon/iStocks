@@ -708,7 +708,7 @@ def intraday_prophet(d, idict, period):
         showlegend=False,
         yaxis=dict(showgrid=False, title={"font": dict(size=24), "text": "Volume", "standoff": 10}),
         yaxis2=dict(showgrid=False, title={"font": dict(size=24), "text": "Price ($USD)", "standoff": 10}),
-        xaxis=dict(showline=False, ticklabelstep=4, ticklabelmode="period",)
+        xaxis=dict(showline=False, ticklabelstep=3, ticklabelmode="period",)
     )
     return fig
 
@@ -1194,7 +1194,8 @@ exchange_dict = ticker_etf_dict['Exchange']
 ########################################################################################
 "---"
 with st.container():
-    st.markdown("<h1 style='text-align: center; color: white;'>Smart Dashboard</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: white;'>Smart Dashboard</h1>",
+                unsafe_allow_html=True)
 
     plt_col1, plt_col2, _, rfrsh_col, plt_col3 = st.columns([3, 1, 1, 1, 2], gap="small")
     # col1: Ticker input
