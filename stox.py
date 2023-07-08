@@ -1136,8 +1136,11 @@ def plot_news_item(title, link, source, pub_when, thumb):
 ########################################################################################
 ################################## TITLE & LOGO ########################################
 title = '💎 iStocks 💎'
-# title = '💎 U.S. Stocks App 💎'
+# TODO:
+#  candles
+#  heatmap: stock close prices in the past days
 
+# fix price chart color
 welcome = 'The Smart App for U.S. Stocks'
 author = 'Obai Shaikh'
 st.markdown(f"<h1 style='text-align: center; color: white;'>{title}</h1>", unsafe_allow_html=True)
@@ -1163,8 +1166,7 @@ if 'rate' not in st.session_state:
 # Posting_Date|Ticker_Symbol|Security_Name|Listing_Exchange|Effective_Date|Deleted_Date|
 # Tick_Size_Pilot_Program_Group|Old_Tick_Size_Pilot_Program_Group|Old_Ticker_Symbol|Reason_for_Change
 ########################################################################################
-#TODO: candles
-# fix price chart color
+
 
 # Language input
 lang = st.sidebar.radio(
