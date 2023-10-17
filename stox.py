@@ -758,7 +758,8 @@ def price_chart(idict):
                         ("1M", ("1mo", ['15m', '30m', '1h', '1d'])),
                         ("1Y", ("1y", ['1d', '1wk'])),
                         ("5Y", ("5y", ['1d', '1wk', '1mo'])),
-                        ("Max", ("max", ['1d', '1wk', '1mo', '3mo']))])
+                        # ("Max", ("max", ['1d', '1wk', '1mo', '3mo'])),
+                        ])
 
     # after_hours = plt_col3.checkbox("After-hours?", value=False, key='prepost', help="Include Pre- and Post-market Data?")
     after_hours = False
